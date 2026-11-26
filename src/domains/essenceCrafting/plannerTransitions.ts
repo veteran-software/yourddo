@@ -67,7 +67,7 @@ export const getEquipmentBlockers = (state: EssencePlanState, change: EquipmentC
       : []
   }
   const target = change.equipmentSlotId
-  if (!offHandSlots.has(target) || state.activeSlotIds.some((id) => id === target)) return []
+  if (!isEquipmentSlotId(target) || !offHandSlots.has(target) || state.activeSlotIds.includes(target)) return []
   return state.activeSlotIds.filter(
     (id) => offHandSlots.has(id) || (id === 'main-hand' && state.itemsBySlotId[id]?.twoHanded)
   )
@@ -378,6 +378,83 @@ function setMasterMinimumLevel(
   return { ...state, masterMinimumLevel: minimumLevel, itemsBySlotId }
 }
 
+function activateEquipmentSlot(
+  state: EssencePlanState,
+  action: Extract<EssencePlanAction, { type: 'activate-equipment-slot' }>
+): EssencePlanState {
+  if (!isEquipmentSlotId(action.equipmentSlotId) || getEquipmentBlockers(state, action).length) return state
+  const activeIds = new Set(state.activeSlotIds)
+  activeIds.add(action.equipmentSlotId)
+  const activeSlotIds = orderEquipmentSlotIds(activeIds)
+  const item = state.itemsBySlotId[action.equipmentSlotId]
+  if (item && state.activeSlotIds.includes(action.equipmentSlotId)) return state
+  const itemsBySlotId = {
+    ...state.itemsBySlotId,
+    [action.equipmentSlotId]: item ?? createEmptyPlannedItem()
+  }
+  return {
+    ...state,
+    activeSlotIds,
+    itemsBySlotId: orderItemsBySlotId(activeSlotIds, itemsBySlotId)
+  }
+}
+
+function setTwoHanded(
+  state: EssencePlanState,
+  action: Extract<EssencePlanAction, { type: 'set-two-handed' }>
+): EssencePlanState {
+  if (getEquipmentBlockers(state, action).length) return state
+  return updateActiveItem(state, 'main-hand', (item) => {
+    if (Boolean(item.twoHanded) === action.enabled) return item
+    if (action.enabled) return { ...item, twoHanded: true }
+    const next = { ...item }
+    delete next.twoHanded
+    return next
+  })
+}
+
+function resolveEquipmentConflict(
+  data: EssenceCraftingData,
+  state: EssencePlanState,
+  action: Extract<EssencePlanAction, { type: 'resolve-equipment-conflict' }>
+): EssencePlanState {
+  const blockers = getEquipmentBlockers(state, action.change)
+  if (blockers.some((id) => !action.blockers.includes(id))) return state
+  const cleared = blockers.reduce(
+    (plan, equipmentSlotId) =>
+      transitionEssencePlan(data, plan, { type: 'deactivate-equipment-slot', equipmentSlotId }),
+    state
+  )
+  const next = transitionEssencePlan(data, cleared, action.change)
+  return next === cleared ? state : next
+}
+
+function applyShard(
+  data: EssenceCraftingData,
+  state: EssencePlanState,
+  action: Extract<EssencePlanAction, { type: 'apply-shard' }>
+): EssencePlanState {
+  const { equipmentSlotId, position, enhancementId } = action
+  if (!isEquipmentSlotId(equipmentSlotId)) return state
+  const enhancement = data.indexes.enhancementById.get(enhancementId)
+  if (!enhancement) return state
+
+  const item = state.itemsBySlotId[equipmentSlotId]
+  let next = transitionEssencePlan(data, state, { type: 'activate-equipment-slot', equipmentSlotId })
+  if (enhancement.minimumItemLevel > (item?.minimumLevelOverride ?? state.masterMinimumLevel)) {
+    next = transitionEssencePlan(data, next, {
+      type: 'set-item-minimum-level-override',
+      equipmentSlotId,
+      minimumLevel: enhancement.minimumItemLevel
+    })
+  }
+  if (position === 'extra' && !item?.hasCannithMark) {
+    next = transitionEssencePlan(data, next, { type: 'set-cannith-mark', equipmentSlotId, enabled: true })
+  }
+  next = selectEnhancement(data, next, equipmentSlotId, position, enhancementId)
+  return next.itemsBySlotId[equipmentSlotId]?.[`${position}EnhancementId`] === enhancementId ? next : state
+}
+
 export const transitionEssencePlan = (
   data: EssenceCraftingData,
   state: EssencePlanState,
@@ -386,44 +463,12 @@ export const transitionEssencePlan = (
   switch (action.type) {
     case 'set-master-minimum-level':
       return setMasterMinimumLevel(data, state, action.minimumLevel)
-    case 'activate-equipment-slot': {
-      if (!isEquipmentSlotId(action.equipmentSlotId) || getEquipmentBlockers(state, action).length) return state
-      const activeIds = new Set(state.activeSlotIds)
-      activeIds.add(action.equipmentSlotId)
-      const activeSlotIds = orderEquipmentSlotIds(activeIds)
-      const item = state.itemsBySlotId[action.equipmentSlotId]
-      if (item && state.activeSlotIds.includes(action.equipmentSlotId)) return state
-      const itemsBySlotId = {
-        ...state.itemsBySlotId,
-        [action.equipmentSlotId]: item ?? createEmptyPlannedItem()
-      }
-      return {
-        ...state,
-        activeSlotIds,
-        itemsBySlotId: orderItemsBySlotId(activeSlotIds, itemsBySlotId)
-      }
-    }
-    case 'set-two-handed': {
-      if (getEquipmentBlockers(state, action).length) return state
-      return updateActiveItem(state, 'main-hand', (item) => {
-        if (Boolean(item.twoHanded) === action.enabled) return item
-        if (action.enabled) return { ...item, twoHanded: true }
-        const next = { ...item }
-        delete next.twoHanded
-        return next
-      })
-    }
-    case 'resolve-equipment-conflict': {
-      const blockers = getEquipmentBlockers(state, action.change)
-      if (blockers.some((id) => !action.blockers.includes(id))) return state
-      const cleared = blockers.reduce(
-        (plan, equipmentSlotId) =>
-          transitionEssencePlan(data, plan, { type: 'deactivate-equipment-slot', equipmentSlotId }),
-        state
-      )
-      const next = transitionEssencePlan(data, cleared, action.change)
-      return next === cleared ? state : next
-    }
+    case 'activate-equipment-slot':
+      return activateEquipmentSlot(state, action)
+    case 'set-two-handed':
+      return setTwoHanded(state, action)
+    case 'resolve-equipment-conflict':
+      return resolveEquipmentConflict(data, state, action)
     case 'deactivate-equipment-slot': {
       if (!isEquipmentSlotId(action.equipmentSlotId) || !state.activeSlotIds.includes(action.equipmentSlotId)) {
         return state
@@ -488,27 +533,8 @@ export const transitionEssencePlan = (
       )
     case 'select-extra-enhancement':
       return selectEnhancement(data, state, action.equipmentSlotId, 'extra', action.enhancementId)
-    case 'apply-shard': {
-      const { equipmentSlotId, position, enhancementId } = action
-      if (!isEquipmentSlotId(equipmentSlotId)) return state
-      const enhancement = data.indexes.enhancementById.get(enhancementId)
-      if (!enhancement) return state
-
-      const item = state.itemsBySlotId[equipmentSlotId]
-      let next = transitionEssencePlan(data, state, { type: 'activate-equipment-slot', equipmentSlotId })
-      if (enhancement.minimumItemLevel > (item?.minimumLevelOverride ?? state.masterMinimumLevel)) {
-        next = transitionEssencePlan(data, next, {
-          type: 'set-item-minimum-level-override',
-          equipmentSlotId,
-          minimumLevel: enhancement.minimumItemLevel
-        })
-      }
-      if (position === 'extra' && !item?.hasCannithMark) {
-        next = transitionEssencePlan(data, next, { type: 'set-cannith-mark', equipmentSlotId, enabled: true })
-      }
-      next = selectEnhancement(data, next, equipmentSlotId, position, enhancementId)
-      return next.itemsBySlotId[equipmentSlotId]?.[`${position}EnhancementId`] === enhancementId ? next : state
-    }
+    case 'apply-shard':
+      return applyShard(data, state, action)
     case 'add-augment-slot':
       return updateActiveItem(state, action.equipmentSlotId, (item, slotId) => {
         if (

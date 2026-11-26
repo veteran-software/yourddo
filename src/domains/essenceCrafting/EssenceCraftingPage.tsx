@@ -54,15 +54,73 @@ const getPermalinkErrorMessage = (reason: EssenceCraftingPermalinkDecodeFailure)
     ? 'This Essence Crafting link uses a permalink version that is not supported. Your current plan was kept.'
     : 'This Essence Crafting link is invalid or damaged. Your current plan was kept.'
 
+interface EquipmentConflict {
+  change: EquipmentChange
+  onApplied?: () => void
+}
+
+function EquipmentConflictDialog({
+  equipmentConflict,
+  plan,
+  dispatch,
+  onClose
+}: {
+  equipmentConflict: EquipmentConflict | null
+  plan: EssencePlanState
+  dispatch: (action: EssencePlanAction) => void
+  onClose: () => void
+}) {
+  const blockers = equipmentConflict ? getEquipmentBlockers(plan, equipmentConflict.change) : []
+  const conflictTargetId =
+    equipmentConflict?.change.type === 'activate-equipment-slot' ? equipmentConflict.change.equipmentSlotId : undefined
+  const conflictTarget = EQUIPMENT_SLOTS.find(({ id }) => id === conflictTargetId)
+
+  return (
+    <Modal opened={equipmentConflict !== null} onClose={onClose} title='Equipment conflict' centered>
+      {equipmentConflict && (
+        <Stack gap='md'>
+          <Text>
+            Unequip <strong>{describeEquipmentBlockers(plan, blockers)}</strong>{' '}
+            {conflictTarget ? (
+              <>
+                to add <strong>{conflictTarget.label}</strong>?
+              </>
+            ) : (
+              <>
+                to use a <strong>two-handed Main Hand weapon</strong>?
+              </>
+            )}
+          </Text>
+          <Text size='sm' c='dimmed'>
+            Unequipping removes the blocking item and its selections from this plan.
+          </Text>
+          <Group justify='flex-end'>
+            <Button variant='default' onClick={onClose}>
+              Cancel
+            </Button>
+            <Button
+              color='red'
+              onClick={() => {
+                dispatch({ type: 'resolve-equipment-conflict', change: equipmentConflict.change, blockers })
+                equipmentConflict.onApplied?.()
+                onClose()
+              }}
+            >
+              Unequip and continue
+            </Button>
+          </Group>
+        </Stack>
+      )}
+    </Modal>
+  )
+}
+
 const EssenceCraftingPage = () => {
   const [dataState, setDataState] = useState<DataState>({ status: 'loading' })
   const [loadAttempt, setLoadAttempt] = useState(0)
   const [confirmation, setConfirmation] = useState<Confirmation>(null)
   const [helpOpen, setHelpOpen] = useState(false)
-  const [equipmentConflict, setEquipmentConflict] = useState<{
-    change: EquipmentChange
-    onApplied?: () => void
-  } | null>(null)
+  const [equipmentConflict, setEquipmentConflict] = useState<EquipmentConflict | null>(null)
   const [binding, setBinding] = useState<'bound' | 'unbound'>('bound')
   const [view, setView] = useState<string | null>('plan')
   const [permalinkError, setPermalinkError] = useState<string | null>(null)
@@ -186,12 +244,6 @@ const EssenceCraftingPage = () => {
     }
   }
 
-  const conflictPlan = dataState.status === 'loaded' ? dataState.plan : undefined
-  const blockers = conflictPlan && equipmentConflict ? getEquipmentBlockers(conflictPlan, equipmentConflict.change) : []
-  const conflictTargetId =
-    equipmentConflict?.change.type === 'activate-equipment-slot' ? equipmentConflict.change.equipmentSlotId : undefined
-  const conflictTarget = EQUIPMENT_SLOTS.find(({ id }) => id === conflictTargetId)
-
   const retry = () => {
     setDataState({ status: 'loading' })
     setLoadAttempt((attempt) => attempt + 1)
@@ -314,6 +366,14 @@ const EssenceCraftingPage = () => {
                 <ShardLookup data={dataState.data} plan={dataState.plan} onAction={dispatch} />
               </Tabs.Panel>
             </Tabs>
+            <EquipmentConflictDialog
+              equipmentConflict={equipmentConflict}
+              plan={dataState.plan}
+              dispatch={dispatch}
+              onClose={() => {
+                setEquipmentConflict(null)
+              }}
+            />
           </>
         ) : null}
       </Stack>
@@ -353,55 +413,6 @@ const EssenceCraftingPage = () => {
             </List.Item>
           </List>
         </Stack>
-      </Modal>
-
-      <Modal
-        opened={equipmentConflict !== null}
-        onClose={() => {
-          setEquipmentConflict(null)
-        }}
-        title='Equipment conflict'
-        centered
-      >
-        {equipmentConflict && conflictPlan && (
-          <Stack gap='md'>
-            <Text>
-              Unequip <strong>{describeEquipmentBlockers(conflictPlan, blockers)}</strong>{' '}
-              {conflictTarget ? (
-                <>
-                  to add <strong>{conflictTarget.label}</strong>?
-                </>
-              ) : (
-                <>
-                  to use a <strong>two-handed Main Hand weapon</strong>?
-                </>
-              )}
-            </Text>
-            <Text size='sm' c='dimmed'>
-              Unequipping removes the blocking item and its selections from this plan.
-            </Text>
-            <Group justify='flex-end'>
-              <Button
-                variant='default'
-                onClick={() => {
-                  setEquipmentConflict(null)
-                }}
-              >
-                Cancel
-              </Button>
-              <Button
-                color='red'
-                onClick={() => {
-                  dispatch({ type: 'resolve-equipment-conflict', change: equipmentConflict.change, blockers })
-                  equipmentConflict.onApplied?.()
-                  setEquipmentConflict(null)
-                }}
-              >
-                Unequip and continue
-              </Button>
-            </Group>
-          </Stack>
-        )}
       </Modal>
 
       <Modal

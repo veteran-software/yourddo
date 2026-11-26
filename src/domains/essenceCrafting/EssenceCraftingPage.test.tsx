@@ -236,7 +236,7 @@ describe('EssenceCraftingPage', () => {
     await user.keyboard('{Escape}')
     expect(screen.queryByRole('dialog', { name: 'Essence Crafting help' })).toBeNull()
     await waitFor(() => {
-      expect(document.activeElement === help).toBe(true)
+      expect(document.activeElement).toBe(help)
     })
     expect(screen.getByRole('tab', { name: 'Master Shard Lookup' }).getAttribute('aria-selected')).toBe('true')
   })

@@ -18,7 +18,7 @@ import { IconArrowDown, IconArrowUp, IconArrowsSort, IconCheck, IconSearch } fro
 import { useMemo, useRef, useState } from 'react'
 import { formatResolvedEffectModifier, resolveEssenceEffects } from './enhancementEffects'
 import { EQUIPMENT_SLOTS } from './equipment'
-import type { EssenceBinding, EssenceCraftingData, EssenceEnhancement } from './essenceCrafting.types'
+import type { EssenceBinding, EssenceCraftingData, EssenceEnhancement, EssenceRecipe } from './essenceCrafting.types'
 import type { EssencePlanState } from './plannerState'
 import { describeEquipmentBlockers, type EssencePlanAction, getEquipmentBlockers } from './plannerTransitions'
 import styles from './ShardLookup.module.css'
@@ -57,6 +57,141 @@ interface ShardLookupProps {
   data: EssenceCraftingData
   plan: EssencePlanState
   onAction: (action: Extract<EssencePlanAction, { type: 'apply-shard' | 'resolve-equipment-conflict' }>) => void
+}
+
+function ApplyShardDialog({
+  data,
+  plan,
+  pending,
+  onAction,
+  onClose
+}: ShardLookupProps & { pending: ApplyShardAction | null; onClose: () => void }) {
+  const mark = data.rules.extraAffix.markRequirement
+  const markName = data.indexes.ingredientById.get(mark.ingredientId)?.displayName ?? mark.ingredientId
+  const targetSlot = EQUIPMENT_SLOTS.find(({ id }) => id === pending?.equipmentSlotId)
+  const pendingShard = pending ? data.indexes.enhancementById.get(pending.enhancementId) : undefined
+  const targetItem = targetSlot ? plan.itemsBySlotId[targetSlot.id] : undefined
+  const currentId = pending ? targetItem?.[`${pending.position}EnhancementId`] : undefined
+  const currentShard = currentId ? data.indexes.enhancementById.get(currentId) : undefined
+  const alreadyApplied = Boolean(pendingShard && currentId === pendingShard.id)
+  const itemLevel = targetItem?.minimumLevelOverride ?? plan.masterMinimumLevel
+  const blockers = pending ? getEquipmentBlockers(plan, pending) : []
+  const hasConflict = blockers.length > 0
+
+  const shardName = <strong>{pendingShard?.displayName}</strong>
+  const destination = (
+    <>
+      {pending?.position} on <strong>{targetSlot?.label}</strong>
+    </>
+  )
+  let title = 'Apply effect?'
+  let confirmLabel = 'Apply effect'
+  let message = (
+    <>
+      Apply {shardName} as the {destination}?
+    </>
+  )
+  if (currentShard) {
+    title = 'Replace effect?'
+    confirmLabel = 'Replace effect'
+    message = (
+      <>
+        Replace <strong>{currentShard.displayName}</strong> with {shardName} as the {destination}?
+      </>
+    )
+  }
+  if (alreadyApplied) {
+    title = 'Effect already applied'
+    message = (
+      <>
+        {shardName} is already the {destination}.
+      </>
+    )
+  }
+  if (hasConflict) {
+    title = 'Equipment conflict'
+    confirmLabel = 'Unequip and apply'
+  }
+
+  return (
+    <Modal opened={pending !== null} onClose={onClose} title={title} centered>
+      {pending && pendingShard && targetSlot && (
+        <Stack gap='sm'>
+          {hasConflict && (
+            <Text>
+              Unequip <strong>{describeEquipmentBlockers(plan, blockers)}</strong> to continue. Unequipping removes the
+              blocking item and its selections from this plan.
+            </Text>
+          )}
+          <Text>{message}</Text>
+          {!targetItem && (
+            <Text size='sm' c='dimmed'>
+              This adds the item to your plan.
+            </Text>
+          )}
+          {pendingShard.minimumItemLevel > itemLevel && (
+            <Text size='sm' c='dimmed'>
+              This raises the item's minimum level from {itemLevel} to {pendingShard.minimumItemLevel}.
+            </Text>
+          )}
+          {pending.position === 'extra' && !targetItem?.hasCannithMark && (
+            <Text size='sm' c='dimmed'>
+              This adds {mark.quantity} × {markName} to your ingredient requirements.
+            </Text>
+          )}
+          <Group justify='flex-end'>
+            <Button variant='default' onClick={onClose}>
+              {alreadyApplied ? 'Done' : 'Cancel'}
+            </Button>
+            {!alreadyApplied && (
+              <Button
+                color={hasConflict ? 'red' : undefined}
+                onClick={() => {
+                  onAction(hasConflict ? { type: 'resolve-equipment-conflict', change: pending, blockers } : pending)
+                  onClose()
+                }}
+              >
+                {confirmLabel}
+              </Button>
+            )}
+          </Group>
+        </Stack>
+      )}
+    </Modal>
+  )
+}
+
+function ShardRecipe({
+  recipe,
+  binding,
+  ingredientName
+}: {
+  recipe?: EssenceRecipe
+  binding: EssenceBinding
+  ingredientName: (id: string) => string
+}) {
+  const emptyMessage = recipe ? 'No ingredients required.' : 'Recipe unavailable.'
+  return (
+    <Stack gap='xs' className={styles.detailSection}>
+      <Title order={4} size='h6'>
+        {binding === 'bound' ? 'Bound' : 'Unbound'} recipe
+      </Title>
+      {recipe?.requirements.length ? (
+        <dl className={styles.values}>
+          {recipe.requirements.map(({ ingredientId, quantity }) => (
+            <div key={ingredientId}>
+              <dt>{ingredientName(ingredientId)}</dt>
+              <dd>×{quantity.toLocaleString()}</dd>
+            </div>
+          ))}
+        </dl>
+      ) : (
+        <Text size='sm' c='dimmed'>
+          {emptyMessage}
+        </Text>
+      )}
+    </Stack>
+  )
 }
 
 const ShardLookup = ({ data, plan, onAction }: ShardLookupProps) => {
@@ -160,15 +295,6 @@ const ShardLookup = ({ data, plan, onAction }: ShardLookupProps) => {
   }
   const ingredientName = (id: string) => data.indexes.ingredientById.get(id)?.displayName ?? id
   const mark = data.rules.extraAffix.markRequirement
-  const targetSlot = EQUIPMENT_SLOTS.find(({ id }) => id === pending?.equipmentSlotId)
-  const pendingShard = pending ? data.indexes.enhancementById.get(pending.enhancementId) : undefined
-  const targetItem = targetSlot ? plan.itemsBySlotId[targetSlot.id] : undefined
-  const currentId = pending ? targetItem?.[`${pending.position}EnhancementId`] : undefined
-  const currentShard = currentId ? data.indexes.enhancementById.get(currentId) : undefined
-  const alreadyApplied = Boolean(pendingShard && currentId === pendingShard.id)
-  const itemLevel = targetItem?.minimumLevelOverride ?? plan.masterMinimumLevel
-  const blockers = pending ? getEquipmentBlockers(plan, pending) : []
-  const hasConflict = blockers.length > 0
 
   return (
     <Stack gap='md' className={styles.lookup}>
@@ -257,12 +383,11 @@ const ShardLookup = ({ data, plan, onAction }: ShardLookupProps) => {
                     <Table.Tr>
                       {columns.map(({ key, label }) => {
                         const active = sort.key === key
-                        const Icon = active ? (sort.descending ? IconArrowDown : IconArrowUp) : IconArrowsSort
+                        const direction = sort.descending ? 'descending' : 'ascending'
+                        const DirectionIcon = sort.descending ? IconArrowDown : IconArrowUp
+                        const Icon = active ? DirectionIcon : IconArrowsSort
                         return (
-                          <Table.Th
-                            key={key}
-                            aria-sort={active ? (sort.descending ? 'descending' : 'ascending') : undefined}
-                          >
+                          <Table.Th key={key} aria-sort={active ? direction : undefined}>
                             <UnstyledButton
                               className={styles.sort}
                               onClick={() => {
@@ -417,10 +542,8 @@ const ShardLookup = ({ data, plan, onAction }: ShardLookupProps) => {
                         const slots = EQUIPMENT_SLOTS.filter(({ itemCategoryIds }) =>
                           itemCategoryIds.some((id) => categories.has(id))
                         )
-                        const unmapped = [...categories].filter(
-                          (category) =>
-                            !slots.some(({ itemCategoryIds }) => itemCategoryIds.some((id) => id === category))
-                        )
+                        const mapped = new Set<string>(slots.flatMap(({ itemCategoryIds }) => itemCategoryIds))
+                        const unmapped = [...categories].filter((category) => !mapped.has(category))
                         const enhancementId = selected.id
                         return (
                           <div key={value}>
@@ -468,110 +591,20 @@ const ShardLookup = ({ data, plan, onAction }: ShardLookupProps) => {
                 </>
               )}
 
-              <Stack gap='xs' className={styles.detailSection}>
-                <Title order={4} size='h6'>
-                  {binding === 'bound' ? 'Bound' : 'Unbound'} recipe
-                </Title>
-                {recipe?.requirements.length ? (
-                  <dl className={styles.values}>
-                    {recipe.requirements.map(({ ingredientId, quantity }) => (
-                      <div key={ingredientId}>
-                        <dt>{ingredientName(ingredientId)}</dt>
-                        <dd>×{quantity.toLocaleString()}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                ) : (
-                  <Text size='sm' c='dimmed'>
-                    {recipe ? 'No ingredients required.' : 'Recipe unavailable.'}
-                  </Text>
-                )}
-              </Stack>
+              <ShardRecipe recipe={recipe} binding={binding} ingredientName={ingredientName} />
             </Stack>
           </Paper>
         )}
       </div>
-      <Modal
-        opened={pending !== null}
+      <ApplyShardDialog
+        data={data}
+        plan={plan}
+        pending={pending}
+        onAction={onAction}
         onClose={() => {
           setPending(null)
         }}
-        title={
-          hasConflict
-            ? 'Equipment conflict'
-            : alreadyApplied
-              ? 'Effect already applied'
-              : currentShard
-                ? 'Replace effect?'
-                : 'Apply effect?'
-        }
-        centered
-      >
-        {pending && pendingShard && targetSlot && (
-          <Stack gap='sm'>
-            {hasConflict && (
-              <Text>
-                Unequip <strong>{describeEquipmentBlockers(plan, blockers)}</strong> to continue. Unequipping removes
-                the blocking item and its selections from this plan.
-              </Text>
-            )}
-            <Text>
-              {alreadyApplied ? (
-                <>
-                  <strong>{pendingShard.displayName}</strong> is already the {pending.position} on{' '}
-                  <strong>{targetSlot.label}</strong>.
-                </>
-              ) : currentShard ? (
-                <>
-                  Replace <strong>{currentShard.displayName}</strong> with <strong>{pendingShard.displayName}</strong>{' '}
-                  as the {pending.position} on <strong>{targetSlot.label}</strong>?
-                </>
-              ) : (
-                <>
-                  Apply <strong>{pendingShard.displayName}</strong> as the {pending.position} on{' '}
-                  <strong>{targetSlot.label}</strong>?
-                </>
-              )}
-            </Text>
-            {!targetItem && (
-              <Text size='sm' c='dimmed'>
-                This adds the item to your plan.
-              </Text>
-            )}
-            {pendingShard.minimumItemLevel > itemLevel && (
-              <Text size='sm' c='dimmed'>
-                This raises the item's minimum level from {itemLevel} to {pendingShard.minimumItemLevel}.
-              </Text>
-            )}
-            {pending.position === 'extra' && !targetItem?.hasCannithMark && (
-              <Text size='sm' c='dimmed'>
-                This adds {mark.quantity} × {ingredientName(mark.ingredientId)} to your ingredient requirements.
-              </Text>
-            )}
-            <Group justify='flex-end'>
-              <Button
-                variant='default'
-                onClick={() => {
-                  setPending(null)
-                }}
-              >
-                {alreadyApplied ? 'Done' : 'Cancel'}
-              </Button>
-              {!alreadyApplied && (
-                <Button
-                  color={hasConflict ? 'red' : undefined}
-                  onClick={() => {
-                    onAction(hasConflict ? { type: 'resolve-equipment-conflict', change: pending, blockers } : pending)
-                    setPending(null)
-                  }}
-                >
-                  {hasConflict ? 'Unequip and apply' : currentShard ? 'Replace effect' : 'Apply effect'}
-                </Button>
-              )}
-            </Group>
-          </Stack>
-        )}
-      </Modal>
+      />
     </Stack>
   )
 }
