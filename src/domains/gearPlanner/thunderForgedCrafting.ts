@@ -59,6 +59,7 @@ export function applyThunderRecipe(
     system: system(recipe.stage),
     id: String(recipe.id),
     label: recipe.name,
+    materials: recipe.costs,
     effects
   }))
   return {

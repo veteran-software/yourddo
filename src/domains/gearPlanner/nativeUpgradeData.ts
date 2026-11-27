@@ -2,7 +2,7 @@ import { loadDatasetFile } from '../../shared/data/loadDataset'
 import type { NearlyCompleteDataset } from '../nearlyComplete/data'
 import type { NearlyCompleteRecipe } from '../nearlyComplete/recipes'
 import type { NearlyFinishedDataset, ReforgingEntry } from '../nearlyFinished/nearlyFinished.types'
-import type { CraftChoice } from './crafting'
+import type { CraftChoice, CraftingMaterial } from './crafting'
 import type { GearPlannerAugmentSlot, GearPlannerEffect } from './gearPlanner.types'
 import { effectIndex, resolveEffects, spellIndex } from './itemCatalog'
 
@@ -57,6 +57,7 @@ export interface NativeEffectGroup {
 }
 export interface NativeMutation {
   name: string
+  materials?: readonly CraftingMaterial[]
   added: NativeEffectGroup[]
   removeIds: number[]
   slot?: GearPlannerAugmentSlot
@@ -121,6 +122,7 @@ async function readUpgradeSystem(directory: string) {
     return recipe.ingredients.map(({ ingredientId, itemId, quantity }) => {
       if (ingredientId !== undefined)
         return {
+          id: ingredientId,
           name: findIngredient(ingredientId).name,
           quantity,
           ...(!craftedIds.has(ingredientId) && { raw: true as const })
@@ -229,7 +231,13 @@ export async function loadNativeNearlyFinished(): Promise<NearlyFinishedDataset>
       // Multi-effect raid choices retain the published power-then-lore label used by saved loadouts.
       const name =
         labels.toSorted((a, b) => Number(a.includes(' Lore')) - Number(b.includes(' Lore'))).join(' & ') || recipe.name
-      return { name, added, removeIds: recipe.removeMutationIds ?? [], slot: addedSlot(recipe) }
+      return {
+        name,
+        materials: data.cost(recipe),
+        added,
+        removeIds: recipe.removeMutationIds ?? [],
+        slot: addedSlot(recipe)
+      }
     })
     const slot = options[0].slot?.augmentType.toLowerCase()
     const entry: ReforgingEntry = {
@@ -259,7 +267,13 @@ export async function loadNativeNamedUpgrades(directory: string, marker: string)
     const spell = recipe.resultSpell ?? item.spell
     if (spell) effects.push(...resolveEffects({ spell }, item.name, data.index, data.spellMap))
     const slot = addedSlot(recipe)
-    nativeChoices.set(item.id, { id: 'applied', label: recipe.name, effects, ...(slot && { augmentSlot: slot }) })
+    nativeChoices.set(item.id, {
+      id: 'applied',
+      label: recipe.name,
+      effects,
+      materials: data.cost(recipe),
+      ...(slot && { augmentSlot: slot })
+    })
   }
   return { items: new Map<string, GearPlannerEffect[]>(), nativeChoices }
 }

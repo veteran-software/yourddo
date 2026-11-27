@@ -142,3 +142,25 @@ export const getHighlightParts = (text: string, query: string): HighlightPart[] 
   if (start < text.length) parts.push({ text: text.slice(start), match: false })
   return parts.length > 0 ? parts : [{ text, match: false }]
 }
+
+export function buildSagaSession(
+  quests: readonly QuestDefinition[],
+  activeSagaIds: ReadonlySet<string>,
+  questDoneAt: Readonly<TimestampMap>,
+  turnedInAt: Readonly<TimestampMap>
+) {
+  const remainingBySaga = new Map<string, number>()
+  const queue = quests.flatMap((quest) => {
+    const neededBy = quest.sagas.filter(
+      (id) => activeSagaIds.has(id) && !questCountsForSaga(id, quest.id, questDoneAt, turnedInAt)
+    )
+    if (!neededBy.length) return []
+    for (const id of neededBy) remainingBySaga.set(id, (remainingBySaga.get(id) ?? 0) + 1)
+    return [{ quest, neededBy }]
+  })
+  queue.sort(
+    (a, b) =>
+      b.neededBy.length - a.neededBy.length || a.quest.level - b.quest.level || a.quest.name.localeCompare(b.quest.name)
+  )
+  return { queue, remainingBySaga, sharedCount: queue.filter(({ neededBy }) => neededBy.length > 1).length }
+}

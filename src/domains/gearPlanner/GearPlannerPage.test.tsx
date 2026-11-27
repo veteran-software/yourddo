@@ -26,7 +26,7 @@ import { loadoutSnapshot } from './loadoutComparison'
 import { gearPlannerPermalink } from './sharing'
 import { createGearPlannerSetup } from './setups'
 import GearPlannerPage from './GearPlannerPage.tsx'
-import { readTroveInventory, troveStorageKey, TroveSnapshot } from './trove'
+import { readTroveInventory, serializeTroveInventory, troveStorageKey, TroveSnapshot } from './trove'
 import { createGearPlannerExport, GEAR_PLANNER_STORAGE_KEY, parsePersistedGearPlannerState } from './plannerStorage.ts'
 import { createGearPlannerReforgingData, emptyGearPlannerReforgingData } from './reforging.ts'
 import type { ReforgingEntry } from '../nearlyFinished/nearlyFinished.types.ts'
@@ -245,6 +245,49 @@ describe('GearPlannerPage', () => {
     expect(checkbox.checked).toBe(true)
     fireEvent.click(checkbox)
     expect(checkbox.checked).toBe(false)
+  })
+
+  it('totals remaining crafting steps against the selected Trove character and saves progress', async () => {
+    const stock = new TroveSnapshot()
+    stock.record('Magic Item Essence', 'Robin (Inventory)', 'Robin', 3, 'BtC')
+    stock.record('Magic Item Essence', 'Shared Crafting Bank', '', 2, 'BtA')
+    stock.record('Magic Item Essence', 'Dara (Bank)', 'Dara', 10, 'BtC')
+    stock.record('Magic Item Essence', 'Dara (Inventory)', 'Dara', 1, undefined)
+    localStorage.setItem(troveStorageKey, serializeTroveInventory(stock, '2026-11-27T12:00:00Z'))
+    localStorage.setItem('yourddo:farming-character:default', JSON.stringify('Robin'))
+    await renderReadyPage(dataWithItems([]))
+
+    fireEvent.click(screen.getByRole('button', { name: 'Select Main Hand' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Equip Essence Crafted Weapon (Melee)' }))
+    fireEvent.click(screen.getByRole('combobox', { name: 'Prefix' }))
+    fireEvent.click(await screen.findByRole('option', { name: /Split Prefix Test/ }))
+    fireEvent.click(screen.getByRole('button', { name: 'Farming list' }))
+    fireEvent.click(screen.getByRole('radio', { name: 'Crafting' }))
+
+    const materials = () => within(screen.getByRole('region', { name: 'Materials for remaining steps' }))
+    expect(materials().getAllByText('Magic Item Essence')).toHaveLength(1)
+    expect(materials().getByText('20 needed')).toBeTruthy()
+    expect(materials().getByText('5 usable')).toBeTruthy()
+    expect(materials().getByText('14 missing')).toBeTruthy()
+    expect(materials().getByText('1 unverified')).toBeTruthy()
+    expect(materials().getByText('Character-bound on Dara (Bank)')).toBeTruthy()
+    const steps = () => within(screen.getByRole('region', { name: 'Crafting steps' }))
+    const expand = () => fireEvent.click(steps().getByRole('button', { name: /Essence Crafted Weapon/ }))
+    const shard = () => steps().findByRole<HTMLInputElement>('checkbox', { name: /Minimum Level 1 shard/ })
+    expand()
+    fireEvent.click(await shard())
+    expect(materials().getByText('10 needed')).toBeTruthy()
+    expect(steps().getByText('1 / 2 complete')).toBeTruthy()
+
+    fireEvent.click(screen.getByRole('radio', { name: 'Unbound' }))
+    expect(materials().getByText('120 needed')).toBeTruthy()
+    expect((await shard()).checked).toBe(false)
+    fireEvent.click(screen.getByRole('radio', { name: 'Gear' }))
+    fireEvent.click(screen.getByRole('radio', { name: 'Crafting' }))
+    fireEvent.click(screen.getByRole('radio', { name: 'Bound' }))
+    expand()
+    expect((await shard()).checked).toBe(true)
+    expect(materials().getByText('10 needed')).toBeTruthy()
   })
 
   it('finds enchantments across slots and equips the result in its own slot', async () => {
@@ -669,24 +712,50 @@ describe('GearPlannerPage', () => {
     ])
   })
 
-  it('shows the guide on startup, remembers dismissal and can reopen from the masthead', async () => {
+  it('shows a first-visit tutorial, remembers it, and lets users replay it from the guide', async () => {
     localStorage.removeItem('gearPlannerInfoDismissed')
     await renderReadyPage(data)
-    const guide = within(screen.getByRole('dialog', { name: 'About the Gear Planner' }))
-    expect(guide.getByText('Download JSON')).toBeTruthy()
-    expect(guide.getByText('Review backup')).toBeTruthy()
-    fireEvent.click(guide.getByRole('checkbox', { name: /show again on startup/i }))
-    fireEvent.click(guide.getByRole('button', { name: 'Got it' }))
+    const tutorial = within(screen.getByRole('dialog', { name: 'Gear Planner tutorial' }))
+    expect(tutorial.getByRole('heading', { name: 'Set up your character' })).toBeTruthy()
+    expect(tutorial.getByText('Step 1 of 4')).toBeTruthy()
+    fireEvent.click(tutorial.getByRole('button', { name: 'Next' }))
+    expect(tutorial.getByRole('heading', { name: 'Equip gear' })).toBeTruthy()
+    fireEvent.click(tutorial.getByRole('button', { name: 'Back' }))
+    expect(tutorial.getByText('Step 1 of 4')).toBeTruthy()
+    for (const title of ['Equip gear', 'Check your bonuses', 'Save and share your setup']) {
+      fireEvent.click(tutorial.getByRole('button', { name: 'Next' }))
+      expect(tutorial.getByRole('heading', { name: title })).toBeTruthy()
+    }
+    fireEvent.click(tutorial.getByRole('button', { name: 'Start planning' }))
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(localStorage.getItem('yourddo:gear-planner:tutorial-seen')).toBe('true')
     cleanup()
     await renderReadyPage(data)
     expect(screen.queryByRole('dialog')).toBeNull()
+
     fireEvent.click(screen.getByRole('button', { name: 'About and backup guide' }))
-    expect(screen.getByRole<HTMLInputElement>('checkbox', { name: /show again on startup/i }).checked).toBe(true)
-    fireEvent.click(screen.getByRole('checkbox', { name: /show again on startup/i }))
-    fireEvent.click(screen.getByRole('button', { name: 'Close planner guide' }))
-    cleanup()
+    const guide = within(screen.getByRole('dialog', { name: 'About the Gear Planner' }))
+    expect(guide.getByText('Download JSON')).toBeTruthy()
+    expect(guide.getByText('Review backup')).toBeTruthy()
+    fireEvent.click(guide.getByRole('button', { name: 'Start tutorial' }))
+    const replay = within(screen.getByRole('dialog', { name: 'Gear Planner tutorial' }))
+    expect(replay.getByText('Step 1 of 4')).toBeTruthy()
+    fireEvent.click(replay.getByRole('button', { name: 'Skip tutorial' }))
+    expect(screen.queryByRole('dialog')).toBeNull()
+  })
+
+  it('leaves the planner ready for returning users with saved setups', async () => {
+    localStorage.removeItem('gearPlannerInfoDismissed')
+    const setup = createGearPlannerSetup('returning', 'Saved setup')
+    localStorage.setItem(
+      GEAR_PLANNER_STORAGE_KEY,
+      JSON.stringify(createGearPlannerExport({ setups: [setup], activeSetupId: setup.id }))
+    )
+
     await renderReadyPage(data)
-    expect(screen.getByRole('dialog', { name: 'About the Gear Planner' })).toBeTruthy()
+
+    expect(screen.getByRole('tab', { name: 'Saved setup' })).toBeTruthy()
+    expect(screen.queryByRole('dialog', { name: 'Gear Planner tutorial' })).toBeNull()
   })
 
   it('opens a shared setup directly and keeps the guide available on demand', async () => {

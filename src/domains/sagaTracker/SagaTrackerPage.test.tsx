@@ -79,6 +79,7 @@ beforeEach(() => {
 afterEach(() => {
   cleanup()
   vi.unstubAllGlobals()
+  localStorage.removeItem('yourddo:saga-tracker:session:v1')
 })
 
 describe('SagaTrackerPage', () => {
@@ -95,6 +96,70 @@ describe('SagaTrackerPage', () => {
     expect(screen.getByRole('tab', { name: 'Epic' })).toBeTruthy()
     expect(screen.getByRole('tab', { name: 'Legendary' })).toBeTruthy()
     expect(screen.getByText('Heroic Adventure')).toBeTruthy()
+  })
+
+  it('runs one checklist for multiple sagas and prioritizes shared unfinished quests', async () => {
+    vi.mocked(loadSagaTrackerData).mockResolvedValue({
+      ...data,
+      quests: data.quests.map((quest) => (quest.id === 'beta' ? { ...quest, level: 2 } : quest))
+    })
+    const user = userEvent.setup()
+    renderPage()
+    await user.click(await screen.findByRole('tab', { name: 'Session planner' }))
+    const picker = screen.getByRole('combobox', { name: 'Add a saga to this session' })
+    expect(screen.getByText('Choose your sagas to begin')).toBeTruthy()
+    for (const name of ['Heroic Adventure', 'Epic Adventure']) {
+      await user.type(picker, name)
+      await user.click(screen.getByRole('option', { name }))
+    }
+    const checklist = within(screen.getByRole('region', { name: 'Quest checklist' }))
+    expect(checklist.getByText('2 quests left')).toBeTruthy()
+    expect(checklist.getByText('1 shared')).toBeTruthy()
+    const [first, second] = checklist.getAllByRole<HTMLInputElement>('checkbox')
+    expect(first.getAttribute('aria-label')).toBe('Complete Alpha [Quest]')
+    first.focus()
+    await user.keyboard('[Space]')
+    expect(checklist.getByText('1 quest left')).toBeTruthy()
+    expect(document.activeElement).toBe(second)
+    expect(screen.getByText('Ready to turn in')).toBeTruthy()
+
+    await user.click(screen.getByRole('tab', { name: 'Saga progress' }))
+    await user.click(screen.getByRole('tab', { name: 'Epic' }))
+    expect(screen.getByRole<HTMLInputElement>('checkbox', { name: 'Mark Epic Adventure as completed' }).checked).toBe(
+      true
+    )
+    await user.click(screen.getByRole('tab', { name: 'Session planner' }))
+    expect(within(screen.getByRole('list', { name: 'Selected sagas' })).getAllByRole('listitem')).toHaveLength(2)
+    await user.click(screen.getByRole('button', { name: 'Remove Heroic Adventure from session' }))
+    expect(screen.getByText('Your session checklist is complete')).toBeTruthy()
+  })
+
+  it('counts credit per current run and restores earlier credit when undoing a repeat', async () => {
+    vi.mocked(loadProgress).mockResolvedValue({
+      progress: { ...emptyProgress, questDoneAt: { alpha: 10 }, turnedInAt: { epic: 20 } },
+      storageAvailable: true
+    })
+    const user = userEvent.setup()
+    renderPage()
+    await user.click(await screen.findByRole('tab', { name: 'Session planner' }))
+    const picker = screen.getByRole('combobox', { name: 'Add a saga to this session' })
+    for (const name of ['Heroic Adventure', 'Epic Adventure']) {
+      await user.type(picker, name)
+      await user.click(screen.getByRole('option', { name }))
+    }
+    const checklist = within(screen.getByRole('region', { name: 'Quest checklist' }))
+    const shared = checklist.getByRole('checkbox', { name: 'Complete Alpha [Quest]' })
+    const row = shared.closest('li')
+    expect(row?.textContent).toContain('Epic Adventure')
+    expect(row?.textContent).not.toContain('Heroic Adventure')
+    expect(checklist.queryByText('1 shared')).toBeNull()
+
+    await user.click(shared)
+    await user.click(checklist.getByRole('button', { name: 'Undo' }))
+    expect(checklist.getByRole('checkbox', { name: 'Complete Alpha [Quest]' })).toBeTruthy()
+    await waitFor(() => {
+      expect(vi.mocked(saveProgress).mock.lastCall?.[1].questDoneAt).toEqual({ alpha: 10 })
+    })
   })
 
   it('shows a friendly CDN error and retries without reloading the page', async () => {

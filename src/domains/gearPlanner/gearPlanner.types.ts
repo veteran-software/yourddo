@@ -91,6 +91,7 @@ export interface GearPlannerSourceItem {
   catalogId?: number
   catalogSlots?: readonly GearPlannerSlot[]
   suppressedPowerRecipeId?: number
+  suppressedPowerMaterials?: readonly import('./crafting').CraftingMaterial[]
   iconLayers?: readonly string[]
   name: string
   pageTitle?: string

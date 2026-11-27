@@ -1,5 +1,5 @@
 import { hasDatasetFile, loadDatasetFile } from '../../shared/data/loadDataset'
-import type { CraftGroup, EquippedCraft } from './crafting'
+import type { CraftGroup, CraftingMaterial, EquippedCraft } from './crafting'
 import type {
   GearPlannerAugmentSlot,
   GearPlannerEffect,
@@ -35,6 +35,7 @@ interface NativeRecipe {
   removeMutationIds?: number[]
   effectVariants?: Record<number, string>
   setIds?: number[]
+  ingredients?: { ingredientId: number; quantity: number }[]
 }
 
 interface Mutation {
@@ -50,6 +51,7 @@ interface Recipe {
   stage: string
   requires: readonly number[]
   removes: readonly number[]
+  materials?: readonly CraftingMaterial[]
   adds: readonly Mutation[]
   sets: readonly GearPlannerSetBonus[]
 }
@@ -59,7 +61,14 @@ interface HeroismBase {
   stages: ReadonlyMap<string, Recipe[]>
 }
 
-function readHeroismData(bases: NativeBase[], recipes: NativeRecipe[], rawEffects: unknown, rawSets: unknown) {
+function readHeroismData(
+  bases: NativeBase[],
+  recipes: NativeRecipe[],
+  rawEffects: unknown,
+  rawSets: unknown,
+  ingredients?: { id: number; name: string }[]
+) {
+  const materialNames = ingredients && new Map(ingredients.map(({ id, name }) => [id, name]))
   const index = craftingMutationEffectIndex(rawEffects)
   const definitions = new Map(adaptItemSetDefinitions(rawSets, index))
   const metadata = new Map(
@@ -87,8 +96,16 @@ function readHeroismData(bases: NativeBase[], recipes: NativeRecipe[], rawEffect
       const adds = (recipe.addEffectIds ?? []).map((effectId) =>
         mutation({ effectId, variant: recipe.effectVariants?.[effectId] })
       )
+      const materials =
+        materialNames &&
+        recipe.ingredients?.map(({ ingredientId: id, quantity }) => {
+          const name = materialNames.get(id)
+          if (!name) throw new Error('Missing Attuned to Heroism ingredient ' + String(id))
+          return { id, name, quantity }
+        })
       return {
         id: String(recipe.id),
+        materials,
         label: adds.find(({ socket }) => socket)?.label ?? adds.find(({ label }) => label)?.label ?? recipe.description,
         stage: recipe.stage,
         requires: recipe.keeper?.requiredMutationIds ?? [],
@@ -121,7 +138,8 @@ export async function loadOptionalHeroismData() {
       read<NativeBase[]>('baseItems'),
       read<NativeRecipe[]>('recipes'),
       read('effects'),
-      read('equipmentSets')
+      read('equipmentSets'),
+      manifest.resources.ingredients ? read<{ id: number; name: string }[]>('ingredients') : undefined
     ]))
   )
 }
@@ -154,6 +172,7 @@ function resolveHeroism(base: HeroismBase, selection: ReadonlyMap<string, string
     system: stageSystem(recipe.stage),
     id: recipe.id,
     label: recipe.label,
+    materials: recipe.materials,
     effects: active.flatMap(({ mutation, recipeId }) => (recipeId === recipe.id ? mutation.effects : []))
   }))
   return { source, groups, crafts, sets: selected.flatMap((recipe) => recipe.sets) }

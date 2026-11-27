@@ -166,6 +166,7 @@ export function applyAlchemicalRecipe(
     system: system(recipe.stage),
     id: String(recipe.id),
     label: recipe.name,
+    materials: recipe.costs,
     effects: recipe.effects
       .filter((e) => active.has(e.id) && ownerByEffect.get(e.id) === recipe.id)
       .flatMap((e) => gearEffects(e, host.base))

@@ -51,7 +51,7 @@ export function slaveLordsCraftGroups(base: SlaveLordsBase, slot: GearPlannerSlo
       choice = { id: String(amount), label: '+' + String(amount), effects: match.effects.map(gearEffect) }
     }
     const choices = groups.get(option.category) ?? []
-    choices.push(choice)
+    choices.push({ ...choice, materials: option.costs })
     groups.set(option.category, choices)
   }
   return categories.flatMap((category) => {

@@ -39,6 +39,7 @@ type UpgradeRecipe =
       addEffectIds: number[]
       resultBinding?: { scope: string; on: string }
       resultMinimumLevel?: number
+      ingredients?: { ingredientId: number; quantity: number }[]
     }
   | {
       category: 'tradeIn'
@@ -60,14 +61,15 @@ export async function loadOptionalSuppressedPower() {
       throw new Error('Invalid Suppressed Power resource: ' + key)
     return loadDatasetFile<T>(domain + '/' + file)
   }
-  const [bases, recipes, effects, spells, icons] = await Promise.all([
+  const [bases, recipes, effects, spells, icons, ingredients] = await Promise.all([
     read<NativeItem[]>('baseItems'),
     read<NativeRecipe[]>('recipes'),
     read('effects'),
     read('spells'),
-    read('icons')
+    read('icons'),
+    manifest.resources.ingredients ? read<{ id: number; name: string }[]>('ingredients') : undefined
   ])
-  return { bases, recipes, effects, spells: spellIndex(spells), icons: catalogIconIndex(icons) }
+  return { bases, recipes, effects, ingredients, spells: spellIndex(spells), icons: catalogIconIndex(icons) }
 }
 
 function chooseMutations(base: NativeItem, required: readonly number[]) {
@@ -106,6 +108,7 @@ export function prepareSuppressedPower(
   )
   index(missing)
   const bases = new Map(data.bases.map((base) => [base.id, base]))
+  const materialNames = data.ingredients && new Map(data.ingredients.map(({ id, name }) => [id, name]))
   const mutations = craftingMutationEffectIndex(data.effects)
   const added = new Map<string, GearPlannerSourceItem[]>()
   const recipes = data.recipes.filter(
@@ -140,6 +143,13 @@ export function prepareSuppressedPower(
       ...entry.source,
       catalogId: undefined,
       suppressedPowerRecipeId: recipe.id,
+      suppressedPowerMaterials:
+        materialNames &&
+        recipe.ingredients?.map(({ ingredientId: id, quantity }) => {
+          const ingredient = materialNames.get(id)
+          if (!ingredient) throw new Error('Missing Suppressed Power ingredient ' + String(id))
+          return { id, name: ingredient, quantity }
+        }),
       name,
       pageTitle: name,
       minLevel: recipe.resultMinimumLevel ?? entry.source.minLevel,
