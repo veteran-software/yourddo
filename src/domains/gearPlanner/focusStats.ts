@@ -1,14 +1,14 @@
 import { formatAmount } from './effectAmounts'
 import {
-  aggregateEffectSummary,
-  effectAmount,
-  normalizeBonusType,
-  normalizeEffectName,
-  type GearPlannerEffectSource
-} from './effects'
-import { objectiveEffect, skillObjective } from './statObjectives'
+  itemRecommendationSources,
+  type RecommendedAugment,
+  recommendationStatKey,
+  recommendationStats
+} from './augmentRecommendations'
+import { skillObjective } from './statObjectives'
 import type { GearPlannerCandidate } from './planner'
-import { statValue, type loadoutSnapshot } from './loadoutComparison'
+import type { GearPlannerItem } from './gearPlanner.types'
+import type { loadoutSnapshot } from './loadoutComparison'
 
 type Stats = ReturnType<typeof loadoutSnapshot>['Stats']
 export interface FocusChange {
@@ -43,12 +43,9 @@ export function focusChanges(names: readonly string[], before: Stats, after: Sta
 }
 
 export function compareFocus(a: FocusChange[], b: FocusChange[]) {
-  // Compare gain / unchanged / loss in priority order before comparing magnitudes within a stat.
   for (let i = 0; i < a.length; i++) {
     const direction = Math.sign(b[i].delta) - Math.sign(a[i].delta)
     if (direction) return direction
-  }
-  for (let i = 0; i < a.length; i++) {
     if (a[i].unit !== b[i].unit) continue
     const difference = b[i].delta - a[i].delta
     if (difference) return difference
@@ -63,40 +60,30 @@ export function focusSummary(changes: FocusChange[]) {
     .join(' · ')
 }
 
-/** Rank the gear already in the result list by built-in effects in setup priority order. */
-export function rankBrowserFocus(candidates: readonly GearPlannerCandidate[], names: readonly string[]) {
+/** Rank visible equipment by its built-in effects and suggested augments in setup priority order. */
+const emptyRecommendations: readonly RecommendedAugment[] = []
+
+export function rankBrowserFocus(
+  candidates: readonly GearPlannerCandidate[],
+  names: readonly string[],
+  recommend: (item: GearPlannerItem) => readonly RecommendedAugment[]
+) {
   const priorities = names.map((name, index) => ({
     name,
     position: index + 1,
-    key: normalizeEffectName(objectiveEffect({ name }).name)
+    key: recommendationStatKey(name)
   }))
   const keys = new Set(priorities.map(({ key }) => key))
-  if (!keys.size) return candidates.map((candidate) => ({ candidate, matches: [] }))
+  if (!keys.size) return candidates.map((candidate) => ({ candidate, matches: [], augments: emptyRecommendations }))
 
   const rows = candidates.map((candidate) => {
-    const effects: GearPlannerEffectSource[] = []
-    for (const source of candidate.item.source.enchantments ?? []) {
-      if (source.displayOnly) continue
-      const effect = objectiveEffect(source)
-      const key = normalizeEffectName(effect.name)
-      if (!keys.has(key)) continue
-      effects.push({
-        id: effects.length.toString(),
-        category: 'equipped-item',
-        effect,
-        normalizedName: key,
-        normalizedBonusType: normalizeBonusType(effect.bonus),
-        comparisonValue: effectAmount(effect)
-      })
-    }
-    const stats = new Map(
-      aggregateEffectSummary(effects).map((entry) => [entry.normalizedName, statValue(entry, true)])
-    )
+    const augments = recommend(candidate.item)
+    const stats = recommendationStats(itemRecommendationSources(candidate.item, keys, augments))
     const matches = priorities.flatMap(({ name, position, key }) => {
       const value = stats.get(key)
       return value?.amount !== undefined && value.amount > 0 ? [{ name, position, ...value }] : []
     })
-    return { candidate, matches, stats }
+    return { candidate, matches, stats, augments }
   })
   return rows.sort((a, b) => {
     for (const { key } of priorities) {

@@ -143,7 +143,11 @@ const equippedItems = (equipment: GearPlannerEquipment): readonly GearPlannerIte
 export const augmentEffectId = (itemId: string, slotIndex: number, effectIndex: number) =>
   `${itemId}:augment:${String(slotIndex)}:${String(effectIndex)}`
 
-function matchesAugmentAttackForm(effect: GearPlannerEffect, host: GearPlannerItem, equipment: GearPlannerEquipment) {
+export function matchesAugmentAttackForm(
+  effect: GearPlannerEffect,
+  host: GearPlannerItem,
+  equipment: GearPlannerEquipment
+) {
   if (!effect.attackForms?.length) return true
   if (slotOwner(host.slot) !== 'Character') return effect.attackForms.includes('melee')
   const group = weaponGroup(equipment['Main Hand']?.source.type ?? 'Unarmed')

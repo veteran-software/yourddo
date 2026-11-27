@@ -25,6 +25,7 @@ import type { GearPlannerSetState } from '../sets'
 import type { GearPlannerSetup } from '../setups'
 import { useStatCatalog } from './useStatCatalog'
 import { focusSummary } from '../focusStats'
+import SuggestedAugments from '../components/SuggestedAugments'
 import { troveCharacterNames } from '../trove'
 import { useTroveInventory } from '../troveContext'
 import { searchUpgradePaths, type PathRequest, type UpgradePath } from '../upgradePaths'
@@ -244,7 +245,7 @@ export function UpgradeResults({
         <Text size='sm'>
           {owned
             ? 'No matching path is accounted for in Trove.'
-            : 'No single equipment change or open socket meets this objective with the selected protections.'}
+            : 'No equipment swap or augment suggestion meets this objective with the selected protections.'}
         </Text>
       )}
       {keyedEntries(visible?.slice(0, limit) ?? [], (path) => JSON.stringify([path.slot, path.name, path.change])).map(
@@ -266,6 +267,7 @@ export function UpgradeResults({
                   {path.slot} · {path.change}
                 </Text>
                 {path.focus.some((entry) => entry.delta) && <Text size='sm'>{focusSummary(path.focus)}</Text>}
+                <SuggestedAugments augments={path.augments} />
                 {path.bonusChanges.length > 0 && <Text size='xs'>{path.bonusChanges.join(' · ')}</Text>}
                 <Group gap='xs'>
                   <Badge

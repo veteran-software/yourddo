@@ -18,6 +18,7 @@ import {
   savedWeaponFilterOptions,
   classNames,
   defaultCharacter,
+  maxFocusStats,
   slotOwner,
   proficiencyOptions,
   type CharacterSettings
@@ -226,11 +227,13 @@ function parseCharacter(value: unknown, path: string, availableWeapons: readonly
     const names: unknown = record.focusStats
     if (
       !Array.isArray(names) ||
-      names.length > 5 ||
+      names.length > maxFocusStats ||
       !names.every((name: unknown): name is string => typeof name === 'string' && Boolean(name.trim())) ||
       new Set(names.map((name) => name.toLowerCase())).size !== names.length
     )
-      throw new InvalidGearPlannerStateError(path + '.focusStats must contain up to five distinct stat names')
+      throw new InvalidGearPlannerStateError(
+        `${path}.focusStats must contain up to ${String(maxFocusStats)} distinct stat names`
+      )
     character.focusStats = names
   }
   if (record.disabledProficiencies !== undefined) {

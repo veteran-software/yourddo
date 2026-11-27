@@ -181,6 +181,8 @@ export interface CharacterSettings {
   allowMetalWithDruid: boolean
 }
 
+export const maxFocusStats = 10
+
 export const defaultCharacter = (): CharacterSettings => ({
   classes: [],
   weapons: [],

@@ -1,5 +1,11 @@
 import { formatAmount } from './effectAmounts'
 import { compareFocus, focusChanges, type FocusChange } from './focusStats'
+import {
+  applyRecommendedAugments,
+  collectRecommendationEffects,
+  createAugmentRecommender,
+  type RecommendedAugment
+} from './augmentRecommendations'
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types'
 import { characterAllowsItem, ownerSlots, type GearOwner } from './character'
 import { isCompatibleGearPlannerAugment } from './augments'
@@ -34,6 +40,7 @@ export interface UpgradePath {
   losses: string[]
   availability: string
   location: string
+  augments: readonly RecommendedAugment[]
 }
 
 export function* searchUpgradePaths(
@@ -51,6 +58,15 @@ export function* searchUpgradePaths(
     entries.get(request.objective) ?? [...entries].find(([name]) => name.toLowerCase() === objectiveName)?.[1]
   const current = stat(before.Stats)
   const currentTyped = request.bonusType ? before.objectiveBonuses.get(request.bonusType) : undefined
+  const goals = request.kind === 'Stat' ? [request.objective] : (setup.character.focusStats ?? [])
+  const recommend = createAugmentRecommender(
+    setup,
+    data.reforging,
+    data.augments,
+    request.kind === 'Set tier' ? [] : goals,
+    collectRecommendationEffects(setup, essence, data.reforging),
+    request.bonusType
+  )
   function objectiveGain(after: typeof before) {
     if (request.kind === 'Set tier') {
       if (!after.Sets.has(request.objective) || before.Sets.has(request.objective)) return undefined
@@ -73,7 +89,13 @@ export function* searchUpgradePaths(
     const delta = formatAmount(gain, value.unit, true, value.rounding ?? current?.rounding)
     return { gain, delta, totals }
   }
-  function evaluate(next: GearPlannerSetup, slot: GearPlannerSlot, name: string, change: string) {
+  function evaluate(
+    next: GearPlannerSetup,
+    slot: GearPlannerSlot,
+    name: string,
+    change: string,
+    augments: readonly RecommendedAugment[] = []
+  ) {
     if (
       next === setup ||
       ownerSlots[owner].some((key) => request.locked.includes(key) && setup.equipment[key] !== next.equipment[key])
@@ -97,8 +119,9 @@ export function* searchUpgradePaths(
       const displaced = setup.equipment[key]
       if (key !== slot && displaced && !next.equipment[key]) losses.unshift('Unequips ' + displaced.source.name)
     }
-    const needs = farmingList(next, inventory, request.character).filter(
-      (task) => task.name.toLowerCase() === name.toLowerCase()
+    const required = new Set([name, ...augments.map(({ augment }) => augment.name)].map((value) => value.toLowerCase()))
+    const needs = farmingList(next, inventory, request.character).filter((task) =>
+      required.has(task.name.toLowerCase())
     )
     const task =
       needs.find((t) => t.status === 'Farm') ??
@@ -117,7 +140,8 @@ export function* searchUpgradePaths(
         .map((row) => bonusLabel(row.label) + ' ' + row.before + ' → ' + row.after),
       losses,
       availability: inventory.size ? (task?.status ?? 'Check') : 'Unknown',
-      location: task ? [task.group, ...task.notes].filter(Boolean).join(' · ') : ''
+      location: task ? [task.group, ...task.notes].filter(Boolean).join(' · ') : '',
+      augments
     })
   }
   function* equipmentChanges(slot: GearPlannerSlot, host: GearPlannerItem | null) {
@@ -130,13 +154,14 @@ export function* searchUpgradePaths(
       )
         continue
       const selection = equipGearPlannerItemInSelection(setup, slot, item)
-      if (selection !== setup)
-        evaluate(
-          { ...setup, ...selection },
-          slot,
-          item.source.name,
-          host ? 'Replace ' + host.source.name : 'Equip in empty slot'
-        )
+      if (selection !== setup) {
+        const next = { ...setup, ...selection }
+        const change = host ? 'Replace ' + host.source.name : 'Equip in empty slot'
+        evaluate(next, slot, item.source.name, change)
+        const augments = recommend(item)
+        const augmented = applyRecommendedAugments(next, item, data.reforging, augments)
+        if (augmented !== next) evaluate(augmented, slot, item.source.name, change + ' with augments', augments)
+      }
       yield
     }
   }

@@ -306,6 +306,7 @@ export default function AugmentsTool({
                             enchantmentNames={enchantmentNames}
                             conflicts={conflicts}
                             conflictSources={conflictSources}
+                            setup={setup}
                             selected={s.augment}
                             onChange={(a) => {
                               onChange(s, a)

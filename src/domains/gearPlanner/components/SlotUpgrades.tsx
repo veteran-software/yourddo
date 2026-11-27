@@ -10,6 +10,8 @@ import { findSlotReplacements, shortlistReplacements, type SlotReplacement } fro
 import ChangeSummary from './ChangeSummary'
 import LoadoutComparison from './LoadoutComparison'
 import { TroveOwnership } from './TroveInventory'
+import SuggestedAugments from './SuggestedAugments'
+import { applyRecommendedAugments, type RecommendedAugment } from '../augmentRecommendations'
 
 const describe = (row: SlotReplacement['gains'][number]) =>
   row.delta === 'Changed' ? row.label + ' ' + row.before + ' → ' + row.after : row.label + ' ' + row.delta
@@ -27,13 +29,13 @@ export default function SlotUpgrades({
   data: GearPlannerData
   essence: EssenceCraftingData
   onClose: () => void
-  onEquip: (item: GearPlannerItem) => void
+  onEquip: (item: GearPlannerItem, augments?: readonly RecommendedAugment[]) => void
 }>) {
   const [results, setResults] = useState<SlotReplacement[] | null>(null)
   const [priority, setPriority] = useState<string | null>(null)
   const [preview, setPreview] = useState<GearPlannerSetup | null>(null)
   useEffect(() => {
-    const search = findSlotReplacements(setup, slot, data, essence)
+    const search = findSlotReplacements(setup, slot, data, essence, priority)
     const matches: SlotReplacement[] = []
     function run() {
       const end = performance.now() + 10
@@ -51,7 +53,7 @@ export default function SlotUpgrades({
     return () => {
       window.clearTimeout(timer)
     }
-  }, [setup, slot, data, essence])
+  }, [setup, slot, data, essence, priority])
   const options = useMemo(
     () => [...new Set(results?.flatMap((row) => [...row.improvements.keys()]))].sort((a, b) => a.localeCompare(b)),
     [results]
@@ -80,8 +82,8 @@ export default function SlotUpgrades({
           <Title order={3}>{setup.equipment[slot]?.source.name}</Title>
         </div>
         <Text size='sm' c='dimmed'>
-          Each swap compares effective bonuses and active sets across this loadout. Candidates use their current
-          configuration.
+          Each swap compares effective bonuses and active sets across this loadout. When a focus stat or priority can
+          improve with compatible augments, the preview includes those suggestions.
         </Text>
         {results === null ? (
           <Group role='status'>
@@ -161,17 +163,25 @@ export default function SlotUpgrades({
                         <ChangeSummary entries={cost} label='Trade-offs' />
                       </Text>
                     )}
+                    <SuggestedAugments augments={row.augments} />
                     <Group justify='flex-end' gap='xs'>
                       <Button
                         size='compact-sm'
                         variant='subtle'
                         onClick={() => {
-                          setPreview({
-                            ...setup,
-                            ...equipGearPlannerItemInSelection(setup, slot, row.item),
-                            id: setup.id + '-preview',
-                            name: row.item.source.name
-                          })
+                          setPreview(
+                            applyRecommendedAugments(
+                              {
+                                ...setup,
+                                ...equipGearPlannerItemInSelection(setup, slot, row.item),
+                                id: setup.id + '-preview',
+                                name: row.item.source.name
+                              },
+                              row.item,
+                              data.reforging,
+                              row.augments
+                            )
+                          )
                         }}
                       >
                         Compare
@@ -183,8 +193,19 @@ export default function SlotUpgrades({
                           onEquip(row.item)
                         }}
                       >
-                        Equip
+                        {row.augments.length ? 'Equip gear only' : 'Equip'}
                       </Button>
+                      {row.augments.length > 0 && (
+                        <Button
+                          size='compact-sm'
+                          variant='filled'
+                          onClick={() => {
+                            onEquip(row.item, row.augments)
+                          }}
+                        >
+                          Equip with augments
+                        </Button>
+                      )}
                     </Group>
                   </Stack>
                 </Paper>

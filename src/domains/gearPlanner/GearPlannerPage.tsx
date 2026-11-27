@@ -1,7 +1,6 @@
 import { keyedEntries } from '../../shared/ui/keyedEntries'
 import KnownDiscrepancies from './components/KnownDiscrepancies'
 import {
-  type CharacterSettings,
   violatesDruidicOath,
   characterAllowsItem,
   catalogWeaponTypes,
@@ -12,12 +11,14 @@ import {
 } from './character'
 import { UpgradePathsTool, UpgradeResults } from './tools/UpgradePathsTool'
 import type { PathRequest } from './upgradePaths'
+import SuggestedAugments from './components/SuggestedAugments'
 import SlotUpgrades from './components/SlotUpgrades'
 import LoadoutComparison from './components/LoadoutComparison'
 import AugmentsTool from './tools/AugmentsTool'
 import FarmingTool from './tools/FarmingTool'
 import LevelRangeInputs, { type LevelRange } from './components/LevelRangeInputs'
 import FocusStatEditor from './tools/FocusStatEditor'
+import { applyRecommendedAugments, createAugmentRecommender, type RecommendedAugment } from './augmentRecommendations'
 import { rankBrowserFocus } from './focusStats'
 import CharacterSetupTool from './tools/CharacterSetupTool'
 import { ownsTroveItem } from './trove'
@@ -287,7 +288,7 @@ const itemMetadata = (item: GearPlannerItem, essenceMinimumLevel?: number) =>
 
 interface EquipmentEditorProps {
   findSlotUpgrades: () => void
-  character: CharacterSettings
+  setup: GearPlannerSetup
   inline: boolean
   sets: readonly string[]
   openSet: (name: string) => void
@@ -325,7 +326,7 @@ interface EquipmentEditorProps {
 
 const EquipmentEditor = ({
   findSlotUpgrades,
-  character,
+  setup,
   inline,
   sets,
   openSet,
@@ -371,7 +372,7 @@ const EquipmentEditor = ({
             <ItemCompendiumLink item={item} />
             <ItemMaterial item={item} selectedMaterial={essenceCrafting[item.id]?.material} />
           </Group>
-          {violatesDruidicOath(character, item, essenceCrafting[item.id]?.material) && (
+          {violatesDruidicOath(setup.character, item, essenceCrafting[item.id]?.material) && (
             <Text size='xs' c='orange'>
               Violates Druidic Oath. Change the gear or allow metal in Character Setup.
             </Text>
@@ -443,6 +444,7 @@ const EquipmentEditor = ({
                   augments={data.augments}
                   enchantmentNames={data.augmentEnchantmentNames}
                   conflictSources={conflictSources}
+                  setup={setup}
                   selected={slottedAugments[item.id]?.[slotIndex] ?? null}
                   onChange={(augment) => {
                     setAugment(item.id, slotIndex, augment)
@@ -471,7 +473,7 @@ const EquipmentEditor = ({
               ) : null}
               {isEssenceCraftedGearPlannerItem(item) && essenceCrafting[item.id] ? (
                 <EssenceCraftingSelector
-                  character={character}
+                  character={setup.character}
                   item={item}
                   data={essenceData}
                   configuration={essenceCrafting[item.id]}
@@ -512,7 +514,8 @@ const EquipmentEditor = ({
 )
 
 interface ItemBrowserProps extends Pick<EquipmentEditorProps, 'effectiveAugmentSlots' | 'essenceCrafting' | 'openSet'> {
-  focusStats?: readonly string[]
+  setup: GearPlannerSetup
+  recommendationEffects: readonly GearPlannerEffectSource[]
   memberships: readonly GearPlannerSetMembership[]
   equippedFiligrees: readonly GearPlannerSelectedFiligree[]
   openFiligree: (host: GearPlannerSelectedFiligree) => void
@@ -529,7 +532,7 @@ interface ItemBrowserProps extends Pick<EquipmentEditorProps, 'effectiveAugmentS
   equipment: GearPlannerEquipment
   minimumLevel: number
   maximumLevel: number
-  equip: (slot: GearPlannerSlot, item: GearPlannerItem | null) => void
+  equip: (slot: GearPlannerSlot, item: GearPlannerItem | null, augments?: readonly RecommendedAugment[]) => void
   onMinorArtifactRejected: () => void
   updateLevels: (update: { minimumLevel?: number; maximumLevel?: number }) => void
 }
@@ -565,7 +568,8 @@ const ItemBrowser = ({
   equippedFiligrees,
   openFiligree,
   catalogItems,
-  focusStats,
+  setup,
+  recommendationEffects,
   missingWeaponFilters,
   effectiveAugmentSlots,
   essenceCrafting,
@@ -699,10 +703,24 @@ const ItemBrowser = ({
       setName: null
     }).filter((candidate) => !visible.has(candidate))
   }, [catalog, eligibleCandidates, exactEffect, filtered, inventory, search])
+  const focusStats = setup.character.focusStats
+  const recommend = useMemo(
+    () =>
+      createAugmentRecommender(
+        setup,
+        data.reforging,
+        ownedOnly && inventory.size
+          ? data.augments.filter((augment) => ownsTroveItem(inventory, augment.name))
+          : data.augments,
+        focusStats ?? [],
+        recommendationEffects
+      ),
+    [setup, data, focusStats, inventory, ownedOnly, recommendationEffects]
+  )
   const results = useMemo(() => {
     const priorities = focusFirst ? (focusStats ?? []) : []
-    return rankBrowserFocus(showFiltered ? [...filtered, ...hidden] : filtered, priorities)
-  }, [filtered, focusFirst, focusStats, hidden, showFiltered])
+    return rankBrowserFocus(showFiltered ? [...filtered, ...hidden] : filtered, priorities, recommend)
+  }, [filtered, focusFirst, focusStats, hidden, recommend, showFiltered])
   const hiddenCandidates = new Set(hidden)
 
   useEffect(() => {
@@ -769,14 +787,14 @@ const ItemBrowser = ({
       }
     }
   ]
-  const select = (item: GearPlannerItem) => {
+  const select = (item: GearPlannerItem, augments?: readonly RecommendedAugment[]) => {
     const targetSlot = item.slot
     if (!slots.includes(targetSlot) || (!finding && targetSlot !== slot)) return
     if (hasOtherGearPlannerMinorArtifact(equipment, targetSlot, item)) {
       onMinorArtifactRejected()
       return
     }
-    equip(targetSlot, item)
+    equip(targetSlot, item, augments)
   }
 
   return (
@@ -968,7 +986,7 @@ const ItemBrowser = ({
           )}
 
           <ul className={classes.results} data-finder={finding || undefined}>
-            {results.slice(0, visibleCount).map(({ candidate, matches }) => {
+            {results.slice(0, visibleCount).map(({ candidate, matches, augments }) => {
               const { item, sets: itemSets, effects, craftGroups } = candidate
               const incumbent = equipment[item.slot]
               const equipped = incumbent?.id === item.id
@@ -1027,7 +1045,7 @@ const ItemBrowser = ({
                       </Group>
                       {matches.length > 0 && (
                         <Text size='xs' c='blue'>
-                          Focus match ·{' '}
+                          {augments.length ? 'With suggested augments' : 'Focus match'} ·{' '}
                           {matches
                             .map(({ name, position, text }) => `#${position.toString()} ${name} ${text}`)
                             .join(' · ')}
@@ -1105,6 +1123,12 @@ const ItemBrowser = ({
                       )}
                     </Group>
                   </div>
+                  <SuggestedAugments
+                    augments={augments}
+                    onApply={() => {
+                      select(item, augments)
+                    }}
+                  />
                   <CandidateEquipmentDetails
                     item={item}
                     material={essence?.material}
@@ -1648,13 +1672,28 @@ const GearPlannerWorkspace = () => {
     setAttempt((current) => current + 1)
   }
 
-  const equip = (targetSlot: GearPlannerSlot, item: GearPlannerItem | null) => {
+  const equip = (
+    targetSlot: GearPlannerSlot,
+    item: GearPlannerItem | null,
+    augments?: readonly RecommendedAugment[]
+  ) => {
     if (dataState.status !== 'ready') return
     if (finding) setReturnSlot(slot)
     setRequestedSlot(targetSlot)
-    applySetupState(item ? `Equipped ${item.source.name} in ${targetSlot}` : `Unequipped ${targetSlot}`, (current) =>
-      equipGearPlannerSetupItem(current, targetSlot, item, dataState.essenceData)
-    )
+    const description = item ? `Equipped ${item.source.name} in ${targetSlot}` : `Unequipped ${targetSlot}`
+    applySetupState(augments?.length ? description + ' with suggested augments' : description, (current) => {
+      const next = equipGearPlannerSetupItem(current, targetSlot, item, dataState.essenceData)
+      if (!item || !augments?.length) return next
+      const setup = activeGearPlannerSetup(next)
+      const augmented = applyRecommendedAugments(setup, item, dataState.data.reforging, augments)
+      return setup === augmented
+        ? next
+        : {
+            ...next,
+            setups: next.setups.map((entry) => (entry.id === setup.id ? augmented : entry))
+          }
+    })
+
     setMode('equipped')
     setPersistenceEnabled(true)
     if (view === 'grid' && !finding) {
@@ -1702,7 +1741,8 @@ const GearPlannerWorkspace = () => {
         essenceCrafting={essenceCrafting}
         missingWeaponFilters={unavailableWeaponsOnly && owner === 'Character' ? activeSetup.character.weapons : []}
         catalogItems={catalogItems}
-        focusStats={activeSetup.character.focusStats}
+        setup={activeSetup}
+        recommendationEffects={baseEffects}
         slots={slots}
         finding={isFinder}
         showConflicts={showConflicts}
@@ -1748,7 +1788,7 @@ const GearPlannerWorkspace = () => {
         findSlotUpgrades={() => {
           setUpgradeSlot(cardSlot)
         }}
-        character={activeSetup.character}
+        setup={activeSetup}
         inline={inline}
         openSet={openSet}
         sets={setState.memberships
@@ -2017,8 +2057,8 @@ const GearPlannerWorkspace = () => {
                 onClose={() => {
                   setUpgradeSlot(null)
                 }}
-                onEquip={(item) => {
-                  equip(upgradeSlot, item)
+                onEquip={(item, augments) => {
+                  equip(upgradeSlot, item, augments)
                   setUpgradeSlot(null)
                 }}
               />
