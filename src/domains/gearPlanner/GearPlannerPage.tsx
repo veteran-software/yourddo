@@ -32,7 +32,15 @@ import CandidateEquipmentDetails from './components/CandidateEquipmentDetails'
 import GearPlannerGuide from './components/GearPlannerGuide'
 import CandidateEnchantments from './components/CandidateEnchantments'
 import FiligreeSetBrowser from './components/FiligreeSetBrowser'
-import { TroveOwnership, OwnedFilter, TroveImport } from './components/TroveInventory'
+import {
+  TroveOwnership,
+  OwnedFilter,
+  TroveImport,
+  TroveEquippedFeedback,
+  type EquippedImportReport
+} from './components/TroveInventory'
+import { addTroveLoadouts, resolveTroveLoadouts } from './troveLoadouts'
+import type { TroveEquippedItem } from './troveV5'
 import { createCandidateComparison, matchesGearEffect, type GearFindTarget } from './finding'
 import { useSlotView } from '../../shared/layout/plannerView'
 import { PlannerViewToolbar } from '../../shared/layout/PlannerViewToolbar'
@@ -1681,9 +1689,39 @@ const GearPlannerWorkspace = () => {
     }
   }, [dataState.status])
 
+  const { pendingEquipped, clearPendingEquipped } = useTroveInventory()
+  const appliedTroveRows = useRef<readonly TroveEquippedItem[] | null>(null)
+  const [troveReport, setTroveReport] = useState<EquippedImportReport | null>(null)
+  const confirmTroveLoadouts = (selected: readonly TroveEquippedItem[], batch: readonly TroveEquippedItem[]) => {
+    if (dataState.status !== 'ready') return
+    const { loadouts, issues, inferred } = resolveTroveLoadouts(selected, dataState.data.items)
+    const drafts = loadouts.map((loadout) => ({ ...loadout, id: createGearPlannerSetupId() }))
+    if (addTroveLoadouts(plannerState, drafts) !== plannerState) {
+      appliedTroveRows.current = batch
+      editPlanner((current) => addTroveLoadouts(current, drafts), 'Imported equipped gear from Trove')
+      setPersistenceEnabled(true)
+    } else {
+      clearPendingEquipped(batch)
+    }
+    if (loadouts.length) {
+      setRequestedSlot(characterSlotLayout.find((position) => loadouts[0].equipment[position]) ?? 'Eyes')
+      setReturnSlot(null)
+      setMode('equipped')
+      setDetailOnMobile(false)
+    }
+    setTroveReport({ characters: loadouts.length, issues, inferred })
+  }
+
   const autosave = usePlannerAutosave(
     dataState.status === 'ready' && persistenceEnabled ? plannerState : null,
-    (state) => saveGearPlannerState(state, undefined, legacySaveImported.current) && history.saveEntries()
+    (state) => {
+      const saved = saveGearPlannerState(state, undefined, legacySaveImported.current) && history.saveEntries()
+      if (saved && appliedTroveRows.current) {
+        clearPendingEquipped(appliedTroveRows.current)
+        appliedTroveRows.current = null
+      }
+      return saved
+    }
   )
 
   useEffect(() => {
@@ -1912,7 +1950,7 @@ const GearPlannerWorkspace = () => {
             <Title order={1} size='h2'>
               Gear Planner
             </Title>
-            {dataState.status === 'ready' && <GearPlannerGuide />}
+            {dataState.status === 'ready' && <GearPlannerGuide skipInitialTutorial={pendingEquipped.length > 0} />}
           </Group>
           {dataState.status === 'ready' && (
             <Group gap='xs'>
@@ -1926,12 +1964,23 @@ const GearPlannerWorkspace = () => {
               >
                 Find gear
               </Button>
-              <TroveImport />
+              <TroveImport onEquipped={confirmTroveLoadouts} />
             </Group>
           )}
         </Group>
 
         {autosave.saveFailed && <PlannerSaveWarning retry={autosave.retrySave} />}
+        {troveReport && (
+          <Alert
+            color={troveReport.characters ? 'teal' : 'yellow'}
+            withCloseButton
+            onClose={() => {
+              setTroveReport(null)
+            }}
+          >
+            <TroveEquippedFeedback report={troveReport} />
+          </Alert>
+        )}
 
         {dataState.status === 'loading' && (
           <Center mih={160} role='status' aria-live='polite'>

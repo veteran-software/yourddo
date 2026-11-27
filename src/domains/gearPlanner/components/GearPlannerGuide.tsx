@@ -82,8 +82,8 @@ function initialView(): GuideView {
   return { type: 'tutorial', step: 0 }
 }
 
-export default function GearPlannerGuide() {
-  const [view, setView] = useState<GuideView>(initialView)
+export default function GearPlannerGuide({ skipInitialTutorial = false }: Readonly<{ skipInitialTutorial?: boolean }>) {
+  const [view, setView] = useState<GuideView>(() => (skipInitialTutorial ? null : initialView()))
   const step = view?.type === 'tutorial' ? view.step : undefined
   const isTutorial = step !== undefined
   const stepContent = step === undefined ? undefined : tutorial[step]
