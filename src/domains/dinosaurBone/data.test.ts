@@ -18,11 +18,13 @@ function fixture() {
       'baseItems',
       'effects',
       'spells',
-      'equipmentSets',
       'recipes',
       'ingredients'
     ]),
-    'items/augments/manifest.json': manifest('items', ['standard', 'dinosaur-bone', 'sets', 'effects', 'spells']),
+    'items/augments/manifest.json': manifest('items', ['standard', 'dinosaur-bone', 'effects', 'spells']),
+    'item-sets/manifest.json': manifest('item-sets', ['itemSets', 'effects']),
+    'item-sets/itemSets.json': [{ id: 10, name: 'Test Set', thresholds: [{ pieces: 3, effect: { effectId: 11 } }] }],
+    'item-sets/effects.json': [{ id: 11, enchantments: [{ displayName: 'Melee Power', value: 5 }] }],
     'dinosaur-bone/baseItems.json': [
       {
         id: 1,
@@ -30,11 +32,18 @@ function fixture() {
         itemType: 'Dart',
         baseStats: {},
         effects: [{ effectId: 8 }],
+        equipmentSets: [{ id: 10, name: 'Test Set' }],
         augmentSlots: [{ name: 'Isle of Dread: Scale Slot (Weapon)', types: ['Dread_Weapon_Prefix'] }]
       }
     ],
     'items/augments/dinosaur-bone.json': [
-      { id: 2, name: 'Flamescale', effects: [{ effectId: 8 }], slotTypes: ['Dread_Weapon_Prefix'] }
+      {
+        id: 2,
+        name: 'Flamescale',
+        effects: [{ effectId: 8 }],
+        slotTypes: ['Dread_Weapon_Prefix'],
+        hostSetOverride: { primarySetId: 10 }
+      }
     ],
     'dinosaur-bone/recipes.json': [
       { category: 'equipment', device: 'crafting', outputItemId: 1, ingredients: [{ ingredientId: 7, quantity: 25 }] },
@@ -42,13 +51,11 @@ function fixture() {
     ],
     'dinosaur-bone/ingredients.json': [{ id: 7, name: 'Bone' }],
     'dinosaur-bone/effects.json': [{ id: 8, hidden: true, displayName: 'Hidden' }],
-    'dinosaur-bone/equipmentSets.json': [],
     'dinosaur-bone/spells.json': [],
     'items/augments/standard.json': [{ id: 3, name: 'Ruby', slotTypes: ['Red'] }],
     'items/augments/effects.json': [
       { id: 8, displayName: 'Fire', enchantments: [{ displayName: 'Fire Resistance', value: 5 }] }
     ],
-    'items/augments/sets.json': [],
     'items/augments/spells.json': []
   }
   return files
@@ -69,12 +76,14 @@ describe('Dinosaur Bone data', () => {
       family: 'crafted-weapons',
       requirements: [{ name: 'Bone', quantity: 25 }],
       enchantments: [],
+      setBonus: [{ name: 'Test Set', numPiecesEquipped: 3, enhancements: [{ name: 'Melee Power', modifier: 5 }] }],
       augments: [{ id: 'Isle of Dread: Scale Slot (Weapon)' }]
     })
     expect(data.indexes.itemByName.get('Dinosaur Bone Bone Dart')).toBe(data.items[0])
     expect(data.indexes.augmentsByType.get('Isle of Dread: Scale (Weapon)')?.[0].name).toBe('Flamescale')
     expect(data.dinosaurAugments[0]).toMatchObject({
       effectsAdded: [{ name: 'Fire Resistance', modifier: 5 }],
+      setBonus: [{ name: 'Test Set', numPiecesEquipped: 3, enhancements: [{ name: 'Melee Power', modifier: 5 }] }],
       craftedIn: 'Dinosaur Bone Crafting',
       requirements: [{ name: 'Bone', quantity: 9 }]
     })

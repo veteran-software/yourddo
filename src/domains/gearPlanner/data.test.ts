@@ -1,6 +1,7 @@
 import { catalogWeaponTypes, changeClasses, characterAllowsItem, classNames, defaultCharacter } from './character'
 import { describe, expect, it, vi } from 'vitest'
 import * as datasets from '../../shared/data/loadDataset'
+import { loadDinosaurBoneData } from '../dinosaurBone/data'
 import { loadIncrediblePotentialData } from '../incrediblePotential/data.ts'
 import { getRingUpgrades, validateIncrediblePotentialData } from '../incrediblePotential/incrediblePotential.logic.ts'
 import {
@@ -650,6 +651,10 @@ describe('Gear Planner production CDN validation', () => {
     try {
       const [data, rings] = await Promise.all([loadGearPlannerData(), loadIncrediblePotentialData()])
       verifyHeroismUpgrades(data)
+      const dinosaur = await loadDinosaurBoneData()
+      expect(dinosaur.items.some(({ setBonus }) => setBonus?.length)).toBe(true)
+      expect(dinosaur.dinosaurAugments.filter(({ setBonus }) => setBonus?.length).length).toBeGreaterThanOrEqual(6)
+      expect(requested.some((url) => url.endsWith('/items/augments/sets.json'))).toBe(false)
       for (const [input, output] of [
         [1879110202, 1879110200],
         [1879110212, 1879110213],
