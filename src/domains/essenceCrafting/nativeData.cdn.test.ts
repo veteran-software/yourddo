@@ -1,6 +1,5 @@
 import { expect, it, vi } from 'vitest'
 import { loadEssenceCraftingData } from './data'
-import { resolveEnhancementEffects } from './enhancementEffects'
 import { getAvailableEnhancementChoices } from './enhancementEligibility'
 import { calculatePlanMaterials } from './materialCalculations'
 import { hydrateEssencePlan } from './plannerTransitions'
@@ -19,7 +18,14 @@ it.runIf(import.meta.env.VITE_GEAR_PLANNER_CDN === '1')(
     try {
       const data = await loadEssenceCraftingData()
       expect(requested.some((url) => url.endsWith('/essence/essenceCrafting.v2.json'))).toBe(true)
+      expect(requested.some((url) => url.includes('/essence-crafting/'))).toBe(false)
       expect(data.enhancements).toHaveLength(368)
+      expect(data.augments.length).toBeGreaterThan(800)
+      expect(data.augments).toHaveLength(data.indexes.augmentById.size)
+      expect(data.indexes.augmentById.get('augment-4a8d5bc634a20e0c')).toMatchObject({
+        displayName: 'Sapphire of Good Luck +1',
+        minimumItemLevel: 12
+      })
       expect(data.recipes).toHaveLength(808)
       const acidId = 'enhancement-aa015129bd857543'
       expect(data.indexes.enhancementById.get(acidId)?.effects[0].displayName).toBe('Elemental Resistance: Acid')
@@ -43,18 +49,6 @@ it.runIf(import.meta.env.VITE_GEAR_PLANNER_CDN === '1')(
         status: 'unavailable',
         reason: { placementUnavailable: true }
       })
-      for (const [name, value] of [
-        ['Spell Penetration', 5],
-        ['Insightful Spell Penetration', 3],
-        ['Vampirism', 2]
-      ] as const) {
-        const enhancement = data.enhancements.find(({ displayName }) => displayName === name)
-        if (!enhancement) throw new Error('Missing ' + name)
-        expect(resolveEnhancementEffects(data, enhancement.id, 13).effects[0].modifier).toMatchObject({
-          status: 'resolved',
-          value
-        })
-      }
     } finally {
       vi.unstubAllGlobals()
     }

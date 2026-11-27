@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { loadScopedAugmentCatalog } from '../gearPlanner/itemCatalog'
-import { hasDatasetFile, loadDataset, loadDatasetFile } from '../../shared/data/loadDataset.ts'
+import { loadDatasetFile } from '../../shared/data/loadDataset.ts'
 import { InvalidEssenceCraftingDataError, loadEssenceCraftingData, validateEssenceCraftingDataset } from './data.ts'
 import { createEssenceCraftingTestPayload } from './test-fixture.ts'
 import { getAvailableEnhancementChoices } from './enhancementEligibility'
@@ -9,8 +9,6 @@ import { hydrateEssencePlan } from './plannerTransitions'
 
 vi.mock('../gearPlanner/itemCatalog', () => ({ loadScopedAugmentCatalog: vi.fn() }))
 vi.mock('../../shared/data/loadDataset.ts', () => ({
-  hasDatasetFile: vi.fn(),
-  loadDataset: vi.fn(),
   loadDatasetFile: vi.fn()
 }))
 
@@ -19,49 +17,51 @@ const required = <T>(value: T | undefined): T => {
   return value
 }
 
+function mockNativeShards() {
+  const recipe = {
+    recipeId: 23,
+    level: 20,
+    essence: 55,
+    collectible: [{ name: 'Small Wooden Idol', quantity: 7 }],
+    minItemLevel: 1,
+    prefix: ['Weapon'],
+    suffix: [],
+    extra: ['Head'],
+    placementRules: { extra: [{ slots: ['Head'], minItemLevel: 2 }] },
+    enchantments: [
+      {
+        name: 'Dodge',
+        bonus: 'Enhancement',
+        modifiers: [
+          { level: 1, value: 0.005 },
+          { level: 2, value: 0.04 },
+          { level: 4, value: 0.06 }
+        ]
+      }
+    ]
+  }
+  vi.mocked(loadDatasetFile)
+    .mockResolvedValueOnce({ system: 'essence', resources: { shards: 'essenceCrafting.v2.json' } })
+    .mockResolvedValueOnce([
+      {
+        name: 'Native Shard Test',
+        bound: recipe,
+        unbound: { ...recipe, recipeId: 24, extra: [], placementRules: {} }
+      }
+    ])
+}
+
 describe('Essence Crafting data', () => {
   beforeEach(() => {
-    vi.mocked(loadDataset).mockReset()
     vi.mocked(loadDatasetFile).mockReset()
-    vi.mocked(hasDatasetFile).mockReset().mockResolvedValue(false)
+    vi.mocked(loadScopedAugmentCatalog).mockReset()
   })
 
-  it('uses native shard costs, effects and placement floors with the saved enhancement ID', async () => {
-    vi.mocked(loadDataset).mockResolvedValue(createEssenceCraftingTestPayload())
-    vi.mocked(hasDatasetFile).mockResolvedValue(true)
-    const recipe = {
-      recipeId: 23,
-      level: 20,
-      essence: 55,
-      collectible: [{ name: 'Small Wooden Idol', quantity: 7 }],
-      minItemLevel: 1,
-      prefix: ['Weapon'],
-      suffix: [],
-      extra: ['Head'],
-      placementRules: { extra: [{ slots: ['Head'], minItemLevel: 2 }] },
-      enchantments: [
-        {
-          name: 'Dodge',
-          bonus: 'Enhancement',
-          modifiers: [
-            { level: 1, value: 0.005 },
-            { level: 2, value: 0.04 }
-          ]
-        }
-      ]
-    }
-    vi.mocked(loadDatasetFile)
-      .mockResolvedValueOnce({ system: 'essence', resources: { shards: 'essenceCrafting.v2.json' } })
-      .mockResolvedValueOnce([
-        {
-          name: 'Split Prefix Test',
-          bound: recipe,
-          unbound: { ...recipe, recipeId: 24, extra: [], placementRules: {} }
-        }
-      ])
+  it('uses native costs, effects and placement floors with the saved enhancement ID', async () => {
+    mockNativeShards()
     const data = await loadEssenceCraftingData()
     expect(loadDatasetFile).toHaveBeenNthCalledWith(2, 'essence/essenceCrafting.v2.json')
-    const id = 'enhancement-split-prefix'
+    const id = 'enhancement-1829b895dd926167'
     expect(data.indexes.enhancementById.get(id)?.recipes.boundRecipeId).toBe('recipe-source-23')
     expect(data.recipes.find((r) => r.id === 'recipe-source-23')?.requirements.map(({ quantity }) => quantity)).toEqual(
       [55, 7]
@@ -70,6 +70,8 @@ describe('Essence Crafting data', () => {
       value: 0.5,
       representation: 'percentage'
     })
+    expect(resolveEnhancementEffects(data, id, 3).effects[0].modifier.status).toBe('no-match-for-item-level')
+    expect(resolveEnhancementEffects(data, id, 4).effects[0].modifier).toMatchObject({ value: 6 })
     expect(getAvailableEnhancementChoices(data, 'helmet', 'extra', 1)).toEqual([])
     expect(getAvailableEnhancementChoices(data, 'helmet', 'extra', 2).map((row) => row.id)).toEqual([id])
     const restored = hydrateEssencePlan(data, {
@@ -80,18 +82,31 @@ describe('Essence Crafting data', () => {
     expect(restored.itemsBySlotId['main-hand']?.prefixEnhancementId).toBe(id)
   })
 
-  it('loads the generated Essence Crafting domain when scoped data is unavailable', async () => {
-    vi.mocked(loadDataset).mockResolvedValue(createEssenceCraftingTestPayload())
-
+  it('keeps minimum-level and Mark costs when the shard package is the only Essence source', async () => {
+    mockNativeShards()
     const data = await loadEssenceCraftingData()
 
-    expect(loadDataset).toHaveBeenCalledOnce()
-    expect(loadDataset).toHaveBeenCalledWith('essence-crafting')
-    expect(data.indexes.enhancementById.get('enhancement-split-prefix')?.displayName).toBe('Split Prefix Test')
+    expect(loadDatasetFile).toHaveBeenCalledTimes(2)
+    expect(loadDatasetFile).toHaveBeenNthCalledWith(1, 'essence/manifest.json')
+    expect(data.rules.extraAffix.markRequirement.quantity).toBe(1)
+    expect(data.indexes.minimumLevelRecipeByLevel.get(1)?.bound).toMatchObject({
+      craftingLevel: 1,
+      requirements: [{ quantity: 10 }]
+    })
+    for (const [level, quantities] of [
+      [20, [500]],
+      [21, [520, 5]],
+      [26, [620, 10]],
+      [36, [820, 15]]
+    ] as const) {
+      expect(
+        data.indexes.minimumLevelRecipeByLevel.get(level)?.unbound.requirements.map(({ quantity }) => quantity)
+      ).toEqual(quantities)
+    }
   })
 
   it('retains the saved augment ID and uses the public catalog for display and filter labels', async () => {
-    vi.mocked(loadDataset).mockResolvedValue(createEssenceCraftingTestPayload())
+    mockNativeShards()
     const entry = {
       id: 10,
       name: 'Ruby of Charisma +1',
@@ -107,7 +122,7 @@ describe('Essence Crafting data', () => {
       names: ['Eldritch Blast: Dice', 'Eldritch Blast: Pact Dice']
     })
     const data = await loadEssenceCraftingData()
-    expect(data.indexes.augmentById.get('augment-red-charisma')).toMatchObject({
+    expect(data.indexes.augmentById.get('augment-4834aeaf0182f92b')).toMatchObject({
       scoped: { fallbackDescription: 'A charged gem.' },
       effects: [],
       filterEffects: []
@@ -196,7 +211,7 @@ describe('Essence Crafting data', () => {
 
   it('propagates loader rejection unchanged', async () => {
     const cause = new Error('CDN unavailable')
-    vi.mocked(loadDataset).mockRejectedValueOnce(cause)
+    vi.mocked(loadDatasetFile).mockRejectedValueOnce(cause)
 
     await expect(loadEssenceCraftingData()).rejects.toBe(cause)
   })
