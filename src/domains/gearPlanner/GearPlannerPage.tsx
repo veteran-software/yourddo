@@ -39,6 +39,7 @@ import { PlannerViewToolbar } from '../../shared/layout/PlannerViewToolbar'
 import classes from '../../shared/layout/PlannerWorkspace.module.css'
 import workspace from '../../shared/layout/workspace.module.css'
 import ItemCraftingSelector from './components/ItemCraftingSelector.tsx'
+import DampenedUpgradeButton from './components/DampenedUpgradeButton'
 import {
   ActionIcon,
   Autocomplete,
@@ -313,6 +314,7 @@ interface EquipmentEditorProps {
   reforging: import('./reforging.ts').GearPlannerReforgingState
   effectiveAugmentSlots: Readonly<Record<string, readonly import('./gearPlanner.types.ts').GearPlannerAugmentSlot[]>>
   openBrowser: (slot: GearPlannerSlot) => void
+  replaceItem: (item: GearPlannerItem) => void
   clearSlot: (slot: GearPlannerSlot) => void
   setAugment: (itemId: string, slotIndex: number, augment: GearPlannerData['augments'][number] | null) => void
   setCraft: (itemId: string, system: string, choiceId: string | null) => void
@@ -351,6 +353,7 @@ const EquipmentEditor = ({
   reforging,
   effectiveAugmentSlots,
   openBrowser,
+  replaceItem,
   clearSlot,
   setAugment,
   setCurse,
@@ -385,6 +388,7 @@ const EquipmentEditor = ({
         </Stack>
       </Group>
       <Group gap='xs'>
+        <DampenedUpgradeButton key={item.id} item={item} setup={setup} data={data} onReplace={replaceItem} />
         <Button
           size='xs'
           variant='light'
@@ -1836,6 +1840,9 @@ const GearPlannerWorkspace = () => {
         openBrowser={() => {
           selectSlot(cardSlot)
           setMode('replace')
+        }}
+        replaceItem={(replacement) => {
+          equip(cardSlot, replacement)
         }}
         clearSlot={(currentSlot) => {
           equip(currentSlot, null)

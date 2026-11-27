@@ -650,6 +650,19 @@ describe('Gear Planner production CDN validation', () => {
     try {
       const [data, rings] = await Promise.all([loadGearPlannerData(), loadIncrediblePotentialData()])
       verifyHeroismUpgrades(data)
+      for (const [input, output] of [
+        [1879110202, 1879110200],
+        [1879110212, 1879110213],
+        [1879110221, 1879110222],
+        [1879110224, 1879110220]
+      ]) {
+        const current = data.items.find(({ source }) => source.catalogId === input)
+        if (!current) throw new Error('Missing Dampened item ' + String(input))
+        expect(data.dampenedUpgrades?.get(current.id)).toMatchObject({
+          slot: current.slot,
+          source: { catalogId: output }
+        })
+      }
       for (const [augmentName, minLevel, name, bonus, total] of [
         ['Melancholic: Wisdom', 34, 'Wisdom', 'Enhancement', 15],
         ['Bronzescale', 31, 'Skill: Hide', 'Enhancement', 5],

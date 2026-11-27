@@ -172,6 +172,7 @@ export interface GearPlannerData {
   augmentEnchantmentNames?: readonly string[]
   enchantmentAliases?: ReadonlyMap<string, string>
   crafting: import('./crafting.ts').GearCraftingData
+  dampenedUpgrades?: ReadonlyMap<string, GearPlannerItem>
   standardSets?: ReadonlyMap<string | number, GearPlannerStandardSetDefinition>
   sourceDatasets: readonly GearPlannerSourceDataset[]
   items: readonly GearPlannerItem[]

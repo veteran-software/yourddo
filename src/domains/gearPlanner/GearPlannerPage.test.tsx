@@ -1552,6 +1552,47 @@ describe('GearPlannerPage', () => {
     expect(await screen.findAllByText(/Essence Crafting · prefix: Split Prefix Test/)).toHaveLength(2)
   })
 
+  it('previews a Dampened upgrade and only replaces the item on confirmation', async () => {
+    const current = item('dampened', 'Armor', 'Dampened Frozen Plate', 1, [
+      { name: 'Enhancement Bonus', modifier: 3 },
+      { name: 'Cold Guard' }
+    ])
+    const upgrade = item('cleansed', 'Armor', 'Frozen Plate', 6, [
+      { name: 'Enhancement Bonus', modifier: 4 },
+      { name: 'Physical Resistance Rating', modifier: 10 }
+    ])
+    current.source.baseStats = { hardness: 5, maxDurability: 60 }
+    upgrade.source.baseStats = { hardness: 3, maxDurability: 50 }
+    await renderReadyPage({
+      ...dataWithItems([current, upgrade]),
+      dampenedUpgrades: new Map([[current.id, upgrade]])
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Select Armor' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Equip Dampened Frozen Plate' }))
+    const open = () => {
+      fireEvent.click(screen.getByRole('button', { name: 'View Dampened upgrade' }))
+      return within(screen.getByRole('dialog', { name: 'Confirm Dampened upgrade' }))
+    }
+    const preview = open()
+    expect(preview.getByRole('row', { name: /Minimum level 1 6/ })).toBeTruthy()
+    expect(preview.getByRole('row', { name: /Enhancement Bonus 3 4 \+1/ })).toBeTruthy()
+    expect(preview.getByRole('row', { name: /Physical Resistance Rating.*\+10/ })).toBeTruthy()
+    expect(preview.getByRole('row', { name: /Cold Guard.*Lost/ })).toBeTruthy()
+    expect(preview.queryByRole('row', { name: /Hardness|Durability/ })).toBeNull()
+    fireEvent.click(preview.getByRole('button', { name: 'Cancel' }))
+    const equipped = screen.getByTestId('gear-slot-Armor')
+    expect(equipped.textContent).toContain(current.source.name)
+
+    fireEvent.click(open().getByRole('button', { name: 'Replace item' }))
+    expect(equipped.textContent).toContain(upgrade.source.name)
+    expect(equipped.textContent).not.toContain(current.source.name)
+    expect(screen.queryByRole('button', { name: 'View Dampened upgrade' })).toBeNull()
+    const saved = parsePersistedGearPlannerState(JSON.parse(localStorage.getItem(GEAR_PLANNER_STORAGE_KEY) ?? '{}'))
+    expect(saved.setups[0].equipment.Armor).toBe(upgrade.id)
+    fireEvent.click(screen.getByRole('button', { name: 'Undo plan edit' }))
+    expect(equipped.textContent).toContain(current.source.name)
+  })
+
   it('shows item upgrades immediately and lets the user apply and clear them', async () => {
     await renderReadyPage(dataWithItems([item('eyes', gearPlannerSlots.eyes, 'Test Goggles')]))
     fireEvent.click(screen.getByRole('button', { name: 'Select Eyes' }))
