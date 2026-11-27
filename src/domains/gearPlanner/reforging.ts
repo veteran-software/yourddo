@@ -43,6 +43,7 @@ export interface GearPlannerReforgingChoice {
 }
 
 export interface GearPlannerReforgingRecipe extends Pick<ReforgingEntry, 'native'> {
+  cost?: ReforgingEntry['cost']
   itemName: string
   stage: GearPlannerReforgingStage
   kind: 'toggle' | 'choice'
@@ -197,6 +198,7 @@ const toRecipe = (entry: ReforgingEntry, source: GearPlannerSourceItem): GearPla
         ...choice,
         effect: options[i].added.flatMap((g) => g.effects)[0] ?? choice.effect
       })),
+      cost: entry.cost,
       native: entry.native
     }
   }
@@ -207,11 +209,12 @@ const toRecipe = (entry: ReforgingEntry, source: GearPlannerSourceItem): GearPla
       stage,
       kind: choices.length > 0 ? 'choice' : 'toggle',
       choices,
+      cost: entry.cost,
       usesNearlyFinishedFallback: true
     }
   }
   const choices = toChoices(stage, choiceLabels(entry, source))
-  return { itemName: entry.item, stage, kind: choices.length > 0 ? 'choice' : 'toggle', choices }
+  return { itemName: entry.item, stage, kind: choices.length > 0 ? 'choice' : 'toggle', choices, cost: entry.cost }
 }
 
 export const getGearPlannerReforgingUpgradeTier = (
@@ -340,7 +343,7 @@ const effectiveTierRecord = (
   return candidates.length === 1 ? candidates[0] : undefined
 }
 
-function selectedNativeOption(
+export function selectedNativeOption(
   item: GearPlannerItem,
   recipe: GearPlannerReforgingRecipe | undefined,
   selection: GearPlannerReforgingStageState | undefined,

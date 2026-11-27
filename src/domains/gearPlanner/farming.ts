@@ -79,7 +79,7 @@ function farmingTasks(key: string, need: Need, inventory: TroveInventory, target
     }))
   const blocked: string[] = []
   function allocateStock(copies: readonly TroveHolding[]) {
-    const available = copies.map((h) => ({ h, status: availability(h, target) }))
+    const available = copies.map((h) => ({ h, status: troveHoldingAvailability(h, target) }))
     for (const status of ['Owned', 'Collect', 'Check', 'bound'] as const) {
       for (const { h, status: kind } of available) {
         if (!remaining || kind !== status) continue
@@ -108,7 +108,7 @@ function farmingTasks(key: string, need: Need, inventory: TroveInventory, target
   return tasks
 }
 
-function availability(h: TroveHolding, target: string) {
+export function troveHoldingAvailability(h: TroveHolding, target: string) {
   const shared = /^Shared (?:Crafting )?Bank(?: ·|$)/.test(h.location)
   if (!target) return 'Owned'
   if (h.character?.toLowerCase() === target) return 'Owned'

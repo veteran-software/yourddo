@@ -1539,7 +1539,14 @@ const GearPlannerWorkspace = () => {
             id: 'farming',
             label: 'Farming list',
             icon: <IconMapPin stroke={2} />,
-            content: <FarmingTool key={activeSetup.id} setup={activeSetup} />
+            content: (
+              <FarmingTool
+                key={activeSetup.id}
+                setup={activeSetup}
+                essence={dataState.essenceData}
+                reforging={dataState.data.reforging}
+              />
+            )
           },
           {
             id: 'history',

@@ -66,6 +66,7 @@ function verifyHeroismUpgrades(data: GearPlannerData) {
     for (const { id } of group.choices) {
       const upgraded = applyGearCraft(gear, group, id, data.crafting)
       expect(upgraded, gear.source.name).not.toBe(gear)
+      expect(upgraded.crafts?.find((craft) => craft.id === id)?.materials, gear.source.name).toBeDefined()
       recipeIds.add(id)
       walk(upgraded, tier + 1)
     }
@@ -663,7 +664,8 @@ describe('Gear Planner production CDN validation', () => {
       expect(paleBlueUpgrade?.source).toMatchObject({
         name: 'Pale Blue Ioun Stone (Unsuppressed)',
         minLevel: 5,
-        suppressedPowerRecipeId: 1879108307
+        suppressedPowerRecipeId: 1879108307,
+        suppressedPowerMaterials: [{ name: 'Crystal Disc of Dreams', quantity: 1 }]
       })
       expect(paleBlueUpgrade?.source.enchantments).toContainEqual(
         expect.objectContaining({ name: 'Strength', modifier: 6 })

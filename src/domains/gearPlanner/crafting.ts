@@ -10,12 +10,19 @@ import rules from './craftingRules.json'
 import type { GearPlannerEffect, GearPlannerItem } from './gearPlanner.types.ts'
 import { heroicSlaveLordsSetNames, legendarySlaveLordsSetNames, slaveLordsMarker } from './slaveLords'
 
+export interface CraftingMaterial {
+  name: string
+  quantity: number
+  id?: string | number
+}
+
 export interface CraftChoice {
   id: string
   label: string
   effects?: readonly GearPlannerEffect[]
   augmentSlot?: import('./gearPlanner.types').GearPlannerAugmentSlot
   setName?: string
+  materials?: readonly CraftingMaterial[]
 }
 
 export interface EquippedCraft extends CraftChoice {
@@ -39,7 +46,7 @@ export interface GearCraftingData {
     name: string
     keeperIds?: readonly number[]
     hostEffects?: ReadonlyMap<number, readonly GearPlannerEffect[]>
-    requirements: readonly { name: string }[]
+    requirements: readonly { name: string; quantity?: number }[]
     effectsAdded: readonly GearPlannerEffect[]
     effectsRemoved: readonly { name: string }[]
   }[]
@@ -96,6 +103,11 @@ function nearlyCompleteGroup(item: GearPlannerItem, data: GearCraftingData): Cra
     .map((r) => ({
       id: r.name,
       label: r.name,
+      materials: r.requirements.flatMap(({ name, quantity }) =>
+        quantity !== undefined && !/^(Heroic|Legendary) Item with Nearly Complete:/.test(name)
+          ? [{ name, quantity }]
+          : []
+      ),
       effects: (catalogId === undefined ? undefined : r.hostEffects?.get(catalogId)) ?? r.effectsAdded
     }))
   return choices.length ? { system: 'nearly-complete', label: 'Nearly Complete', choices } : undefined

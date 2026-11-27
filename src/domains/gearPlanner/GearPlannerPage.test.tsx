@@ -26,7 +26,7 @@ import { loadoutSnapshot } from './loadoutComparison'
 import { gearPlannerPermalink } from './sharing'
 import { createGearPlannerSetup } from './setups'
 import GearPlannerPage from './GearPlannerPage.tsx'
-import { readTroveInventory, troveStorageKey, TroveSnapshot } from './trove'
+import { readTroveInventory, serializeTroveInventory, troveStorageKey, TroveSnapshot } from './trove'
 import { createGearPlannerExport, GEAR_PLANNER_STORAGE_KEY, parsePersistedGearPlannerState } from './plannerStorage.ts'
 import { createGearPlannerReforgingData, emptyGearPlannerReforgingData } from './reforging.ts'
 import type { ReforgingEntry } from '../nearlyFinished/nearlyFinished.types.ts'
@@ -245,6 +245,49 @@ describe('GearPlannerPage', () => {
     expect(checkbox.checked).toBe(true)
     fireEvent.click(checkbox)
     expect(checkbox.checked).toBe(false)
+  })
+
+  it('totals remaining crafting steps against the selected Trove character and saves progress', async () => {
+    const stock = new TroveSnapshot()
+    stock.record('Magic Item Essence', 'Robin (Inventory)', 'Robin', 3, 'BtC')
+    stock.record('Magic Item Essence', 'Shared Crafting Bank', '', 2, 'BtA')
+    stock.record('Magic Item Essence', 'Dara (Bank)', 'Dara', 10, 'BtC')
+    stock.record('Magic Item Essence', 'Dara (Inventory)', 'Dara', 1, undefined)
+    localStorage.setItem(troveStorageKey, serializeTroveInventory(stock, '2026-11-27T12:00:00Z'))
+    localStorage.setItem('yourddo:farming-character:default', JSON.stringify('Robin'))
+    await renderReadyPage(dataWithItems([]))
+
+    fireEvent.click(screen.getByRole('button', { name: 'Select Main Hand' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Equip Essence Crafted Weapon (Melee)' }))
+    fireEvent.click(screen.getByRole('combobox', { name: 'Prefix' }))
+    fireEvent.click(await screen.findByRole('option', { name: /Split Prefix Test/ }))
+    fireEvent.click(screen.getByRole('button', { name: 'Farming list' }))
+    fireEvent.click(screen.getByRole('radio', { name: 'Crafting' }))
+
+    const materials = () => within(screen.getByRole('region', { name: 'Materials for remaining steps' }))
+    expect(materials().getAllByText('Magic Item Essence')).toHaveLength(1)
+    expect(materials().getByText('20 needed')).toBeTruthy()
+    expect(materials().getByText('5 usable')).toBeTruthy()
+    expect(materials().getByText('14 missing')).toBeTruthy()
+    expect(materials().getByText('1 unverified')).toBeTruthy()
+    expect(materials().getByText('Character-bound on Dara (Bank)')).toBeTruthy()
+    const steps = () => within(screen.getByRole('region', { name: 'Crafting steps' }))
+    const expand = () => fireEvent.click(steps().getByRole('button', { name: /Essence Crafted Weapon/ }))
+    const shard = () => steps().findByRole<HTMLInputElement>('checkbox', { name: /Minimum Level 1 shard/ })
+    expand()
+    fireEvent.click(await shard())
+    expect(materials().getByText('10 needed')).toBeTruthy()
+    expect(steps().getByText('1 / 2 complete')).toBeTruthy()
+
+    fireEvent.click(screen.getByRole('radio', { name: 'Unbound' }))
+    expect(materials().getByText('120 needed')).toBeTruthy()
+    expect((await shard()).checked).toBe(false)
+    fireEvent.click(screen.getByRole('radio', { name: 'Gear' }))
+    fireEvent.click(screen.getByRole('radio', { name: 'Crafting' }))
+    fireEvent.click(screen.getByRole('radio', { name: 'Bound' }))
+    expand()
+    expect((await shard()).checked).toBe(true)
+    expect(materials().getByText('10 needed')).toBeTruthy()
   })
 
   it('finds enchantments across slots and equips the result in its own slot', async () => {
