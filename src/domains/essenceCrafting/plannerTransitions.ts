@@ -5,9 +5,9 @@ import {
   isAugmentSlotTypeAvailable,
   isSelectedAugmentStillValid
 } from './augmentRules.ts'
-import { isSelectedEnhancementStillValid } from './enhancementEligibility.ts'
+import { isSelectedEnhancementStillValid, placementMinimumLevel, restoredShardLevel } from './enhancementEligibility.ts'
 import { EQUIPMENT_SLOTS, type EquipmentSlotId } from './equipment.ts'
-import type { EssenceAffixPosition, EssenceCraftingData } from './essenceCrafting.types.ts'
+import type { EssenceAffixPosition, EssenceBinding, EssenceCraftingData } from './essenceCrafting.types.ts'
 import {
   createEmptyEssencePlan,
   createPlannedAugmentSlotId,
@@ -18,7 +18,13 @@ import {
 
 export type EquipmentChange =
   | { type: 'activate-equipment-slot'; equipmentSlotId: string }
-  | { type: 'apply-shard'; equipmentSlotId: string; position: EssenceAffixPosition; enhancementId: string }
+  | {
+      type: 'apply-shard'
+      equipmentSlotId: string
+      position: EssenceAffixPosition
+      enhancementId: string
+      binding?: EssenceBinding
+    }
   | { type: 'set-two-handed'; enabled: boolean }
 
 export type EssencePlanAction =
@@ -312,6 +318,16 @@ const sanitizeHydratedItem = (
       augmentId: selectedAugmentIds[index] ?? null
     }))
   }
+  const equipment = EQUIPMENT_SLOTS.find(({ id }) => id === equipmentSlotId)
+  if (equipment && data.previousEnhancementById) {
+    const current = item.minimumLevelOverride ?? masterMinimumLevel
+    const migrated = restoredShardLevel(data, equipment.itemCategoryIds, current, [
+      ['prefix', item.prefixEnhancementId],
+      ['suffix', item.suffixEnhancementId],
+      ['extra', item.hasCannithMark ? item.extraEnhancementId : null]
+    ])
+    if (migrated > current) item.minimumLevelOverride = migrated
+  }
   return revalidateItemSelections(data, equipmentSlotId, item, masterMinimumLevel)
 }
 
@@ -434,18 +450,23 @@ function applyShard(
   state: EssencePlanState,
   action: Extract<EssencePlanAction, { type: 'apply-shard' }>
 ): EssencePlanState {
-  const { equipmentSlotId, position, enhancementId } = action
+  const { equipmentSlotId, position, enhancementId, binding } = action
   if (!isEquipmentSlotId(equipmentSlotId)) return state
   const enhancement = data.indexes.enhancementById.get(enhancementId)
-  if (!enhancement) return state
+  const slot = EQUIPMENT_SLOTS.find(({ id }) => id === equipmentSlotId)
+  if (!enhancement || !slot) return state
+  const recipe = binding && data.recipes.find(({ id }) => id === enhancement.recipes[`${binding}RecipeId`])
+  const placements = recipe && recipe.kind === 'enhancement-shard' ? recipe.placements : undefined
+  const minimumLevel = placementMinimumLevel(enhancement, slot.itemCategoryIds, position, placements)
+  if (minimumLevel > data.rules.supportedItemLevels.maximum) return state
 
   const item = state.itemsBySlotId[equipmentSlotId]
   let next = transitionEssencePlan(data, state, { type: 'activate-equipment-slot', equipmentSlotId })
-  if (enhancement.minimumItemLevel > (item?.minimumLevelOverride ?? state.masterMinimumLevel)) {
+  if (minimumLevel > (item?.minimumLevelOverride ?? state.masterMinimumLevel)) {
     next = transitionEssencePlan(data, next, {
       type: 'set-item-minimum-level-override',
       equipmentSlotId,
-      minimumLevel: enhancement.minimumItemLevel
+      minimumLevel
     })
   }
   if (position === 'extra' && !item?.hasCannithMark) {

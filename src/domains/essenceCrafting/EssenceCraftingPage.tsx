@@ -175,6 +175,7 @@ const EssenceCraftingPage = () => {
   )
   const [view, setView] = useState<string | null>('plan')
   const [permalinkError, setPermalinkError] = useState<string | null>(null)
+  const [removedShardSelections, setRemovedShardSelections] = useState<readonly string[]>([])
   const permalinkToImportRef = useRef(readEssenceCraftingPermalinkFromSearch())
   const planMaterials = useMemo(
     () => (dataState.status === 'loaded' ? calculatePlanMaterials(dataState.data, dataState.plan, binding) : undefined),
@@ -244,10 +245,11 @@ const EssenceCraftingPage = () => {
     loadCatalog()
       .then((data) => {
         if (!active) return
-        const storedPlan = loadEssenceCraftingPlan(data).plan
+        const stored = loadEssenceCraftingPlan(data)
         const encodedPermalink = permalinkToImportRef.current
         const decodedPermalink = encodedPermalink ? decodeEssenceCraftingPermalink(data, encodedPermalink) : undefined
-        const plan = decodedPermalink?.ok ? decodedPermalink.plan : storedPlan
+        const plan = decodedPermalink?.ok ? decodedPermalink.plan : stored.plan
+        setRemovedShardSelections(decodedPermalink?.ok ? [] : (stored.removedShardSelections ?? []))
         if (decodedPermalink?.ok) {
           removeEssenceCraftingPermalinkFromCurrentUrl()
           setPermalinkError(null)
@@ -392,6 +394,24 @@ const EssenceCraftingPage = () => {
                 {permalinkError}
               </Alert>
             ) : null}
+            {removedShardSelections.length > 0 && (
+              <Alert
+                color='yellow'
+                title='Changed shard placements'
+                role='status'
+                withCloseButton
+                onClose={() => {
+                  setRemovedShardSelections([])
+                }}
+              >
+                <Text size='sm'>Choose replacements for these saved selections under the published shard rules.</Text>
+                <List size='sm'>
+                  {removedShardSelections.map((selection) => (
+                    <List.Item key={selection}>{selection}</List.Item>
+                  ))}
+                </List>
+              </Alert>
+            )}
 
             <Tabs
               value={view}

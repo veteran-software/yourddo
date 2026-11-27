@@ -3,7 +3,7 @@ export type EssenceAffixPosition = 'prefix' | 'suffix' | 'extra'
 export type EssenceBinding = 'bound' | 'unbound'
 export type EssenceRecipeKind = 'enhancement-shard' | 'minimum-level-shard'
 export type EssenceRequirementKind = 'ingredient'
-export type EssenceModifierUnit = 'number' | 'percent' | 'dice' | 'text'
+export type EssenceModifierUnit = 'number' | 'percent' | 'ratio' | 'dice' | 'text'
 
 export interface EssenceNamedRecord {
   id: string
@@ -15,6 +15,7 @@ export type EssenceIngredient = EssenceNamedRecord
 export interface EssencePlacement {
   position: EssenceAffixPosition
   itemCategoryIds: readonly string[]
+  minimumItemLevels?: Readonly<Record<string, number>>
 }
 
 export interface EssenceModifierBand {
@@ -73,6 +74,7 @@ export interface EssenceRecipeBase {
 export interface EssenceEnhancementRecipe extends EssenceRecipeBase {
   kind: 'enhancement-shard'
   sourceRecipeId: string
+  placements?: readonly EssencePlacement[]
 }
 
 export interface EssenceMinimumLevelRecipe extends EssenceRecipeBase {
@@ -131,6 +133,7 @@ export interface EssenceCraftingIndexes {
 
 export interface EssenceCraftingData {
   enchantmentNames?: readonly string[]
+  previousEnhancementById?: ReadonlyMap<string, EssenceEnhancement>
   schemaVersion: 1
   itemCategories: readonly EssenceNamedRecord[]
   augmentTypes: readonly EssenceNamedRecord[]

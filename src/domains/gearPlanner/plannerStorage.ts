@@ -1,10 +1,12 @@
 import { convertLegacyGearSave } from './legacyImport'
 import { gearCraftGroups, applyGearCraft, craftStageOrder } from './crafting.ts'
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
+import { restoredShardLevel } from '../essenceCrafting/enhancementEligibility'
 import { gearPlannerAugmentIdentity, isCompatibleGearPlannerAugment } from './augments.ts'
 import { canApplyGearPlannerCurse, collectSelectedGearPlannerCurses, gearPlannerCurseIdentity } from './curses.ts'
 import {
   type GearPlannerEssenceCraftingConfiguration,
+  getGearPlannerEssenceCraftingLevel,
   isEssenceCraftedGearPlannerItem,
   isGearPlannerEssenceAffixValid,
   isGearPlannerEssenceCraftingMaterial,
@@ -828,26 +830,24 @@ function restoreEssenceConfiguration(
   if (!isGearPlannerEssenceCraftingMaterial(savedEssence.material)) {
     report('ineligible-essence', 'Essence Crafted material is invalid')
   }
-  for (const [position, enhancementId] of [
+  const selections = [
     ['prefix', savedEssence.prefixId],
     ['suffix', savedEssence.suffixId],
     ['extra', savedEssence.extraId]
-  ] as const) {
+  ] as const
+  const curse = setup.slottedCurses[item.id]
+  if (item.essenceCrafting && essenceData.previousEnhancementById) {
+    const level = getGearPlannerEssenceCraftingLevel(essenceData, configuration, curse)
+    configuration.minimumLevel +=
+      restoredShardLevel(essenceData, [item.essenceCrafting.itemCategoryId], level, selections) - level
+  }
+  for (const [position, enhancementId] of selections) {
     if (enhancementId === null) continue
     if (!essenceData.indexes.enhancementById.has(enhancementId)) {
       report('missing-essence-enhancement', 'Essence enhancement is unavailable')
       continue
     }
-    if (
-      !isGearPlannerEssenceAffixValid(
-        essenceData,
-        item,
-        configuration,
-        setup.slottedCurses[item.id],
-        position,
-        enhancementId
-      )
-    ) {
+    if (!isGearPlannerEssenceAffixValid(essenceData, item, configuration, curse, position, enhancementId)) {
       report('ineligible-essence', 'Essence enhancement is no longer eligible')
       continue
     }

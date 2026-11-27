@@ -1,11 +1,18 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { loadScopedAugmentCatalog } from '../gearPlanner/itemCatalog'
-import { loadDataset } from '../../shared/data/loadDataset.ts'
+import { hasDatasetFile, loadDataset, loadDatasetFile } from '../../shared/data/loadDataset.ts'
 import { InvalidEssenceCraftingDataError, loadEssenceCraftingData, validateEssenceCraftingDataset } from './data.ts'
 import { createEssenceCraftingTestPayload } from './test-fixture.ts'
+import { getAvailableEnhancementChoices } from './enhancementEligibility'
+import { resolveEnhancementEffects } from './enhancementEffects'
+import { hydrateEssencePlan } from './plannerTransitions'
 
 vi.mock('../gearPlanner/itemCatalog', () => ({ loadScopedAugmentCatalog: vi.fn() }))
-vi.mock('../../shared/data/loadDataset.ts', () => ({ loadDataset: vi.fn() }))
+vi.mock('../../shared/data/loadDataset.ts', () => ({
+  hasDatasetFile: vi.fn(),
+  loadDataset: vi.fn(),
+  loadDatasetFile: vi.fn()
+}))
 
 const required = <T>(value: T | undefined): T => {
   if (value === undefined) throw new Error('Expected fixture value')
@@ -13,7 +20,65 @@ const required = <T>(value: T | undefined): T => {
 }
 
 describe('Essence Crafting data', () => {
-  beforeEach(() => vi.mocked(loadDataset).mockReset())
+  beforeEach(() => {
+    vi.mocked(loadDataset).mockReset()
+    vi.mocked(loadDatasetFile).mockReset()
+    vi.mocked(hasDatasetFile).mockReset().mockResolvedValue(false)
+  })
+
+  it('uses native shard costs, effects and placement floors with the saved enhancement ID', async () => {
+    vi.mocked(loadDataset).mockResolvedValue(createEssenceCraftingTestPayload())
+    vi.mocked(hasDatasetFile).mockResolvedValue(true)
+    const recipe = {
+      recipeId: 23,
+      level: 20,
+      essence: 55,
+      collectible: [{ name: 'Small Wooden Idol', quantity: 7 }],
+      minItemLevel: 1,
+      prefix: ['Weapon'],
+      suffix: [],
+      extra: ['Head'],
+      placementRules: { extra: [{ slots: ['Head'], minItemLevel: 2 }] },
+      enchantments: [
+        {
+          name: 'Dodge',
+          bonus: 'Enhancement',
+          modifiers: [
+            { level: 1, value: 0.005 },
+            { level: 2, value: 0.04 }
+          ]
+        }
+      ]
+    }
+    vi.mocked(loadDatasetFile)
+      .mockResolvedValueOnce({ system: 'essence', resources: { shards: 'essenceCrafting.v2.json' } })
+      .mockResolvedValueOnce([
+        {
+          name: 'Split Prefix Test',
+          bound: recipe,
+          unbound: { ...recipe, recipeId: 24, extra: [], placementRules: {} }
+        }
+      ])
+    const data = await loadEssenceCraftingData()
+    expect(loadDatasetFile).toHaveBeenNthCalledWith(2, 'essence/essenceCrafting.v2.json')
+    const id = 'enhancement-split-prefix'
+    expect(data.indexes.enhancementById.get(id)?.recipes.boundRecipeId).toBe('recipe-source-23')
+    expect(data.recipes.find((r) => r.id === 'recipe-source-23')?.requirements.map(({ quantity }) => quantity)).toEqual(
+      [55, 7]
+    )
+    expect(resolveEnhancementEffects(data, id, 1).effects[0].modifier).toMatchObject({
+      value: 0.5,
+      representation: 'percentage'
+    })
+    expect(getAvailableEnhancementChoices(data, 'helmet', 'extra', 1)).toEqual([])
+    expect(getAvailableEnhancementChoices(data, 'helmet', 'extra', 2).map((row) => row.id)).toEqual([id])
+    const restored = hydrateEssencePlan(data, {
+      masterMinimumLevel: 1,
+      activeSlotIds: ['main-hand'],
+      itemsBySlotId: { 'main-hand': { prefixEnhancementId: id } }
+    })
+    expect(restored.itemsBySlotId['main-hand']?.prefixEnhancementId).toBe(id)
+  })
 
   it('loads the generated Essence Crafting domain when scoped data is unavailable', async () => {
     vi.mocked(loadDataset).mockResolvedValue(createEssenceCraftingTestPayload())

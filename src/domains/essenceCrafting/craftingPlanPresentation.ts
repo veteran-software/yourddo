@@ -17,6 +17,8 @@ export const stepLabel = (step: EssenceMaterialStep): string =>
 export const warningMessage = (data: EssenceCraftingData, step: EssenceUnavailableMaterialStep): string => {
   if (step.reason.status === 'recipe-variant-unavailable') {
     const displayName = data.indexes.enhancementById.get(step.reason.enhancementId)?.displayName
+    if (step.reason.placementUnavailable)
+      return `The ${step.reason.binding} ${displayName ?? stepLabel(step)} shard cannot be applied in this slot at the planned item level.`
     return `${displayName ?? stepLabel(step)} has no ${step.reason.binding} recipe variant.`
   }
   if (step.reason.status === 'enhancement-not-found') {

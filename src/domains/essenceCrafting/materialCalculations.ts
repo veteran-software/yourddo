@@ -1,4 +1,5 @@
-import type { EquipmentSlotId } from './equipment.ts'
+import { EQUIPMENT_SLOTS, type EquipmentSlotId } from './equipment.ts'
+import { placementMinimumLevel } from './enhancementEligibility'
 import type {
   EssenceBinding,
   EssenceCraftingData,
@@ -34,6 +35,7 @@ export interface EssenceRecipeVariantUnavailable {
   enhancementId: string
   binding: EssenceBinding
   recipeId: string
+  placementUnavailable?: true
 }
 
 export type EssenceEnhancementRecipeResolution =
@@ -149,7 +151,9 @@ const resolveEnhancementStep = (
   data: EssenceCraftingData,
   source: EssenceEnhancementSelectionSource,
   enhancementId: string,
-  binding: EssenceBinding
+  binding: EssenceBinding,
+  itemLevel: number,
+  equipment: (typeof EQUIPMENT_SLOTS)[number] | undefined
 ): EssenceMaterialStep => {
   const resolution = resolveEnhancementRecipe(data, enhancementId, binding)
   if (resolution.status !== 'resolved') {
@@ -157,6 +161,25 @@ const resolveEnhancementStep = (
   }
   const enhancement = data.indexes.enhancementById.get(enhancementId)
   if (!enhancement) throw new Error(`Resolved enhancement recipe has no enhancement: ${enhancementId}`)
+  const { recipe } = resolution
+  if (
+    equipment &&
+    recipe.placements &&
+    placementMinimumLevel(enhancement, equipment.itemCategoryIds, source, recipe.placements) > itemLevel
+  ) {
+    return {
+      status: 'unavailable',
+      source,
+      selection: { enhancementId },
+      reason: {
+        status: 'recipe-variant-unavailable',
+        enhancementId,
+        binding,
+        recipeId: recipe.id,
+        placementUnavailable: true
+      }
+    }
+  }
   return {
     status: 'resolved',
     source,
@@ -179,9 +202,11 @@ export const calculatePlannedItemMaterials = (
   data: EssenceCraftingData,
   item: PlannedItem,
   masterMinimumLevel: number,
-  binding: EssenceBinding
+  binding: EssenceBinding,
+  equipmentSlotId?: EquipmentSlotId
 ): EssencePlannedItemMaterials => {
   const itemLevel = effectiveItemLevel(item, masterMinimumLevel)
+  const equipment = EQUIPMENT_SLOTS.find(({ id }) => id === equipmentSlotId)
   const minimumLevelResolution = resolveMinimumLevelShardRecipe(data, itemLevel, binding)
   const steps: EssenceMaterialStep[] = []
 
@@ -196,11 +221,13 @@ export const calculatePlannedItemMaterials = (
     steps.push({ status: 'unavailable', source: 'minimum-level-shard', reason: minimumLevelResolution })
   }
 
-  if (item.prefixEnhancementId) steps.push(resolveEnhancementStep(data, 'prefix', item.prefixEnhancementId, binding))
-  if (item.suffixEnhancementId) steps.push(resolveEnhancementStep(data, 'suffix', item.suffixEnhancementId, binding))
+  if (item.prefixEnhancementId)
+    steps.push(resolveEnhancementStep(data, 'prefix', item.prefixEnhancementId, binding, itemLevel, equipment))
+  if (item.suffixEnhancementId)
+    steps.push(resolveEnhancementStep(data, 'suffix', item.suffixEnhancementId, binding, itemLevel, equipment))
 
   if (item.hasCannithMark && item.extraEnhancementId) {
-    steps.push(resolveEnhancementStep(data, 'extra', item.extraEnhancementId, binding))
+    steps.push(resolveEnhancementStep(data, 'extra', item.extraEnhancementId, binding, itemLevel, equipment))
     const markRequirement = data.rules.extraAffix.markRequirement
     const markIngredient = data.indexes.ingredientById.get(markRequirement.ingredientId)
     if (markIngredient) {
@@ -231,7 +258,7 @@ export const calculatePlanMaterials = (
       ? [
           {
             equipmentSlotId,
-            ...calculatePlannedItemMaterials(data, item, plan.masterMinimumLevel, binding)
+            ...calculatePlannedItemMaterials(data, item, plan.masterMinimumLevel, binding, equipmentSlotId)
           }
         ]
       : []

@@ -19,6 +19,7 @@ import { useMemo, useRef, useState } from 'react'
 import { RevealFilteredResults } from '../../shared/layout/PlannerEditActions'
 import { formatResolvedEffectModifier, resolveEssenceEffects } from './enhancementEffects'
 import { EQUIPMENT_SLOTS } from './equipment'
+import { placementMinimumLevel } from './enhancementEligibility'
 import type { EssenceBinding, EssenceCraftingData, EssenceEnhancement, EssenceRecipe } from './essenceCrafting.types'
 import type { EssencePlanState } from './plannerState'
 import { describeEquipmentBlockers, type EssencePlanAction, getEquipmentBlockers } from './plannerTransitions'
@@ -76,6 +77,15 @@ function ApplyShardDialog({
   const currentShard = currentId ? data.indexes.enhancementById.get(currentId) : undefined
   const alreadyApplied = Boolean(pendingShard && currentId === pendingShard.id)
   const itemLevel = targetItem?.minimumLevelOverride ?? plan.masterMinimumLevel
+  const binding = pending?.binding
+  const requestedRecipe =
+    binding && pendingShard && data.recipes.find(({ id }) => id === pendingShard.recipes[`${binding}RecipeId`])
+  const placements =
+    requestedRecipe && requestedRecipe.kind === 'enhancement-shard' ? requestedRecipe.placements : undefined
+  const placementLevel =
+    pending && pendingShard && targetSlot
+      ? placementMinimumLevel(pendingShard, targetSlot.itemCategoryIds, pending.position, placements)
+      : itemLevel
   const blockers = pending ? getEquipmentBlockers(plan, pending) : []
   const hasConflict = blockers.length > 0
 
@@ -130,9 +140,9 @@ function ApplyShardDialog({
               This adds the item to your plan.
             </Text>
           )}
-          {pendingShard.minimumItemLevel > itemLevel && (
+          {placementLevel > itemLevel && (
             <Text size='sm' c='dimmed'>
-              This raises the item's minimum level from {itemLevel} to {pendingShard.minimumItemLevel}.
+              This raises the item's minimum level from {itemLevel} to {placementLevel}.
             </Text>
           )}
           {pending.position === 'extra' && !targetItem?.hasCannithMark && (
@@ -266,7 +276,10 @@ const ShardLookup = ({ data, plan, onAction }: ShardLookupProps) => {
     const inFilters: ShardRow[] = []
     const outsideFilters: ShardRow[] = []
     for (const row of searched) {
-      const compatible = row.enhancement?.placements.some(
+      const recipe = recipes.get(row.recipeIds[binding])
+      const placements =
+        (recipe?.kind === 'enhancement-shard' ? recipe.placements : undefined) ?? row.enhancement?.placements
+      const compatible = placements?.some(
         (placement) =>
           (!slot || placement.itemCategoryIds.includes(slot)) && (!position || placement.position === position)
       )
@@ -281,6 +294,8 @@ const ShardLookup = ({ data, plan, onAction }: ShardLookupProps) => {
   const visibleRows = results.slice((page - 1) * pageSize, page * pageSize)
   const selected = visibleRows.find(({ id }) => id === selectedId) ?? visibleRows[0]
   const recipe = selected ? recipes.get(selected.recipeIds[binding]) : undefined
+  const compatiblePlacements =
+    (recipe?.kind === 'enhancement-shard' ? recipe.placements : undefined) ?? selected?.enhancement?.placements
   const effectiveLevel = selected ? Math.max(selected.minimumItemLevel, previewLevel) : previewLevel
   const previewLevels = selected
     ? Array.from({ length: data.rules.supportedItemLevels.maximum - selected.minimumItemLevel + 1 }, (_, index) =>
@@ -558,8 +573,8 @@ const ShardLookup = ({ data, plan, onAction }: ShardLookupProps) => {
                     <dl className={styles.values}>
                       {positions.map(({ value, label }) => {
                         const categories = new Set(
-                          selected.enhancement?.placements
-                            .filter(({ position }) => position === value)
+                          compatiblePlacements
+                            ?.filter(({ position }) => position === value)
                             .flatMap(({ itemCategoryIds }) => itemCategoryIds)
                         )
                         if (!categories.size) return null
@@ -588,7 +603,8 @@ const ShardLookup = ({ data, plan, onAction }: ShardLookupProps) => {
                                         type: 'apply-shard',
                                         equipmentSlotId: id,
                                         position: value,
-                                        enhancementId
+                                        enhancementId,
+                                        binding
                                       })
                                     }}
                                   >
@@ -606,7 +622,7 @@ const ShardLookup = ({ data, plan, onAction }: ShardLookupProps) => {
                         )
                       })}
                     </dl>
-                    {selected.enhancement.placements.some(({ position }) => position === 'extra') && (
+                    {compatiblePlacements?.some(({ position }) => position === 'extra') && (
                       <Text size='xs' c='dimmed'>
                         Applying as an extra affix also uses {mark.quantity} × {ingredientName(mark.ingredientId)}.
                       </Text>
