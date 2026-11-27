@@ -1,0 +1,59 @@
+customHeaders:
+  # Revalidate page requests, including Amplify clean URLs and direct HTML references.
+  - pattern: '/'
+    headers: &pageHeaders
+      - key: 'Cache-Control'
+        value: 'no-cache, max-age=0, s-maxage=0, must-revalidate'
+  - { pattern: '/*.html', headers: *pageHeaders }
+  - { pattern: '/**/*.html', headers: *pageHeaders }
+
+  # List both URL forms when adding a prerendered route.
+  - { pattern: '/alchemical', headers: *pageHeaders }
+  - { pattern: '/alchemical/', headers: *pageHeaders }
+  - { pattern: '/cauldron-of-cadence', headers: *pageHeaders }
+  - { pattern: '/cauldron-of-cadence/', headers: *pageHeaders }
+  - { pattern: '/dinosaur-bone', headers: *pageHeaders }
+  - { pattern: '/dinosaur-bone/', headers: *pageHeaders }
+  - { pattern: '/essence-crafting', headers: *pageHeaders }
+  - { pattern: '/essence-crafting/', headers: *pageHeaders }
+  - { pattern: '/gear-planner', headers: *pageHeaders }
+  - { pattern: '/gear-planner/', headers: *pageHeaders }
+  - { pattern: '/green-steel', headers: *pageHeaders }
+  - { pattern: '/green-steel/', headers: *pageHeaders }
+  - { pattern: '/incredible-potential', headers: *pageHeaders }
+  - { pattern: '/incredible-potential/', headers: *pageHeaders }
+  - { pattern: '/legendary-green-steel', headers: *pageHeaders }
+  - { pattern: '/legendary-green-steel/', headers: *pageHeaders }
+  - { pattern: '/monastery-of-the-scorpion', headers: *pageHeaders }
+  - { pattern: '/monastery-of-the-scorpion/', headers: *pageHeaders }
+  - { pattern: '/nearly-complete', headers: *pageHeaders }
+  - { pattern: '/nearly-complete/', headers: *pageHeaders }
+  - { pattern: '/nearly-finished', headers: *pageHeaders }
+  - { pattern: '/nearly-finished/', headers: *pageHeaders }
+  - { pattern: '/reavers-fate', headers: *pageHeaders }
+  - { pattern: '/reavers-fate/', headers: *pageHeaders }
+  - { pattern: '/saga-tracker', headers: *pageHeaders }
+  - { pattern: '/saga-tracker/', headers: *pageHeaders }
+  - { pattern: '/slave-lords', headers: *pageHeaders }
+  - { pattern: '/slave-lords/', headers: *pageHeaders }
+  - { pattern: '/the-key-to-the-mythal', headers: *pageHeaders }
+  - { pattern: '/the-key-to-the-mythal/', headers: *pageHeaders }
+  - { pattern: '/the-shadow-crypt', headers: *pageHeaders }
+  - { pattern: '/the-shadow-crypt/', headers: *pageHeaders }
+  - { pattern: '/the-shroud', headers: *pageHeaders }
+  - { pattern: '/the-shroud/', headers: *pageHeaders }
+  - { pattern: '/thunder-forged', headers: *pageHeaders }
+  - { pattern: '/thunder-forged/', headers: *pageHeaders }
+  - { pattern: '/total-chaos', headers: *pageHeaders }
+  - { pattern: '/total-chaos/', headers: *pageHeaders }
+  - { pattern: '/toxic-treatment', headers: *pageHeaders }
+  - { pattern: '/toxic-treatment/', headers: *pageHeaders }
+  - { pattern: '/viktranium-experiment', headers: *pageHeaders }
+  - { pattern: '/viktranium-experiment/', headers: *pageHeaders }
+
+  # Vite writes content-hashed JavaScript and CSS to /assets/.
+  - pattern: '/assets/*-*.js'
+    headers: &bundleHeaders
+      - key: 'Cache-Control'
+        value: 'public, max-age=31536000, immutable'
+  - { pattern: '/assets/*-*.css', headers: *bundleHeaders }
