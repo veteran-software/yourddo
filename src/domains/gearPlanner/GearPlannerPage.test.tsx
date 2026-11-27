@@ -1517,13 +1517,13 @@ describe('GearPlannerPage', () => {
     expect(await screen.findAllByText(/Essence Crafting · prefix: Split Prefix Test/)).toHaveLength(2)
   })
 
-  it('applies and clears a Reaper Forge upgrade on the equipped card', async () => {
+  it('shows item upgrades immediately and lets the user apply and clear them', async () => {
     await renderReadyPage(dataWithItems([item('eyes', gearPlannerSlots.eyes, 'Test Goggles')]))
     fireEvent.click(screen.getByRole('button', { name: 'Select Eyes' }))
     fireEvent.click(await screen.findByRole('button', { name: 'Equip Test Goggles' }))
     const card = within(screen.getByTestId('gear-item-editor'))
-    fireEvent.click(card.getByText('Item upgrades'))
-    const selector = card.getByRole('combobox', { name: 'Reaper Forge' })
+    const upgrades = within(card.getByRole('region', { name: 'Item upgrades' }))
+    const selector = upgrades.getByRole('combobox', { name: 'Reaper Forge' })
     fireEvent.click(selector)
     fireEvent.click(await screen.findByRole('option', { name: 'Reaper Goggles Enchantment' }))
     expect(card.getByText('Attack Rolls 1 (Reaper)')).toBeTruthy()
