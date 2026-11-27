@@ -1,5 +1,5 @@
 import type { AugmentEffectFilterMode } from './augmentRules.ts'
-import type { EquipmentSlotId } from './equipment.ts'
+import type { EquipmentSlotId, PetClass } from './equipment.ts'
 import type { EssenceCraftingData } from './essenceCrafting.types.ts'
 
 export type PlannedAugmentSlotId = `augment-slot:${string}`
@@ -24,6 +24,7 @@ export interface PlannedItem {
 
 export interface EssencePlanState {
   masterMinimumLevel: number
+  petClasses?: PetClass[]
   activeSlotIds: EquipmentSlotId[]
   collapsedSlotIds: EquipmentSlotId[]
   itemsBySlotId: Partial<Record<EquipmentSlotId, PlannedItem>>

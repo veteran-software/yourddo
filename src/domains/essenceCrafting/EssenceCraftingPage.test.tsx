@@ -3,12 +3,14 @@
 import { MantineProvider } from '@mantine/core'
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import LZString from 'lz-string'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { loadEssenceCraftingData, validateEssenceCraftingDataset } from './data.ts'
-import { EQUIPMENT_SLOTS } from './equipment.ts'
+import { getAvailableEquipmentSlots } from './equipment.ts'
 import EssenceCraftingPage from './EssenceCraftingPage.tsx'
-import { encodeEssenceCraftingPermalink } from './permalink.ts'
-import { ESSENCE_CRAFTING_SESSION_STORAGE_KEY } from './plannerStorage.ts'
+import { decodeEssenceCraftingPermalink, encodeEssenceCraftingPermalink } from './permalink.ts'
+import { ESSENCE_CRAFTING_SESSION_STORAGE_KEY, loadEssenceCraftingPlan } from './plannerStorage.ts'
+import { formatEssencePlanJsonBackup, readEssencePlanBackup } from './planExport.ts'
 import { hydrateEssencePlan } from './plannerTransitions.ts'
 import { createEssenceCraftingTestPayload } from './test-fixture.ts'
 
@@ -320,6 +322,62 @@ describe('EssenceCraftingPage', () => {
     expect(screen.getByRole('button', { name: 'Plan Off Hand' })).toBeTruthy()
   })
 
+  it('gates pet collar buttons by class and round-trips a confirmed collar replacement', async () => {
+    const user = userEvent.setup()
+    const payload = createEssenceCraftingTestPayload()
+    payload.itemCategories.push({ id: 'pet-collar', displayName: 'Pet Collar' })
+    for (const shard of payload.enhancements.filter(({ displayName }) =>
+      ['Alpha Prefix', 'Zebra Prefix'].includes(displayName)
+    )) {
+      shard.placements[0].itemCategoryIds.push('pet-collar')
+    }
+    const data = validateEssenceCraftingDataset(payload)
+    vi.mocked(loadEssenceCraftingData).mockResolvedValue(data)
+    renderPage()
+
+    await user.click(await screen.findByRole('tab', { name: 'Master Shard Lookup' }))
+    const lookup = within(screen.getByRole('tabpanel', { name: 'Master Shard Lookup' }))
+    const search = lookup.getByRole('textbox', { name: 'Shard or effect' })
+    await user.type(search, 'Alpha Prefix')
+    const disabled = lookup.getByRole('button', { name: 'Pet Collar prefix' })
+    expect(disabled.getAttribute('aria-disabled')).toBe('true')
+    await user.hover(disabled)
+    expect((await screen.findByRole('tooltip')).textContent).toContain('under Pet classes')
+    await user.click(disabled)
+    expect(screen.queryByRole('dialog', { name: 'Apply effect?' })).toBeNull()
+
+    const classes = screen.getByRole('combobox', { name: 'Pet classes' })
+    await user.click(classes)
+    await user.click(screen.getByRole('option', { name: 'Artificer' }))
+    await user.click(screen.getByRole('option', { name: 'Druid' }))
+    await user.keyboard('{Escape}')
+
+    await user.click(lookup.getByRole('button', { name: 'Iron Defender Collar prefix' }))
+    await user.click(
+      within(screen.getByRole('dialog', { name: 'Apply effect?' })).getByRole('button', { name: 'Apply effect' })
+    )
+    expect(lookup.getByRole('button', { name: 'Iron Defender Collar prefix (applied)' })).toBeTruthy()
+
+    await user.clear(search)
+    await user.type(search, 'Zebra Prefix')
+    await user.click(lookup.getByRole('button', { name: 'Iron Defender Collar prefix' }))
+    await user.click(
+      within(screen.getByRole('dialog', { name: 'Replace effect?' })).getByRole('button', { name: 'Replace effect' })
+    )
+    expect(lookup.getByRole('button', { name: 'Wolf Companion Collar prefix' })).toBeTruthy()
+
+    await user.click(screen.getByRole('tab', { name: 'Crafting Plan' }))
+    expect(getSelect('Prefix for Iron Defender Collar').value).toBe('Zebra Prefix')
+    const { plan } = loadEssenceCraftingPlan(data)
+    expect(plan.petClasses).toEqual(['Artificer', 'Druid'])
+    expect(plan.activeSlotIds).toEqual(['iron-defender-collar'])
+    expect(await decodeEssenceCraftingPermalink(data, encodeEssenceCraftingPermalink(data, plan))).toMatchObject({
+      ok: true,
+      plan
+    })
+    expect(readEssencePlanBackup(data, formatEssencePlanJsonBackup(data, plan, 'bound')).plan).toEqual(plan)
+  })
+
   it('discloses the item level and mark changes needed to apply a shard', async () => {
     const user = userEvent.setup()
     renderPage()
@@ -495,6 +553,40 @@ describe('EssenceCraftingPage', () => {
     replaceState.mockRestore()
   })
 
+  it('warns when a placement in a permalink was removed and keeps the valid affixes', async () => {
+    const data = createPageData()
+    const previous = data.enhancements.find(({ id }) => id === 'enhancement-alpha-prefix')
+    if (!previous) throw new Error('Missing fixture shard')
+    vi.mocked(loadEssenceCraftingData).mockResolvedValue({
+      ...data,
+      previousEnhancementById: new Map([
+        [
+          previous.id,
+          {
+            ...previous,
+            placements: [...previous.placements, { position: 'suffix', itemCategoryIds: ['weapon'] }]
+          }
+        ]
+      ])
+    })
+    const cc = LZString.compressToEncodedURIComponent(
+      JSON.stringify({
+        v: 4,
+        ml: 2,
+        c: [],
+        i: [['main-hand', 0, 0, previous.id, previous.id, '', []]]
+      })
+    )
+    window.history.replaceState({}, '', '/essence-crafting?' + new URLSearchParams({ cc }).toString())
+
+    renderPage()
+
+    expect(await screen.findByText('Changed shard placements')).toBeTruthy()
+    expect(screen.getByText('Main Hand suffix · ' + previous.displayName)).toBeTruthy()
+    expect(getSelect('Prefix for Main Hand').value).toBe(previous.displayName)
+    expect(getSelect('Suffix for Main Hand').value).toBe('')
+  })
+
   it('keeps the existing plan and cc parameter when a permalink is invalid', async () => {
     sessionStorage.setItem(
       ESSENCE_CRAFTING_SESSION_STORAGE_KEY,
@@ -527,9 +619,12 @@ describe('EssenceCraftingPage', () => {
     expect(new URLSearchParams(window.location.search).get('view')).toBe('compact')
   })
 
-  it('generates a v4 permalink for the stable Essence Crafting path', async () => {
+  it('round-trips Unbound binding through a v4 permalink on the stable Essence Crafting path', async () => {
     const user = userEvent.setup()
-    renderPage()
+    const page = renderPage()
+    const originalRecipes = await openRecipes(user)
+    await user.click(within(originalRecipes).getByText('Unbound', { exact: true }))
+    await user.keyboard('{Escape}')
 
     const tool = await openTool(user, 'Sharing')
     await user.click(within(tool).getByText('Preview share text'))
@@ -539,6 +634,13 @@ describe('EssenceCraftingPage', () => {
     expect(url.pathname).toBe('/essence-crafting')
     expect(url.searchParams.get('cc')).toBeTruthy()
     expect(url.searchParams.size).toBe(1)
+
+    page.unmount()
+    window.history.replaceState({}, '', url.pathname + url.search)
+    renderPage()
+
+    const recipes = await openRecipes(user)
+    expect(within(recipes).getByRole<HTMLInputElement>('radio', { name: 'Unbound' }).checked).toBe(true)
   })
 
   it('renders every supported equipment slot in a responsive main-workspace selector', async () => {
@@ -547,8 +649,8 @@ describe('EssenceCraftingPage', () => {
     const selector = await screen.findByTestId('equipment-slot-selector')
     expect(selector.tagName).toBe('DIV')
     expect(screen.queryByRole('complementary')).toBeNull()
-    expect(within(selector).getAllByRole('button')).toHaveLength(EQUIPMENT_SLOTS.length)
-    for (const slot of EQUIPMENT_SLOTS) {
+    expect(within(selector).getAllByRole('button')).toHaveLength(getAvailableEquipmentSlots().length)
+    for (const slot of getAvailableEquipmentSlots()) {
       const control = within(selector).getByRole('button', { name: `Plan ${slot.label}` })
       expect(control.hasAttribute('aria-current')).toBe(false)
     }
@@ -560,7 +662,7 @@ describe('EssenceCraftingPage', () => {
     expect((await screen.findByRole<HTMLInputElement>('radio', { name: 'List' })).checked).toBe(true)
     await user.click(screen.getByText('Grid', { selector: 'span' }))
     const board = within(screen.getByTestId('equipment-slot-selector'))
-    expect(board.getAllByRole('article')).toHaveLength(EQUIPMENT_SLOTS.length)
+    expect(board.getAllByRole('article')).toHaveLength(getAvailableEquipmentSlots().length)
     const hand = within(board.getByRole('article', { name: 'Main Hand crafting slot' }))
     await user.click(screen.getByRole('button', { name: 'Plan Main Hand' }))
     const prefix = await hand.findByRole('combobox', { name: 'Prefix for Main Hand' })

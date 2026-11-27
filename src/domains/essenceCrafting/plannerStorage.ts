@@ -38,6 +38,7 @@ interface PersistedItemV1 {
 export interface EssenceCraftingSessionPayloadV1 {
   version: typeof ESSENCE_CRAFTING_SESSION_PAYLOAD_VERSION
   masterMinimumLevel: number
+  petClasses?: EssencePlanState['petClasses']
   activeSlotIds: string[]
   collapsedSlotIds: string[]
   itemsBySlotId: Record<string, PersistedItemV1>
@@ -126,6 +127,7 @@ export const createEssenceCraftingSessionPayload = (plan: EssencePlanState): Ess
   return {
     version: ESSENCE_CRAFTING_SESSION_PAYLOAD_VERSION,
     masterMinimumLevel: plan.masterMinimumLevel,
+    ...(plan.petClasses?.length && { petClasses: [...plan.petClasses] }),
     activeSlotIds: [...plan.activeSlotIds],
     collapsedSlotIds: [...plan.collapsedSlotIds],
     itemsBySlotId
@@ -232,6 +234,33 @@ export const migrateLegacyEssenceCraftingPayload = (
   }
 }
 
+export function getRemovedShardSelections(
+  data: EssenceCraftingData,
+  source: Pick<EssenceCraftingSessionPayloadV1, 'itemsBySlotId' | 'masterMinimumLevel'>,
+  plan: EssencePlanState
+): readonly string[] {
+  return data.previousEnhancementById
+    ? EQUIPMENT_SLOTS.flatMap(({ id, label, itemCategoryIds }) => {
+        const saved = source.itemsBySlotId[id]
+        const restored = plan.itemsBySlotId[id]
+        if (!saved || !restored) return []
+        return (['prefix', 'suffix', 'extra'] as const).flatMap((position) => {
+          const key = `${position}EnhancementId` as const
+          const selection = saved[key]
+          if (!selection || restored[key]) return []
+          const previous = data.previousEnhancementById?.get(selection)
+          if (
+            !previous ||
+            placementMinimumLevel(previous, itemCategoryIds, position) >
+              (saved.minimumLevelOverride ?? source.masterMinimumLevel)
+          )
+            return []
+          return [label + ' ' + position + ' · ' + previous.displayName]
+        })
+      })
+    : []
+}
+
 export const loadEssenceCraftingPlan = (
   data: EssenceCraftingData,
   storage: EssenceCraftingSessionStorage | undefined = getBrowserSessionStorage()
@@ -239,26 +268,7 @@ export const loadEssenceCraftingPlan = (
   const storedPayload = readStoredJson(storage, ESSENCE_CRAFTING_SESSION_STORAGE_KEY)
   if (hasVersionOneShape(storedPayload)) {
     const plan = planFromExternalState(data, storedPayload)
-    const removedShardSelections = data.previousEnhancementById
-      ? EQUIPMENT_SLOTS.flatMap(({ id, label, itemCategoryIds }) => {
-          const saved = storedPayload.itemsBySlotId[id]
-          const restored = plan.itemsBySlotId[id]
-          if (!saved || !restored) return []
-          return (['prefix', 'suffix', 'extra'] as const).flatMap((position) => {
-            const key = `${position}EnhancementId` as const
-            const selection = saved[key]
-            if (!selection || restored[key]) return []
-            const previous = data.previousEnhancementById?.get(selection)
-            if (
-              !previous ||
-              placementMinimumLevel(previous, itemCategoryIds, position) >
-                (saved.minimumLevelOverride ?? storedPayload.masterMinimumLevel)
-            )
-              return []
-            return [label + ' ' + position + ' · ' + previous.displayName]
-          })
-        })
-      : []
+    const removedShardSelections = getRemovedShardSelections(data, storedPayload, plan)
     if (!removedShardSelections.length) return { plan, source: 'v2' }
     const backupKey = ESSENCE_CRAFTING_SESSION_STORAGE_KEY + ':before-native-shards'
     try {

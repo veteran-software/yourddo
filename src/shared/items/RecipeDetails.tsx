@@ -1,3 +1,4 @@
+import IngredientLabel from './IngredientLabel'
 import { keyedEntries } from '../ui/keyedEntries'
 import { useState } from 'react'
 
@@ -34,7 +35,7 @@ export default function RecipeDetails<Key extends string | number>({
             const quantity = count * part.quantity
             return (
               <li key={key}>
-                {part.name} ×{quantity}
+                <IngredientLabel name={part.name} suffix={' ×' + String(quantity)} />
                 {part.recipeKey !== undefined && (
                   <RecipeDetails recipeKey={part.recipeKey} name={part.name} count={quantity} lookup={lookup} />
                 )}

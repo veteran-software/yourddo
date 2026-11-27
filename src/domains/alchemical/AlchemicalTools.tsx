@@ -1,3 +1,4 @@
+import IngredientLabel from '../../shared/items/IngredientLabel'
 import { SegmentedControl, Stack, Text } from '@mantine/core'
 import IngredientStock from '../../shared/items/IngredientStock'
 import AlchemicalItemArt from './AlchemicalItemArt'
@@ -54,7 +55,7 @@ export function IngredientTool({
           {costs.map((cost) => (
             <li key={cost.id}>
               <div className={styles.costRow}>
-                <span>{cost.name}</span>
+                <IngredientLabel name={cost.name} ingredientId={cost.id} />
                 <strong>×{cost.quantity.toLocaleString()}</strong>
               </div>
               <div className={styles.stock}>

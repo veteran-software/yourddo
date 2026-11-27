@@ -12,13 +12,14 @@ import {
   Text,
   TextInput,
   Title,
+  Tooltip,
   UnstyledButton
 } from '@mantine/core'
 import { IconArrowDown, IconArrowUp, IconArrowsSort, IconCheck, IconSearch } from '@tabler/icons-react'
 import { useMemo, useRef, useState } from 'react'
 import { RevealFilteredResults } from '../../shared/layout/PlannerEditActions'
 import { formatResolvedEffectModifier, resolveEssenceEffects } from './enhancementEffects'
-import { EQUIPMENT_SLOTS } from './equipment'
+import { getAvailableEquipmentSlots } from './equipment'
 import { placementMinimumLevel } from './enhancementEligibility'
 import type { EssenceBinding, EssenceCraftingData, EssenceEnhancement, EssenceRecipe } from './essenceCrafting.types'
 import type { EssencePlanState } from './plannerState'
@@ -70,7 +71,7 @@ function ApplyShardDialog({
 }: Readonly<ShardLookupProps & { pending: ApplyShardAction | null; onClose: () => void }>) {
   const mark = data.rules.extraAffix.markRequirement
   const markName = data.indexes.ingredientById.get(mark.ingredientId)?.displayName ?? mark.ingredientId
-  const targetSlot = EQUIPMENT_SLOTS.find(({ id }) => id === pending?.equipmentSlotId)
+  const targetSlot = getAvailableEquipmentSlots(plan.petClasses).find(({ id }) => id === pending?.equipmentSlotId)
   const pendingShard = pending ? data.indexes.enhancementById.get(pending.enhancementId) : undefined
   const targetItem = targetSlot ? plan.itemsBySlotId[targetSlot.id] : undefined
   const currentId = pending ? targetItem?.[`${pending.position}EnhancementId`] : undefined
@@ -319,6 +320,7 @@ const ShardLookup = ({ data, plan, onAction }: ShardLookupProps) => {
   }
   const ingredientName = (id: string) => data.indexes.ingredientById.get(id)?.displayName ?? id
   const mark = data.rules.extraAffix.markRequirement
+  const equipmentSlots = getAvailableEquipmentSlots(plan.petClasses)
 
   return (
     <Stack gap='md' className={styles.lookup}>
@@ -578,7 +580,7 @@ const ShardLookup = ({ data, plan, onAction }: ShardLookupProps) => {
                             .flatMap(({ itemCategoryIds }) => itemCategoryIds)
                         )
                         if (!categories.size) return null
-                        const slots = EQUIPMENT_SLOTS.filter(({ itemCategoryIds }) =>
+                        const slots = equipmentSlots.filter(({ itemCategoryIds }) =>
                           itemCategoryIds.some((id) => categories.has(id))
                         )
                         const mapped = new Set<string>(slots.flatMap(({ itemCategoryIds }) => itemCategoryIds))
@@ -612,11 +614,31 @@ const ShardLookup = ({ data, plan, onAction }: ShardLookupProps) => {
                                   </Button>
                                 )
                               })}
-                              {unmapped.map((id) => (
-                                <Text key={id} size='xs' c='dimmed'>
-                                  {categoryNames.get(id) ?? id}
-                                </Text>
-                              ))}
+                              {unmapped.map((id) =>
+                                id === 'pet-collar' ? (
+                                  <Tooltip
+                                    key={id}
+                                    label='Pet collars require a class companion. Select Artificer, Druid, or Dark Hunter under Pet classes.'
+                                    events={{ hover: true, focus: true, touch: true }}
+                                    multiline
+                                    w={240}
+                                  >
+                                    <Button
+                                      variant='light'
+                                      size='compact-xs'
+                                      data-disabled
+                                      aria-disabled='true'
+                                      aria-label={`Pet Collar ${value}`}
+                                    >
+                                      Pet Collar
+                                    </Button>
+                                  </Tooltip>
+                                ) : (
+                                  <Text key={id} size='xs' c='dimmed'>
+                                    {categoryNames.get(id) ?? id}
+                                  </Text>
+                                )
+                              )}
                             </dd>
                           </div>
                         )

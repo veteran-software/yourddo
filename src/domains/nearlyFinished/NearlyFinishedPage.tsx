@@ -1,3 +1,4 @@
+import IngredientLabel from '../../shared/items/IngredientLabel'
 import RecipeDetails from '../../shared/items/RecipeDetails'
 import IngredientStock from '../../shared/items/IngredientStock'
 import {
@@ -93,7 +94,7 @@ const RequirementList = ({ requirements }: { requirements: NearlyFinishedRequire
       <List.Item key={`${name}-${String(index)}`}>
         <Group component='span' gap='xs'>
           <Text component='span' size='sm'>
-            {name}
+            <IngredientLabel name={name} />
           </Text>
           <Badge variant='light' color='gray' size='sm'>
             ×{quantity}
@@ -120,7 +121,7 @@ const MaterialList = ({
         <List.Item key={name}>
           <Group component='span' gap='xs'>
             <Text component='span' size='sm'>
-              {name}
+              <IngredientLabel name={name} />
             </Text>
             <Badge variant='light' color='gray' size='sm'>
               ×{quantity}

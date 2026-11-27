@@ -1,3 +1,4 @@
+import IngredientLabel from '../../shared/items/IngredientLabel'
 import { createCraftingSelection } from '../../shared/layout/craftingSession'
 import IngredientStock from '../../shared/items/IngredientStock'
 import {
@@ -99,7 +100,7 @@ const MaterialList = ({ materials }: { materials: { name: string; quantity: numb
       <List.Item key={name}>
         <Group component='span' gap='xs'>
           <Text component='span' size='sm'>
-            {name}
+            <IngredientLabel name={name} />
           </Text>
           <Badge variant='light' color='gray' size='sm'>
             ×{quantity}

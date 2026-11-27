@@ -31,9 +31,11 @@ const optionalNumericLevel = (value: string | number | undefined): number | unde
 export const gearPlannerItemId = (sourceFile: string, item: GearPlannerSourceItem, slot: GearPlannerSlot): string =>
   item.catalogId !== undefined
     ? `item:${String(item.catalogId)}:${slot}`
-    : [slot, sourceFile, item.pageTitle ?? item.name, item.name, numericLevel(item.minLevel)]
-        .map(encodeURIComponent)
-        .join('|')
+    : item.suppressedPowerRecipeId !== undefined
+      ? `suppressed-power:${String(item.suppressedPowerRecipeId)}:${slot}`
+      : [slot, sourceFile, item.pageTitle ?? item.name, item.name, numericLevel(item.minLevel)]
+          .map(encodeURIComponent)
+          .join('|')
 
 // Production display names are not unique. Page title is the stable corpus identity.
 export const gearPlannerFiligreeId = (item: GearPlannerSourceItem): string =>

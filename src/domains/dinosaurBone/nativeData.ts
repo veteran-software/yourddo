@@ -1,6 +1,13 @@
 import { baseItemArt } from '../../shared/items/itemArt'
 import { loadDatasetFile } from '../../shared/data/loadDataset'
-import { effectIndex, resolveEffects, scopedAugmentReader, spellIndex } from '../gearPlanner/itemCatalog'
+import { loadItemSetResource } from '../../shared/data/loadItemSetResource'
+import {
+  adaptItemSetDefinitions,
+  effectIndex,
+  resolveEffects,
+  scopedAugmentReader,
+  spellIndex
+} from '../gearPlanner/itemCatalog'
 import type { GearPlannerEffect } from '../gearPlanner/gearPlanner.types'
 import type {
   DinosaurBoneAugment,
@@ -50,10 +57,6 @@ interface Recipe extends Named {
   outputItemId: number
   ingredients: { ingredientId: number; quantity: number }[]
 }
-interface NativeSet extends Named {
-  thresholds: { pieces: number; effect: { effectId: number; variant?: string }; description: string }[]
-}
-
 function lookup<T>(index: ReadonlyMap<number, T>, id: number, kind: string): T {
   const record = index.get(id)
   if (!record) throw new Error(`Missing Dinosaur Bone ${kind} ${String(id)}`)
@@ -75,24 +78,24 @@ const toDinosaurEffect = ({ name, modifier, bonus, notes }: GearPlannerEffect): 
   notes
 })
 
-function effectLibrary(effects: unknown, spells: unknown, sets: NativeSet[], source: 'equipment' | 'augment') {
+function effectLibrary(effects: unknown, spells: unknown, source: 'equipment' | 'augment') {
   const index = effectIndex(effects, source)
   const spellList = spellIndex(spells)
   const effectsFor = (record: Record<string, unknown>, name: string, fallback?: string) =>
     resolveEffects(record, name, index, spellList, fallback).map(toDinosaurEffect)
-  const bonuses = new Map(
-    sets.map((set) => [
-      set.id,
-      set.thresholds.map((tier) => ({
-        name: set.name,
-        numPiecesEquipped: tier.pieces,
-        enhancements: effectsFor({ effects: [tier.effect] }, set.name, tier.description)
-      }))
-    ])
-  )
-  return {
-    effects: (item: NativeItem) => effectsFor(item, item.name),
-    setBonus: (id: number): DinosaurBoneSetBonus[] => lookup(bonuses, id, 'set')
+  return (item: NativeItem) => effectsFor(item, item.name)
+}
+
+async function loadSetBonuses() {
+  const [sets, setEffects] = await Promise.all([loadItemSetResource('itemSets'), loadItemSetResource('effects')])
+  const bonuses = new Map(adaptItemSetDefinitions(sets, effectIndex(setEffects)))
+  return (id: number): DinosaurBoneSetBonus[] => {
+    const set = lookup(bonuses, id, 'set')
+    return set.thresholds.map(({ threshold, effects }) => ({
+      name: set.name,
+      numPiecesEquipped: threshold,
+      enhancements: effects.map(toDinosaurEffect)
+    }))
   }
 }
 
@@ -129,41 +132,42 @@ function slotType(code: string) {
 function asAugment(
   item: NativeItem,
   augmentType: string,
-  library: ReturnType<typeof effectLibrary>
+  effectsFor: ReturnType<typeof effectLibrary>,
+  setBonus: Awaited<ReturnType<typeof loadSetBonuses>>
 ): DinosaurBoneAugment {
   return {
     name: item.name,
     minimumLevel: item.minimumLevel,
     augmentType,
     description: item.description,
-    effectsAdded: library.effects(item),
+    effectsAdded: effectsFor(item),
     requirements: [],
     foundIn: foundIn(item.sources),
-    setBonus: item.hostSetOverride ? library.setBonus(item.hostSetOverride.primarySetId) : undefined
+    setBonus: item.hostSetOverride ? setBonus(item.hostSetOverride.primarySetId) : undefined
   }
 }
 
-async function loadAugments() {
+async function loadAugments(setBonus: Promise<Awaited<ReturnType<typeof loadSetBonuses>>>) {
   const directory = 'items/augments'
   const manifest = await loadDatasetFile<Manifest>(directory + '/manifest.json')
   if (manifest.system !== 'items') throw new Error('Invalid item augment manifest')
   const read = resourceReader(directory, manifest)
-  const [items, dinosaurItems, effects, spells, sets, names] = await Promise.all([
+  const [items, dinosaurItems, effects, spells, bonuses, names] = await Promise.all([
     read<NativeItem[]>('standard'),
     read<NativeItem[]>('dinosaur-bone'),
     read('effects'),
     read('spells'),
-    read<NativeSet[]>('sets'),
+    setBonus,
     manifest.resources['enchantment-names'] ? read<string[]>('enchantment-names') : undefined
   ])
   if (!items.length || !dinosaurItems.length) throw new Error('Empty Dinosaur Bone augment catalog')
-  const library = effectLibrary(effects, spells, sets, 'augment')
+  const effectsFor = effectLibrary(effects, spells, 'augment')
   const seen = new Set<string>()
   const readScoped = names && scopedAugmentReader(effects, names)
   const colorAugments = items
     .toSorted((a, b) => a.id - b.id)
     .map((item) => {
-      const augment = asAugment(item, augmentSlotCode(item), library)
+      const augment = asAugment(item, augmentSlotCode(item), effectsFor, bonuses)
       if (readScoped) {
         const { presentation, searchLabels, fallbackDescription, effectsAdded } = readScoped(item)
         augment.scoped = { presentation, fallbackDescription }
@@ -178,7 +182,7 @@ async function loadAugments() {
     })
   const dinosaurAugments = dinosaurItems.map((item) => ({
     id: item.id,
-    augment: asAugment(item, slotType(augmentSlotCode(item)).replace(' Slot', ''), library)
+    augment: asAugment(item, slotType(augmentSlotCode(item)).replace(' Slot', ''), effectsFor, bonuses)
   }))
   return { colorAugments, dinosaurAugments, enchantmentNames: names }
 }
@@ -188,17 +192,18 @@ export async function loadNativeDinosaurBone() {
   const manifest = await loadDatasetFile<Manifest>(directory + '/manifest.json')
   if (manifest.system !== directory) throw new Error('Invalid Dinosaur Bone manifest')
   const read = resourceReader(directory, manifest)
-  const [bases, effects, spells, sets, recipes, ingredients, augments] = await Promise.all([
+  const bonuses = loadSetBonuses()
+  const [bases, effects, spells, setBonus, recipes, ingredients, augments] = await Promise.all([
     read<NativeItem[]>('baseItems'),
     read('effects'),
     read('spells'),
-    read<NativeSet[]>('equipmentSets'),
+    bonuses,
     read<Recipe[]>('recipes'),
     read<(Named & { sources?: Source[] })[]>('ingredients'),
-    loadAugments()
+    loadAugments(bonuses)
   ])
   if (!bases.length) throw new Error('Empty Dinosaur Bone base item catalog')
-  const library = effectLibrary(effects, spells, sets, 'equipment')
+  const effectsFor = effectLibrary(effects, spells, 'equipment')
   const recipesByOutput = new Map(recipes.map((recipe) => [recipe.outputItemId, recipe]))
   const ingredientIndex = new Map(ingredients.map((ingredient) => [ingredient.id, ingredient]))
   const crafting = (id: number) => {
@@ -231,8 +236,8 @@ export async function loadNativeDinosaurBone() {
       restrictions: [...(stats.raceRestrictions ?? []), ...(stats.classRestrictions ?? [])].map(
         (r) => r.relation + ' ' + r.values.join(', ')
       ),
-      enchantments: library.effects(item),
-      setBonus: item.equipmentSets?.flatMap((set) => library.setBonus(set.id)),
+      enchantments: effectsFor(item),
+      setBonus: item.equipmentSets?.flatMap((set) => setBonus(set.id)),
       augments: (item.augmentSlots ?? []).map((slot) => {
         const type = slot.name.endsWith(' Augment Slot')
           ? slot.name.replace(' Augment Slot', '')

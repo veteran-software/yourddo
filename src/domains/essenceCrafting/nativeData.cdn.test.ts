@@ -1,5 +1,8 @@
+import LZString from 'lz-string'
 import { expect, it, vi } from 'vitest'
 import { loadEssenceCraftingData } from './data'
+import { resolveEnhancementEffects } from './enhancementEffects'
+import { decodeEssenceCraftingPermalink } from './permalink'
 import { getAvailableEnhancementChoices } from './enhancementEligibility'
 import { calculatePlanMaterials } from './materialCalculations'
 import { hydrateEssencePlan } from './plannerTransitions'
@@ -26,6 +29,33 @@ it.runIf(import.meta.env.VITE_GEAR_PLANNER_CDN === '1')(
         displayName: 'Sapphire of Good Luck +1',
         minimumItemLevel: 12
       })
+      expect(requested.some((url) => url.endsWith('/essence/id-crosswalk.json'))).toBe(false)
+      const oldSapphireLink = LZString.compressToEncodedURIComponent(
+        JSON.stringify({
+          v: 3,
+          ml: 12,
+          a: [4],
+          c: [],
+          i: [[4, 0, 0, 0, 0, 0, [[2, 899, 0, []]]]]
+        })
+      )
+      expect(await decodeEssenceCraftingPermalink(data, oldSapphireLink)).toMatchObject({
+        ok: true,
+        plan: { itemsBySlotId: { armor: { augmentSlots: [{ augmentId: 'augment-4a8d5bc634a20e0c' }] } } }
+      })
+      expect(requested.some((url) => url.endsWith('/essence/id-crosswalk.json'))).toBe(true)
+      for (const [name, value] of [
+        ['Spell Penetration', 5],
+        ['Insightful Spell Penetration', 3],
+        ['Vampirism', 2]
+      ] as const) {
+        const shard = data.enhancements.find(({ displayName }) => displayName === name)
+        if (!shard) throw new Error('Missing ' + name)
+        expect(resolveEnhancementEffects(data, shard.id, 13).effects[0].modifier).toMatchObject({
+          status: 'resolved',
+          value
+        })
+      }
       expect(data.recipes).toHaveLength(808)
       const acidId = 'enhancement-aa015129bd857543'
       expect(data.indexes.enhancementById.get(acidId)?.effects[0].displayName).toBe('Elemental Resistance: Acid')

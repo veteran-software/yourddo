@@ -20,10 +20,12 @@ const sagas: SagaDefinition[] = [
 const quests: QuestDefinition[] = [{ id: 'known-quest', name: 'Quest', level: 3, sagas: ['known'] }]
 
 const driver = (values: Record<string, unknown> = {}, fail = false) => ({
-  getValue: vi.fn((key: string) =>
-    fail ? Promise.reject(new Error('IDB unavailable')) : Promise.resolve(values[key])
+  getValues: vi.fn((keys: string[]) =>
+    fail ? Promise.reject(new Error('IDB unavailable')) : Promise.resolve(keys.map((key) => values[key]))
   ),
-  setValue: vi.fn(() => (fail ? Promise.reject(new Error('IDB unavailable')) : Promise.resolve()))
+  setValues: vi.fn<(entries: [string, unknown][]) => Promise<void>>(() =>
+    fail ? Promise.reject(new Error('IDB unavailable')) : Promise.resolve()
+  )
 })
 
 afterEach(() => {
@@ -59,11 +61,13 @@ describe('Saga Tracker storage', () => {
       expect(progress.sagaStatus).toEqual({ [currentId]: { completed: true, turnedIn: true } })
       expect(progress.turnedInAt).toEqual({ [currentId]: 50 })
       expect(progress.questDoneAt).toEqual({ [currentQuestId]: 100 })
-      expect(fake.setValue).toHaveBeenCalledWith(QUEST_DONE_AT_KEY, { [currentQuestId]: 100 })
+      expect(fake.setValues).toHaveBeenCalledWith(
+        expect.arrayContaining([[QUEST_DONE_AT_KEY, { [currentQuestId]: 100 }]])
+      )
       expect(JSON.parse(localStorage.getItem(LOCAL_QUESTS_KEY) ?? '')).toEqual([
         { id: currentQuestId, lastDoneAt: 100 }
       ])
-      expect(fake.setValue).toHaveBeenLastCalledWith(TURNED_IN_AT_KEY, { [currentId]: 50 })
+      expect(fake.setValues).toHaveBeenLastCalledWith(expect.arrayContaining([[TURNED_IN_AT_KEY, { [currentId]: 50 }]]))
     }
   )
 
@@ -112,10 +116,17 @@ describe('Saga Tracker storage', () => {
     const result = await loadProgress(sagas, quests, fake)
     expect(result.progress.questDoneAt).toEqual({ 'known-quest': 10 })
     expect(result.progress.turnedInAt).toEqual({ known: 5 })
-    expect(fake.setValue).toHaveBeenCalledWith(SAGA_ITEMS_KEY, [
-      { id: 'known', completed: true, turnedIn: false },
-      { id: 'new', completed: false, turnedIn: false }
-    ])
+    expect(fake.setValues).toHaveBeenCalledWith(
+      expect.arrayContaining([
+        [
+          SAGA_ITEMS_KEY,
+          [
+            { id: 'known', completed: true, turnedIn: false },
+            { id: 'new', completed: false, turnedIn: false }
+          ]
+        ]
+      ])
+    )
   })
 
   it('survives malformed storage and a complete IndexedDB failure in memory', async () => {
@@ -123,6 +134,32 @@ describe('Saga Tracker storage', () => {
     const result = await loadProgress(sagas, quests, driver({}, true))
     expect(result.storageAvailable).toBe(false)
     expect(result.progress.sagaStatus.new).toEqual({ completed: false, turnedIn: false })
+  })
+
+  it('restores the latest edit on reload while IndexedDB still holds the prior save', async () => {
+    const values = {
+      [SAGA_ITEMS_KEY]: [],
+      [QUEST_DONE_AT_KEY]: {},
+      [TURNED_IN_AT_KEY]: {}
+    }
+    const fake = driver(values)
+    const commit = Promise.withResolvers<undefined>()
+    fake.setValues.mockImplementationOnce(async (entries) => {
+      await commit.promise
+      Object.assign(values, Object.fromEntries(entries))
+    })
+    const progress = {
+      sagaStatus: { known: { completed: true, turnedIn: true, runStartedAt: 5 } },
+      questDoneAt: { 'known-quest': 10 },
+      turnedInAt: { known: 20 }
+    }
+    const write = saveProgress(sagas, progress, fake)
+    expect((await loadProgress(sagas, quests, fake)).progress).toMatchObject(progress)
+    expect(fake.getValues).not.toHaveBeenCalled()
+    commit.resolve(undefined)
+    await expect(write).resolves.toBe(true)
+    expect((await loadProgress(sagas, quests, fake)).progress).toMatchObject(progress)
+    expect(fake.getValues).toHaveBeenCalledOnce()
   })
 
   it('writes all primary keys and compatible localStorage mirrors', async () => {
@@ -136,7 +173,7 @@ describe('Saga Tracker storage', () => {
       turnedInAt: { known: 5 }
     }
     await expect(saveProgress(sagas, progress, fake)).resolves.toBe(true)
-    expect(fake.setValue).toHaveBeenCalledWith(QUEST_DONE_AT_KEY, progress.questDoneAt)
+    expect(fake.setValues).toHaveBeenCalledWith(expect.arrayContaining([[QUEST_DONE_AT_KEY, progress.questDoneAt]]))
     expect(JSON.parse(localStorage.getItem(LOCAL_QUESTS_KEY) ?? '')).toEqual([{ id: 'known-quest', lastDoneAt: 10 }])
   })
 })

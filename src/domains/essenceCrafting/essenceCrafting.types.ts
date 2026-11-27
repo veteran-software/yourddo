@@ -90,6 +90,7 @@ export interface EssenceMinimumLevelShard {
 }
 
 export interface EssenceAugment extends EssenceNamedRecord {
+  catalogItemId?: number
   scoped?: ScopedAugmentPresentation
   filterEffects?: readonly EssenceNamedRecord[]
   augmentTypeId: string
@@ -132,6 +133,7 @@ export interface EssenceCraftingIndexes {
 }
 
 export interface EssenceCraftingData {
+  legacyAugmentCrosswalkPath?: string
   enchantmentNames?: readonly string[]
   previousEnhancementById?: ReadonlyMap<string, EssenceEnhancement>
   schemaVersion: 1

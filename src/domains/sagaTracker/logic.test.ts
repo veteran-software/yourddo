@@ -64,13 +64,14 @@ describe('Saga Tracker logic', () => {
 
   it('turns in, clears turn-in, starts one new run, and resets globally', () => {
     const status = { h: { completed: true, turnedIn: false }, e: { completed: true, turnedIn: true } }
-    expect(toggleTurnedIn(status, {}, 'h', true, 10)).toEqual({
+    const turnedIn = toggleTurnedIn(status, {}, 'h', true, 10)
+    expect(turnedIn).toEqual({
       sagaStatus: { ...status, h: { completed: true, turnedIn: true } },
       turnedInAt: { h: 10 }
     })
-    expect(toggleTurnedIn(status, { h: 10 }, 'h', false, 20).turnedInAt.h).toBe(0)
+    expect(toggleTurnedIn(turnedIn.sagaStatus, turnedIn.turnedInAt, 'h', false, 20).turnedInAt.h).toBe(0)
     expect(startNewRun(status, { e: 7 }, 'h', 30)).toEqual({
-      sagaStatus: { ...status, h: { completed: false, turnedIn: false } },
+      sagaStatus: { ...status, h: { completed: false, turnedIn: false, runStartedAt: 30 } },
       turnedInAt: { e: 7, h: 30 }
     })
     expect(resetProgress(sagas)).toEqual({
@@ -83,6 +84,19 @@ describe('Saga Tracker logic', () => {
       turnedInAt: {}
     })
   })
+
+  it.each([true, false])(
+    'restores only current-run quests when a turn-in is undone (explicit start: %s)',
+    (explicitStart) => {
+      const before = { h: { completed: true, turnedIn: false } }
+      const run = explicitStart ? startNewRun(before, {}, 'h', 20) : { sagaStatus: before, turnedInAt: { h: 20 } }
+      const turnedIn = toggleTurnedIn(run.sagaStatus, run.turnedInAt, 'h', true, 40)
+      const undone = toggleTurnedIn(turnedIn.sagaStatus, turnedIn.turnedInAt, 'h', false, 50)
+      expect(getSagaCompletionState('h', quests, { a: 10, z: 10 }, undone.turnedInAt)).toBe('incomplete')
+      expect(getSagaCompletionState('h', quests, { a: 10, z: 30 }, undone.turnedInAt)).toBe('indeterminate')
+      expect(questCountsForSaga('e', 'z', { z: 10 }, undone.turnedInAt)).toBe(true)
+    }
+  )
 
   it('applies the three-character threshold and matches saga or quest names', () => {
     expect(isSearchActive(' ab ')).toBe(false)

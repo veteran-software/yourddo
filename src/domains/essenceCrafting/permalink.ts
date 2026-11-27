@@ -1,10 +1,13 @@
 import { augmentFilterEffects } from './augmentRules'
 import LZString from 'lz-string'
-import { EQUIPMENT_SLOTS, type EquipmentSlotId } from './equipment.ts'
-import type { EssenceCraftingData } from './essenceCrafting.types.ts'
+import { loadDatasetFile } from '../../shared/data/loadDataset.ts'
+import { EQUIPMENT_SLOTS, readPetClasses, type EquipmentSlotId, type PetClass } from './equipment.ts'
+import type { EssenceBinding, EssenceCraftingData } from './essenceCrafting.types.ts'
 import { LEGACY_V3_AUGMENT_NAMES, LEGACY_V3_EFFECT_NAMES } from './legacyPermalinkV3Data.ts'
 import type { EssencePlanState, PlannedAugmentSlot, PlannedItem } from './plannerState.ts'
+import { getRemovedShardSelections, type EssenceCraftingSessionPayloadV1 } from './plannerStorage.ts'
 import { hydrateEssencePlan } from './plannerTransitions.ts'
+import { savedEssenceId } from './savedIds'
 
 export const ESSENCE_CRAFTING_PERMALINK_VERSION = 4
 export const ESSENCE_CRAFTING_PERMALINK_QUERY_PARAMETER = 'cc'
@@ -31,6 +34,8 @@ export type EssenceCraftingPermalinkV4Item = [
 export interface EssenceCraftingPermalinkV4Payload {
   v: typeof ESSENCE_CRAFTING_PERMALINK_VERSION
   ml: number
+  b?: EssenceBinding
+  p?: readonly PetClass[]
   c: string[]
   i: EssenceCraftingPermalinkV4Item[]
 }
@@ -38,7 +43,16 @@ export interface EssenceCraftingPermalinkV4Payload {
 export type EssenceCraftingPermalinkDecodeFailure = 'malformed-payload' | 'unsupported-version'
 
 export type EssenceCraftingPermalinkDecodeResult =
-  { ok: true; version: 3 | 4; plan: EssencePlanState } | { ok: false; reason: EssenceCraftingPermalinkDecodeFailure }
+  | {
+      ok: true
+      version: 3 | 4
+      plan: EssencePlanState
+      binding?: EssenceBinding
+      removedShardSelections?: readonly string[]
+    }
+  | { ok: false; reason: EssenceCraftingPermalinkDecodeFailure }
+
+type DecodedPlan = Omit<EssenceCraftingSessionPayloadV1, 'version'>
 
 const LEGACY_V3_SLOT_IDS: readonly EquipmentSlotId[] = [
   'main-hand',
@@ -139,7 +153,8 @@ const encodeV4Item = (
 
 export const createEssenceCraftingPermalinkV4Payload = (
   data: EssenceCraftingData,
-  plan: EssencePlanState
+  plan: EssencePlanState,
+  binding: EssenceBinding = 'bound'
 ): EssenceCraftingPermalinkV4Payload => {
   const activeIds = new Set(plan.activeSlotIds)
   const orderedActiveSlotIds = EQUIPMENT_SLOTS.map(({ id }) => id).filter((id) => activeIds.has(id))
@@ -153,13 +168,19 @@ export const createEssenceCraftingPermalinkV4Payload = (
   return {
     v: ESSENCE_CRAFTING_PERMALINK_VERSION,
     ml: plan.masterMinimumLevel,
+    ...(binding === 'unbound' && { b: binding }),
+    ...(plan.petClasses?.length && { p: plan.petClasses }),
     c: orderedActiveSlotIds.filter((equipmentSlotId) => collapsedIds.has(equipmentSlotId)),
     i: items
   }
 }
 
-export const encodeEssenceCraftingPermalink = (data: EssenceCraftingData, plan: EssencePlanState): string =>
-  LZString.compressToEncodedURIComponent(JSON.stringify(createEssenceCraftingPermalinkV4Payload(data, plan)))
+export const encodeEssenceCraftingPermalink = (
+  data: EssenceCraftingData,
+  plan: EssencePlanState,
+  binding: EssenceBinding = 'bound'
+): string =>
+  LZString.compressToEncodedURIComponent(JSON.stringify(createEssenceCraftingPermalinkV4Payload(data, plan, binding)))
 
 function indexAugmentEffectNames(data: EssenceCraftingData) {
   const effectNameById = new Map<string, string>()
@@ -203,11 +224,11 @@ const decodeV4Augments = (
   return decoded
 }
 
-const decodeV4Payload = (data: EssenceCraftingData, payload: Record<string, unknown>): EssencePlanState | null => {
+const decodeV4Payload = (data: EssenceCraftingData, payload: Record<string, unknown>): DecodedPlan | null => {
   if (!isFiniteNumber(payload.ml) || !Array.isArray(payload.c) || !Array.isArray(payload.i)) return null
 
   const activeSlotIds: string[] = []
-  const itemsBySlotId: Record<string, unknown> = {}
+  const itemsBySlotId: DecodedPlan['itemsBySlotId'] = {}
   for (const candidate of payload.i) {
     if (!Array.isArray(candidate) || candidate.length < 7 || typeof candidate[0] !== 'string') return null
     if (!isFiniteNumber(candidate[1]) || (candidate[2] !== 0 && candidate[2] !== 1)) return null
@@ -217,7 +238,7 @@ const decodeV4Payload = (data: EssenceCraftingData, payload: Record<string, unkn
     const equipmentSlotId = candidate[0]
     activeSlotIds.push(equipmentSlotId)
     itemsBySlotId[equipmentSlotId] = {
-      twoHanded: candidate[7] === 1,
+      ...(candidate[7] === 1 && { twoHanded: true }),
       minimumLevelOverride: candidate[1] || null,
       hasCannithMark: candidate[2] === 1,
       prefixEnhancementId: readString(candidate[3]) || null,
@@ -227,12 +248,13 @@ const decodeV4Payload = (data: EssenceCraftingData, payload: Record<string, unkn
     }
   }
 
-  return hydrateEssencePlan(data, {
+  return {
     masterMinimumLevel: payload.ml,
+    petClasses: readPetClasses(payload.p),
     activeSlotIds,
-    collapsedSlotIds: payload.c,
+    collapsedSlotIds: payload.c.filter((id): id is string => typeof id === 'string'),
     itemsBySlotId
-  })
+  }
 }
 
 const createLegacyEnhancementIdByRecipeId = (data: EssenceCraftingData): ReadonlyMap<number, string> => {
@@ -261,41 +283,65 @@ function decodeLegacyFilterCodes(filterCodes: unknown) {
   return selectedEffectNames
 }
 
-const decodeLegacyV3Augments = (
-  data: EssenceCraftingData,
-  value: unknown
-): {
-  augmentSlotTypeId: string
-  augmentId: string | null
-  selectedEffectNames: string[]
-  filterMode: 'or' | 'and'
-}[] => {
-  if (!Array.isArray(value)) return []
-  const decoded = []
-  for (const candidate of value) {
-    if (!Array.isArray(candidate)) continue
-    const tuple = candidate as unknown[]
-    const colorCode = tuple[0]
-    const augmentCode = tuple[1]
-    const filterMode = tuple[2]
-    const filterCodes = tuple[3]
-    if (!isIntegerNumber(colorCode) || !isIntegerNumber(augmentCode)) continue
-    const augmentSlotTypeId = LEGACY_V3_AUGMENT_SLOT_TYPE_IDS[colorCode] ?? 'colorless'
-    const legacyAugmentName = augmentCode > 0 ? LEGACY_V3_AUGMENT_NAMES[augmentCode - 1] : undefined
-    decoded.push({
-      augmentSlotTypeId,
-      augmentId: resolveUniqueNamedId(legacyAugmentName, data.augments),
-      selectedEffectNames: decodeLegacyFilterCodes(filterCodes),
-      filterMode: filterMode === 1 ? ('and' as const) : ('or' as const)
-    })
+async function loadLegacyAugmentItemIds(path: string) {
+  const source = await loadDatasetFile<unknown>(path).catch(() => undefined)
+  const itemIds = new Map<string, number>()
+  if (!isRecord(source) || source.schemaVersion !== 1 || !isRecord(source.augments)) return itemIds
+  for (const [legacyId, row] of Object.entries(source.augments)) {
+    if (isRecord(row) && typeof row.itemId === 'number' && Number.isSafeInteger(row.itemId) && row.itemId > 0)
+      itemIds.set(legacyId, row.itemId)
   }
-  return decoded
+  return itemIds
 }
 
-const decodeLegacyV3Payload = (
+function createLegacyAugmentResolver(data: EssenceCraftingData) {
+  const currentIds = new Map(data.augments.map(({ catalogItemId, id }) => [catalogItemId, id]))
+  let crosswalk: ReturnType<typeof loadLegacyAugmentItemIds> | undefined
+  return async (name: string | undefined): Promise<string | null> => {
+    if (name && data.legacyAugmentCrosswalkPath) {
+      crosswalk ??= loadLegacyAugmentItemIds(data.legacyAugmentCrosswalkPath)
+      const rows = await crosswalk
+      if (rows.size > 0) {
+        // The crosswalk is keyed by the old saved ID. V3 codes index the original names.
+        const legacyId = await savedEssenceId('augment', 'augment.json\0' + name)
+        const itemId = rows.get(legacyId)
+        if (itemId !== undefined) return currentIds.get(itemId) ?? null
+      }
+    }
+    return resolveUniqueNamedId(name, data.augments)
+  }
+}
+
+const decodeLegacyV3Augments = async (
+  resolveAugmentId: ReturnType<typeof createLegacyAugmentResolver>,
+  value: unknown
+) => {
+  if (!Array.isArray(value)) return []
+  const candidates: unknown[] = value
+  return Promise.all(
+    candidates.flatMap((candidate) => {
+      if (!Array.isArray(candidate)) return []
+      const tuple: readonly unknown[] = candidate
+      const [colorCode, augmentCode, filterMode, filterCodes] = tuple
+      if (!isIntegerNumber(colorCode) || !isIntegerNumber(augmentCode)) return []
+      const augmentSlotTypeId = LEGACY_V3_AUGMENT_SLOT_TYPE_IDS[colorCode] ?? 'colorless'
+      const legacyAugmentName = augmentCode > 0 ? LEGACY_V3_AUGMENT_NAMES[augmentCode - 1] : undefined
+      return [
+        resolveAugmentId(legacyAugmentName).then((augmentId) => ({
+          augmentSlotTypeId,
+          augmentId,
+          selectedEffectNames: decodeLegacyFilterCodes(filterCodes),
+          filterMode: filterMode === 1 ? ('and' as const) : ('or' as const)
+        }))
+      ]
+    })
+  )
+}
+
+const decodeLegacyV3Payload = async (
   data: EssenceCraftingData,
   payload: Record<string, unknown>
-): EssencePlanState | null => {
+): Promise<DecodedPlan | null> => {
   if (
     !isFiniteNumber(payload.ml) ||
     !Array.isArray(payload.a) ||
@@ -311,37 +357,49 @@ const decodeLegacyV3Payload = (
   const collapsedSlotIds = payload.c
     .map((slotIndex) => (Number.isInteger(slotIndex) ? LEGACY_V3_SLOT_IDS[slotIndex as number] : undefined))
     .filter((slotId): slotId is EquipmentSlotId => slotId !== undefined)
-  const itemsBySlotId: Record<string, unknown> = {}
+  const resolveAugmentId = createLegacyAugmentResolver(data)
+  const candidates: unknown[] = payload.i
+  const items = await Promise.all(
+    candidates.flatMap((candidate) => {
+      if (!Array.isArray(candidate) || candidate.length < 7) return []
+      const tuple: readonly unknown[] = candidate
+      const [slotIndex, level, mark, prefix, suffix, extra, sockets] = tuple
+      const equipmentSlotId = isIntegerNumber(slotIndex) ? LEGACY_V3_SLOT_IDS[slotIndex] : undefined
+      if (!equipmentSlotId) return []
+      const decodeEnhancementId = (value: unknown): string | null =>
+        typeof value === 'number' && value > 0 ? (enhancementIdByRecipeId.get(value) ?? null) : null
+      const hasCannithMark = Boolean(mark)
+      return [
+        decodeLegacyV3Augments(resolveAugmentId, sockets).then(
+          (augmentSlots) =>
+            [
+              equipmentSlotId,
+              {
+                minimumLevelOverride: isFiniteNumber(level) && level !== 0 ? level : null,
+                hasCannithMark,
+                prefixEnhancementId: decodeEnhancementId(prefix),
+                suffixEnhancementId: decodeEnhancementId(suffix),
+                extraEnhancementId: hasCannithMark ? decodeEnhancementId(extra) : null,
+                augmentSlots
+              }
+            ] as const
+        )
+      ]
+    })
+  )
 
-  for (const candidate of payload.i) {
-    if (!Array.isArray(candidate) || candidate.length < 7) continue
-    const equipmentSlotId = Number.isInteger(candidate[0]) ? LEGACY_V3_SLOT_IDS[candidate[0] as number] : undefined
-    if (!equipmentSlotId) continue
-    const decodeEnhancementId = (value: unknown): string | null =>
-      typeof value === 'number' && value > 0 ? (enhancementIdByRecipeId.get(value) ?? null) : null
-    const hasCannithMark = Boolean(candidate[2])
-    itemsBySlotId[equipmentSlotId] = {
-      minimumLevelOverride: isFiniteNumber(candidate[1]) && candidate[1] !== 0 ? candidate[1] : null,
-      hasCannithMark,
-      prefixEnhancementId: decodeEnhancementId(candidate[3]),
-      suffixEnhancementId: decodeEnhancementId(candidate[4]),
-      extraEnhancementId: hasCannithMark ? decodeEnhancementId(candidate[5]) : null,
-      augmentSlots: decodeLegacyV3Augments(data, candidate[6])
-    }
-  }
-
-  return hydrateEssencePlan(data, {
+  return {
     masterMinimumLevel: payload.ml,
     activeSlotIds,
     collapsedSlotIds,
-    itemsBySlotId
-  })
+    itemsBySlotId: Object.fromEntries(items)
+  }
 }
 
-export const decodeEssenceCraftingPermalink = (
+export const decodeEssenceCraftingPermalink = async (
   data: EssenceCraftingData,
   encoded: string
-): EssenceCraftingPermalinkDecodeResult => {
+): Promise<EssenceCraftingPermalinkDecodeResult> => {
   try {
     const json = LZString.decompressFromEncodedURIComponent(encoded)
     if (!json) return { ok: false, reason: 'malformed-payload' }
@@ -350,11 +408,24 @@ export const decodeEssenceCraftingPermalink = (
     if (payload.v !== 3 && payload.v !== ESSENCE_CRAFTING_PERMALINK_VERSION) {
       return { ok: false, reason: 'unsupported-version' }
     }
-    const plan =
+    const binding = payload.v === ESSENCE_CRAFTING_PERMALINK_VERSION ? payload.b : undefined
+    if (binding !== undefined && binding !== 'bound' && binding !== 'unbound') {
+      return { ok: false, reason: 'malformed-payload' }
+    }
+    const decoded =
       payload.v === ESSENCE_CRAFTING_PERMALINK_VERSION
         ? decodeV4Payload(data, payload)
-        : decodeLegacyV3Payload(data, payload)
-    return plan ? { ok: true, version: payload.v, plan } : { ok: false, reason: 'malformed-payload' }
+        : await decodeLegacyV3Payload(data, payload)
+    if (!decoded) return { ok: false, reason: 'malformed-payload' }
+    const plan = hydrateEssencePlan(data, decoded)
+    const removedShardSelections = getRemovedShardSelections(data, decoded, plan)
+    return {
+      ok: true,
+      version: payload.v,
+      plan,
+      ...(binding !== undefined && { binding }),
+      ...(removedShardSelections.length > 0 && { removedShardSelections })
+    }
   } catch {
     return { ok: false, reason: 'malformed-payload' }
   }

@@ -46,6 +46,7 @@ async function toEssenceAugment(
     record.name === 'Emerald of Arcane Empowerment' ? (savedNames.get(record.id) ?? record.name) : record.name
   return {
     id,
+    catalogItemId: record.id,
     displayName,
     augmentTypeId,
     minimumItemLevel: record.minimumLevel,

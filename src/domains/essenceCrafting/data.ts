@@ -861,8 +861,12 @@ async function fromPublishedEssenceShards(source: unknown): Promise<EssenceCraft
 
 export async function loadEssenceCraftingData(): Promise<EssenceCraftingData> {
   const manifest = expectRecord(await loadDatasetFile<unknown>('essence/manifest.json'), 'native shard manifest')
-  const { shards } = expectRecord(manifest.resources, 'native shard resources')
+  const { shards, idCrosswalk } = expectRecord(manifest.resources, 'native shard resources')
   if (manifest.system !== 'essence' || typeof shards !== 'string' || !/^[\w.-]+\.json$/.test(shards))
     return invalid('invalid native shard manifest')
-  return withScopedAugments(await fromPublishedEssenceShards(await loadDatasetFile<unknown>('essence/' + shards)))
+  const data = await fromPublishedEssenceShards(await loadDatasetFile<unknown>('essence/' + shards))
+  if (typeof idCrosswalk === 'string' && /^[\w.-]+\.json$/.test(idCrosswalk)) {
+    data.legacyAugmentCrosswalkPath = 'essence/' + idCrosswalk
+  }
+  return withScopedAugments(data)
 }

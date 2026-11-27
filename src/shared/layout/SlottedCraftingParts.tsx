@@ -1,5 +1,6 @@
 import { Text } from '@mantine/core'
 import ItemIcon from '../items/ItemIcon'
+import IngredientLabel from '../items/IngredientLabel'
 import IngredientStock from '../items/IngredientStock'
 import styles from './craftingTools.module.css'
 
@@ -38,11 +39,9 @@ export function BuildHeader({
 }
 
 export function RequirementList({
-  requirements,
-  icons = false
+  requirements
 }: Readonly<{
   requirements: readonly Requirement[]
-  icons?: boolean
 }>) {
   if (!requirements.length)
     return (
@@ -55,10 +54,7 @@ export function RequirementList({
       {requirements.map((part, index) => (
         <li key={JSON.stringify([part.name, index])}>
           <div className={styles.costRow}>
-            <span className={icons ? styles.materialName : undefined}>
-              {icons && <ItemIcon item={part} size={24} />}
-              {part.name}
-            </span>
+            <IngredientLabel name={part.name} image={part.image} />
             <strong>×{part.quantity.toLocaleString()}</strong>
           </div>
           <div className={styles.stock}>

@@ -19,6 +19,8 @@ export function describePlanEdit(
       return action.enabled ? 'Set Main Hand to two-handed' : 'Set Main Hand to one-handed'
     case 'resolve-equipment-conflict':
       return `Unequipped ${describeEquipmentBlockers(plan, action.blockers)} · ${describePlanEdit(action.change, data, plan) ?? 'Updated equipment'}`
+    case 'set-pet-classes':
+      return action.classes.length ? 'Selected pet classes · ' + action.classes.join(', ') : 'Cleared pet classes'
     case 'set-master-minimum-level':
       return `Changed Master ML to ${action.minimumLevel.toString()}`
     case 'set-item-minimum-level-override':

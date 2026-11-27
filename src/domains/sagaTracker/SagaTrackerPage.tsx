@@ -12,7 +12,7 @@ import {
   Text,
   TextInput
 } from '@mantine/core'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import TrackerLayout from '../../shared/layout/TrackerLayout.tsx'
 import { createBackup, downloadBackup, parseBackup } from './backup.ts'
 import SagaList from './components/SagaList.tsx'
@@ -74,7 +74,7 @@ const SagaTrackerPage = () => {
           quests.length > 0
             ? getSagaCompletionState(id, quests, questDoneAt, turnedInAt) === 'complete'
             : (sagaStatus[id]?.completed ?? false)
-        return [id, { completed, turnedIn: sagaStatus[id]?.turnedIn ?? false }]
+        return [id, { ...sagaStatus[id], completed, turnedIn: sagaStatus[id]?.turnedIn ?? false }]
       })
     )
   }, [data, questDoneAt, questsBySaga, sagaStatus, turnedInAt])
@@ -104,7 +104,7 @@ const SagaTrackerPage = () => {
     }
   }, [loadAttempt])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!data) return
     let active = true
     void saveProgress(data.sagas, progress)
