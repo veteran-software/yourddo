@@ -669,24 +669,50 @@ describe('GearPlannerPage', () => {
     ])
   })
 
-  it('shows the guide on startup, remembers dismissal and can reopen from the masthead', async () => {
+  it('shows a first-visit tutorial, remembers it, and lets users replay it from the guide', async () => {
     localStorage.removeItem('gearPlannerInfoDismissed')
     await renderReadyPage(data)
-    const guide = within(screen.getByRole('dialog', { name: 'About the Gear Planner' }))
-    expect(guide.getByText('Download JSON')).toBeTruthy()
-    expect(guide.getByText('Review backup')).toBeTruthy()
-    fireEvent.click(guide.getByRole('checkbox', { name: /show again on startup/i }))
-    fireEvent.click(guide.getByRole('button', { name: 'Got it' }))
+    const tutorial = within(screen.getByRole('dialog', { name: 'Gear Planner tutorial' }))
+    expect(tutorial.getByRole('heading', { name: 'Set up your character' })).toBeTruthy()
+    expect(tutorial.getByText('Step 1 of 4')).toBeTruthy()
+    fireEvent.click(tutorial.getByRole('button', { name: 'Next' }))
+    expect(tutorial.getByRole('heading', { name: 'Equip gear' })).toBeTruthy()
+    fireEvent.click(tutorial.getByRole('button', { name: 'Back' }))
+    expect(tutorial.getByText('Step 1 of 4')).toBeTruthy()
+    for (const title of ['Equip gear', 'Check your bonuses', 'Save and share your setup']) {
+      fireEvent.click(tutorial.getByRole('button', { name: 'Next' }))
+      expect(tutorial.getByRole('heading', { name: title })).toBeTruthy()
+    }
+    fireEvent.click(tutorial.getByRole('button', { name: 'Start planning' }))
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(localStorage.getItem('yourddo:gear-planner:tutorial-seen')).toBe('true')
     cleanup()
     await renderReadyPage(data)
     expect(screen.queryByRole('dialog')).toBeNull()
+
     fireEvent.click(screen.getByRole('button', { name: 'About and backup guide' }))
-    expect(screen.getByRole<HTMLInputElement>('checkbox', { name: /show again on startup/i }).checked).toBe(true)
-    fireEvent.click(screen.getByRole('checkbox', { name: /show again on startup/i }))
-    fireEvent.click(screen.getByRole('button', { name: 'Close planner guide' }))
-    cleanup()
+    const guide = within(screen.getByRole('dialog', { name: 'About the Gear Planner' }))
+    expect(guide.getByText('Download JSON')).toBeTruthy()
+    expect(guide.getByText('Review backup')).toBeTruthy()
+    fireEvent.click(guide.getByRole('button', { name: 'Start tutorial' }))
+    const replay = within(screen.getByRole('dialog', { name: 'Gear Planner tutorial' }))
+    expect(replay.getByText('Step 1 of 4')).toBeTruthy()
+    fireEvent.click(replay.getByRole('button', { name: 'Skip tutorial' }))
+    expect(screen.queryByRole('dialog')).toBeNull()
+  })
+
+  it('leaves the planner ready for returning users with saved setups', async () => {
+    localStorage.removeItem('gearPlannerInfoDismissed')
+    const setup = createGearPlannerSetup('returning', 'Saved setup')
+    localStorage.setItem(
+      GEAR_PLANNER_STORAGE_KEY,
+      JSON.stringify(createGearPlannerExport({ setups: [setup], activeSetupId: setup.id }))
+    )
+
     await renderReadyPage(data)
-    expect(screen.getByRole('dialog', { name: 'About the Gear Planner' })).toBeTruthy()
+
+    expect(screen.getByRole('tab', { name: 'Saved setup' })).toBeTruthy()
+    expect(screen.queryByRole('dialog', { name: 'Gear Planner tutorial' })).toBeNull()
   })
 
   it('opens a shared setup directly and keeps the guide available on demand', async () => {
