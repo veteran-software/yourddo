@@ -1,0 +1,115 @@
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
+  align-items: start;
+  gap: var(--mantine-spacing-lg);
+}
+
+.slots {
+  padding: var(--mantine-spacing-sm);
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-md);
+}
+
+.slotHeader {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--mantine-spacing-sm);
+  flex-wrap: wrap;
+  margin-bottom: var(--mantine-spacing-sm);
+}
+
+.slotList,
+.results {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.slotList {
+  display: grid;
+  gap: 4px;
+  max-height: min(61dvh, 34rem);
+  overflow: auto;
+  padding: 2px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--mantine-color-default-border) transparent;
+  scrollbar-gutter: stable;
+}
+
+.slot {
+  display: grid;
+  grid-template-columns: 1.65rem minmax(0, 1fr);
+  align-items: start;
+  gap: var(--mantine-spacing-xs);
+  width: 100%;
+  min-height: 2.65rem;
+  padding: 0.45rem var(--mantine-spacing-xs);
+  border: 1px solid transparent;
+  border-radius: var(--mantine-radius-sm);
+}
+
+.slot:hover {
+  background: var(--mantine-color-default-hover);
+}
+
+.slot[aria-pressed='true'] {
+  background: var(--mantine-color-violet-light);
+  border-color: var(--mantine-color-violet-light-color);
+}
+
+.slotNumber {
+  display: grid;
+  min-height: 1.65rem;
+  place-items: center;
+  border-radius: var(--mantine-radius-sm);
+  background: var(--mantine-color-default-hover);
+  font-size: var(--mantine-font-size-xs);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.slot[aria-pressed='true'] .slotNumber {
+  background: var(--mantine-color-violet-light-color);
+  color: var(--mantine-color-body);
+}
+
+.slotCopy {
+  display: grid;
+  gap: 2px;
+}
+
+.description,
+.slotCopy {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.catalog {
+  min-width: 0;
+}
+
+.result {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--mantine-spacing-sm);
+  padding-block: var(--mantine-spacing-xs);
+  border-bottom: 1px solid var(--mantine-color-default-border);
+}
+
+@media (max-width: 42em) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--mantine-spacing-md);
+  }
+
+  .slotList {
+    max-height: min(31dvh, 15rem);
+  }
+
+  .slots {
+    padding: var(--mantine-spacing-xs);
+  }
+}

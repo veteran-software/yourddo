@@ -67,8 +67,6 @@ describe('Gear Planner filigree transitions', () => {
     let state = equipGearPlannerItemInSelection(createEmptyGearPlannerSelectionState(), gearPlannerSlots.mainHand, host)
 
     expect(state.unlockedFiligreeSlots[host.id]).toBeUndefined()
-    expect(setGearPlannerSlottedFiligree(state, host.id, 0, first)).toBe(state)
-    state = setGearPlannerUnlockedFiligreeSlots(state, host.id, 1)
     state = setGearPlannerSlottedFiligree(state, host.id, 0, first)
     expect(state.slottedFiligrees[host.id]?.[0]).toBe(first)
     expect(setGearPlannerSlottedFiligree(state, host.id, 1, second)).toBe(state)
@@ -85,8 +83,8 @@ describe('Gear Planner filigree transitions', () => {
     state = setGearPlannerSlottedFiligree(state, host.id, 1, null)
     state = setGearPlannerUnlockedFiligreeSlots(state, host.id, 0)
     expect(state.slottedFiligrees).toEqual({})
-    expect(state.unlockedFiligreeSlots[host.id]).toBe(0)
-    expect(setGearPlannerUnlockedFiligreeSlots(state, host.id, -1).unlockedFiligreeSlots[host.id]).toBe(0)
+    expect(state.unlockedFiligreeSlots[host.id]).toBeUndefined()
+    expect(setGearPlannerUnlockedFiligreeSlots(state, host.id, -1)).toBe(state)
     expect(setGearPlannerUnlockedFiligreeSlots(state, host.id, 99).unlockedFiligreeSlots[host.id]).toBe(10)
   })
 
@@ -113,7 +111,7 @@ describe('Gear Planner filigree transitions', () => {
     expect(collectSelectedGearPlannerFiligrees(state.equipment, state.slottedFiligrees).map((s) => s.filigree)).toEqual(
       [first]
     )
-    expect(state.unlockedFiligreeSlots).toEqual({ [mainHand.id]: 2, [head.id]: 1 })
+    expect(state.unlockedFiligreeSlots).toEqual({ [mainHand.id]: 2 })
   })
 
   it('resolves shared type 193 across names and prioritizes catalog type IDs', () => {

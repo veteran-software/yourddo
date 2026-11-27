@@ -355,7 +355,7 @@ export const gearPlannerUnlockedFiligreeSlotCount = (
   const maximum = getGearPlannerMaxFiligreeSlots(item)
   if (maximum === 0) return 0
   const saved = unlockedFiligreeSlots[item.id]
-  return Math.max(0, Math.min(maximum, Number.isInteger(saved) ? saved : 0))
+  return Math.max(1, Math.min(maximum, Number.isInteger(saved) ? saved : 1))
 }
 
 export const setGearPlannerUnlockedFiligreeSlots = (
@@ -374,13 +374,17 @@ export function configureHostFiligreeSlots(
 ): GearPlannerSelectionState {
   const maximum = getGearPlannerMaxFiligreeSlots(item)
   if (!maximum || !Number.isInteger(requestedCount)) return state
-  const count = Math.max(0, Math.min(maximum, requestedCount))
+  const count = Math.max(1, Math.min(maximum, requestedCount))
   if (
     count === gearPlannerUnlockedFiligreeSlotCount(item, state.unlockedFiligreeSlots) ||
     Object.keys(state.slottedFiligrees[item.id] ?? {}).some((index) => Number(index) >= count)
   )
     return state
-  return { ...state, unlockedFiligreeSlots: { ...state.unlockedFiligreeSlots, [item.id]: count } }
+  const unlockedFiligreeSlots =
+    count === 1
+      ? withoutItemRecord(state.unlockedFiligreeSlots, item.id)
+      : { ...state.unlockedFiligreeSlots, [item.id]: count }
+  return { ...state, unlockedFiligreeSlots }
 }
 
 export const setGearPlannerSlottedFiligree = (

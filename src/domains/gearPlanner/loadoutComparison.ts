@@ -13,7 +13,7 @@ import {
   type GearPlannerEffectSummary
 } from './effects'
 import type { GearPlannerAugment, GearPlannerData, GearPlannerEffect, GearPlannerItem } from './gearPlanner.types'
-import { createEmptyGearPlannerEquipment } from './planner'
+import { createEmptyGearPlannerEquipment, gearPlannerUnlockedFiligreeSlotCount } from './planner'
 import {
   gearPlannerReforgingStages,
   gearPlannerReforgingStageLabel,
@@ -175,7 +175,8 @@ function addItemDetails(
     add('Augment ' + String(Number(i) + 1), aug.name)
   for (const [i, fil] of Object.entries(setup.slottedFiligrees[id] ?? {}))
     add('Filigree ' + String(Number(i) + 1), fil.name)
-  if (setup.unlockedFiligreeSlots[id]) add('Unlocked sockets', String(setup.unlockedFiligreeSlots[id]))
+  const unlocked = gearPlannerUnlockedFiligreeSlotCount(item, setup.unlockedFiligreeSlots)
+  if (unlocked) add('Unlocked sockets', String(unlocked))
   if (setup.slottedCurses[id]) add('Curse', setup.slottedCurses[id].name)
   addCraftedAttributes(setup, id, add, essence)
   for (const stage of gearPlannerReforgingStages) {
