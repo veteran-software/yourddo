@@ -11,7 +11,13 @@ import { characterAllowsItem, ownerSlots, type GearOwner } from './character'
 import { isCompatibleGearPlannerAugment } from './augments'
 import { bonusLabel } from './statObjectives'
 import { farmingList } from './farming'
-import type { GearPlannerData, GearPlannerSlot, GearPlannerItem } from './gearPlanner.types'
+import {
+  gearPlannerPetSlots,
+  gearPlannerSlots,
+  type GearPlannerData,
+  type GearPlannerSlot,
+  type GearPlannerItem
+} from './gearPlanner.types'
 import { loadoutSnapshot, comparisonRows } from './loadoutComparison'
 import { equipGearPlannerItemInSelection, setGearPlannerSlottedAugment } from './planner'
 import { getEffectiveGearPlannerAugmentSlots } from './reforging'
@@ -33,6 +39,7 @@ export interface UpgradePath {
   change: string
   setup: GearPlannerSetup
   gain: number
+  changesItemType: boolean
   focus: FocusChange[]
   bonusChanges: string[]
   totals?: string
@@ -42,6 +49,13 @@ export interface UpgradePath {
   location: string
   augments: readonly RecommendedAugment[]
 }
+
+const typeSensitiveSlots = new Set<GearPlannerSlot>([
+  gearPlannerSlots.mainHand,
+  gearPlannerSlots.offHand,
+  gearPlannerSlots.armor,
+  ...gearPlannerPetSlots
+])
 
 export function* searchUpgradePaths(
   setup: GearPlannerSetup,
@@ -157,12 +171,16 @@ export function* searchUpgradePaths(
       needs.find((t) => t.status === 'Check') ??
       needs.find((t) => t.status === 'Collect') ??
       needs[0]
+    const equippedType = setup.equipment[slot]?.source.type
+    const proposedType = next.equipment[slot]?.source.type
     paths.push({
       name,
       slot,
       change,
       setup: next,
       ...improvement,
+      changesItemType:
+        typeSensitiveSlots.has(slot) && Boolean(equippedType && proposedType && equippedType !== proposedType),
       focus,
       bonusChanges: comparisonRows(before.objectiveBonuses, after.objectiveBonuses)
         .filter((row) => row.changed)
@@ -227,6 +245,7 @@ export function* searchUpgradePaths(
   }
   return paths.sort(
     (a, b) =>
+      Number(a.changesItemType) - Number(b.changesItemType) ||
       b.gain - a.gain ||
       compareFocus(a.focus, b.focus) ||
       a.losses.length - b.losses.length ||

@@ -1178,6 +1178,41 @@ describe('GearPlannerPage', () => {
     expect(setup.slottedAugments).toEqual({})
   })
 
+  it.each([
+    [gearPlannerSlots.mainHand, 'Long Sword', 'Dagger'],
+    [gearPlannerSlots.offHand, 'Large Shield', 'Tower Shield'],
+    [gearPlannerSlots.armor, 'Light Armor', 'Heavy Armor']
+  ] as const)('prefers upgrades that keep the equipped type in %s', (slot, equippedType, alternateType) => {
+    function candidate(name: string, type: string, modifier: number) {
+      const gear = item(name, slot, name, 10, [{ name: 'Skill: Jump', modifier, bonus: 'Competence' }])
+      return { ...gear, source: { ...gear.source, type } }
+    }
+    const equipped = candidate('Equipped', equippedType, 1)
+    const setup = createGearPlannerSetup('a', 'A')
+    setup.equipment[slot] = equipped
+    const catalog = dataWithItems([
+      equipped,
+      candidate('Different type', alternateType, 10),
+      candidate('Same type, smaller gain', equippedType, 2),
+      candidate('Same type, greater gain', equippedType, 4)
+    ])
+    const search = searchUpgradePaths(
+      setup,
+      'Character',
+      catalog,
+      essenceData,
+      { kind: 'Stat', objective: 'Skill: Jump', locked: [], protectedTiers: [], character: '' },
+      new Map()
+    )
+    let step = search.next()
+    while (!step.done) step = search.next()
+    expect(step.value.map(({ name }) => name)).toEqual([
+      'Same type, greater gain',
+      'Same type, smaller gain',
+      'Different type'
+    ])
+  })
+
   it('keeps a distinct augmented path only when it changes the loadout outcome', () => {
     const effectsAdded = [{ name: 'Skill: Jump', modifier: 8, bonus: 'Insight' }]
     const augment: GearPlannerAugment = {
