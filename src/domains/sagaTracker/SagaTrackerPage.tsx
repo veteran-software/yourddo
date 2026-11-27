@@ -12,10 +12,12 @@ import {
   Text,
   TextInput
 } from '@mantine/core'
+import { IconListCheck, IconRoute } from '@tabler/icons-react'
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import TrackerLayout from '../../shared/layout/TrackerLayout.tsx'
 import { createBackup, downloadBackup, parseBackup } from './backup.ts'
 import SagaList from './components/SagaList.tsx'
+import SagaSessionPlanner from './components/SagaSessionPlanner.tsx'
 import { InvalidSagaTrackerDataError, loadSagaTrackerData } from './data.ts'
 import {
   categorizeSagas,
@@ -54,6 +56,7 @@ const SagaTrackerPage = () => {
   const [sagaStatus, setSagaStatus] = useState<SagaStatusMap>({})
   const [questDoneAt, setQuestDoneAt] = useState<TimestampMap>({})
   const [turnedInAt, setTurnedInAt] = useState<TimestampMap>({})
+  const [view, setView] = useState<'progress' | 'session'>('progress')
   const [activeTab, setActiveTab] = useState<SagaCategory>(readActiveTab)
   const [searchQuery, setSearchQuery] = useState('')
   const [expandedSagaIds, setExpandedSagaIds] = useState<Set<string>>(() => new Set())
@@ -129,6 +132,13 @@ const SagaTrackerPage = () => {
     const category = value === 'epic' || value === 'legendary' ? value : 'heroic'
     setActiveTab(category)
     writeActiveTab(category)
+  }
+
+  const setQuestCompletion = (id: string, completedAt: number | undefined, expected?: number) => {
+    setQuestDoneAt((current) => {
+      if (expected !== undefined && current[id] !== expected) return current
+      return toggleQuest(current, id, completedAt !== undefined, completedAt ?? 0)
+    })
   }
 
   const toggleExpanded = (sagaId: string) => {
@@ -207,27 +217,28 @@ const SagaTrackerPage = () => {
     </>
   )
 
-  const controls = data && (
-    <TextInput
-      label='Search sagas and quests'
-      placeholder='Enter at least 3 characters'
-      value={searchQuery}
-      onChange={(event) => {
-        setSearchQuery(event.currentTarget.value)
-      }}
-      rightSection={
-        searchQuery.length > 0 && (
-          <CloseButton
-            aria-label='Clear search'
-            onClick={() => {
-              setSearchQuery('')
-            }}
-            size='sm'
-          />
-        )
-      }
-    />
-  )
+  const controls =
+    data && view === 'progress' ? (
+      <TextInput
+        label='Search sagas and quests'
+        placeholder='Enter at least 3 characters'
+        value={searchQuery}
+        onChange={(event) => {
+          setSearchQuery(event.currentTarget.value)
+        }}
+        rightSection={
+          searchQuery.length > 0 && (
+            <CloseButton
+              aria-label='Clear search'
+              onClick={() => {
+                setSearchQuery('')
+              }}
+              size='sm'
+            />
+          )
+        }
+      />
+    ) : undefined
 
   let content
   if (initialization.status === 'loading') {
@@ -274,40 +285,61 @@ const SagaTrackerPage = () => {
             {feedback.message}
           </Alert>
         )}
-        <Tabs value={activeTab} onChange={changeTab} keepMounted={false}>
-          <Tabs.List grow aria-label='Saga categories'>
-            <Tabs.Tab value='heroic'>Heroic</Tabs.Tab>
-            <Tabs.Tab value='epic'>Epic</Tabs.Tab>
-            <Tabs.Tab value='legendary'>Legendary</Tabs.Tab>
+        <Tabs
+          value={view}
+          onChange={(value) => {
+            setView(value === 'session' ? 'session' : 'progress')
+          }}
+          keepMounted={false}
+        >
+          <Tabs.List aria-label='Saga Tracker views'>
+            <Tabs.Tab value='progress' leftSection={<IconListCheck size={17} aria-hidden />}>
+              Saga progress
+            </Tabs.Tab>
+            <Tabs.Tab value='session' leftSection={<IconRoute size={17} aria-hidden />}>
+              Session planner
+            </Tabs.Tab>
           </Tabs.List>
-          <Tabs.Panel value={activeTab} pt='md'>
-            <SagaList
-              sagas={visibleSagas}
-              questsBySaga={questsBySaga}
-              sagaStatus={effectiveSagaStatus}
-              questDoneAt={questDoneAt}
-              turnedInAt={turnedInAt}
-              expandedSagaIds={expandedSagaIds}
-              query={searchQuery}
-              onToggleExpanded={toggleExpanded}
-              onToggleSaga={(sagaId, checked) => {
-                const now = Date.now()
-                setQuestDoneAt((current) => toggleSagaQuests(current, questsBySaga[sagaId] ?? [], checked, now))
-              }}
-              onToggleTurnedIn={(sagaId, checked) => {
-                const next = toggleTurnedIn(sagaStatus, turnedInAt, sagaId, checked, Date.now())
-                setSagaStatus(next.sagaStatus)
-                setTurnedInAt(next.turnedInAt)
-              }}
-              onToggleQuest={(questId, checked) => {
-                setQuestDoneAt((current) => toggleQuest(current, questId, checked, Date.now()))
-              }}
-              onNewRun={(sagaId) => {
-                const next = startNewRun(sagaStatus, turnedInAt, sagaId, Date.now())
-                setSagaStatus(next.sagaStatus)
-                setTurnedInAt(next.turnedInAt)
-              }}
-            />
+          <Tabs.Panel value='progress' pt='md'>
+            <Tabs value={activeTab} onChange={changeTab} keepMounted={false}>
+              <Tabs.List grow aria-label='Saga categories'>
+                <Tabs.Tab value='heroic'>Heroic</Tabs.Tab>
+                <Tabs.Tab value='epic'>Epic</Tabs.Tab>
+                <Tabs.Tab value='legendary'>Legendary</Tabs.Tab>
+              </Tabs.List>
+              <Tabs.Panel value={activeTab} pt='md'>
+                <SagaList
+                  sagas={visibleSagas}
+                  questsBySaga={questsBySaga}
+                  sagaStatus={effectiveSagaStatus}
+                  questDoneAt={questDoneAt}
+                  turnedInAt={turnedInAt}
+                  expandedSagaIds={expandedSagaIds}
+                  query={searchQuery}
+                  onToggleExpanded={toggleExpanded}
+                  onToggleSaga={(sagaId, checked) => {
+                    const now = Date.now()
+                    setQuestDoneAt((current) => toggleSagaQuests(current, questsBySaga[sagaId] ?? [], checked, now))
+                  }}
+                  onToggleTurnedIn={(sagaId, checked) => {
+                    const next = toggleTurnedIn(sagaStatus, turnedInAt, sagaId, checked, Date.now())
+                    setSagaStatus(next.sagaStatus)
+                    setTurnedInAt(next.turnedInAt)
+                  }}
+                  onToggleQuest={(questId, checked) => {
+                    setQuestCompletion(questId, checked ? Date.now() : undefined)
+                  }}
+                  onNewRun={(sagaId) => {
+                    const next = startNewRun(sagaStatus, turnedInAt, sagaId, Date.now())
+                    setSagaStatus(next.sagaStatus)
+                    setTurnedInAt(next.turnedInAt)
+                  }}
+                />
+              </Tabs.Panel>
+            </Tabs>
+          </Tabs.Panel>
+          <Tabs.Panel value='session' pt='md'>
+            <SagaSessionPlanner data={initialization.data} progress={progress} onQuestUpdate={setQuestCompletion} />
           </Tabs.Panel>
         </Tabs>
       </Stack>
@@ -320,7 +352,7 @@ const SagaTrackerPage = () => {
         title='Saga Tracker'
         description='Track your DDO saga completion.'
         summary={
-          data && (
+          data && view === 'progress' ? (
             <Stack gap={4}>
               <Text size='sm' fw={600}>
                 {completedCount} / {data.sagas.length} completed
@@ -332,7 +364,7 @@ const SagaTrackerPage = () => {
                 value={data.sagas.length ? (completedCount / data.sagas.length) * 100 : 0}
               />
             </Stack>
-          )
+          ) : undefined
         }
         controls={controls}
         actions={actions}
