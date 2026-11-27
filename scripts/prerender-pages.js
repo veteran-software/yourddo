@@ -69,8 +69,27 @@ const escapeJsonLd = (value) =>
 
 const upsertTitle = (html, title) => html.replace(/<title>.*?<\/title>/is, `<title>${escapeHtml(title)}</title>`)
 
-const buildHtml = (template, prerender) => {
-  let html = template
+const addRouteAssets = (template, manifest, entry) => {
+  const seen = new Set()
+  const links = new Map()
+  const visit = (key) => {
+    if (seen.has(key)) return
+    seen.add(key)
+    const chunk = manifest[key]
+    if (!chunk) throw new Error('Missing build assets for ' + key)
+    for (const dependency of chunk.imports ?? []) visit(dependency)
+    for (const css of chunk.css ?? []) links.set(css, 'stylesheet')
+    links.set(chunk.file, 'modulepreload')
+  }
+  if (entry) visit(entry)
+  const tags = [...links].flatMap(([asset, rel]) =>
+    template.includes(`href="/${asset}"`) ? [] : [`<link rel="${rel}" href="/${escapeHtml(asset)}"/>`]
+  )
+  return template.replace('</head>', [...tags, '</head>'].join('\n'))
+}
+
+const buildHtml = (template, manifest, prerender) => {
+  let html = addRouteAssets(template, manifest, prerender.assetEntry)
   html = upsertTitle(html, prerender.title)
   html = upsertMetaName(html, 'description', prerender.description)
   html = upsertMetaName(html, 'robots', prerender.robots)
@@ -111,6 +130,7 @@ const writeRouteHtml = async (routePath, html) => {
 
 const main = async () => {
   const template = await readFile(templatePath, 'utf8')
+  const manifest = JSON.parse(await readFile(path.join(distDir, '.vite', 'manifest.json'), 'utf8'))
   const { render, ROUTE_SEO, routeAliases } = await import(pathToFileURL(ssrBundlePath).href)
   const origin =
     process.env.AWS_BRANCH === 'develop'
@@ -119,16 +139,22 @@ const main = async () => {
 
   await Promise.all(
     ROUTE_SEO.map(async ({ path: routePath }) => {
-      const prerender = render(routePath, origin)
-      const html = buildHtml(template, prerender)
+      const prerender = await render(routePath, origin)
+      const html = buildHtml(template, manifest, prerender)
       await writeRouteHtml(routePath, html)
     })
   )
 
   await Promise.all(
-    routeAliases.map(({ path: alias, target }) => writeRouteHtml(alias, buildHtml(template, render(target, origin))))
+    routeAliases.map(async ({ path: alias, target }) =>
+      writeRouteHtml(alias, buildHtml(template, manifest, await render(target, origin)))
+    )
   )
-  await writeFile(path.join(distDir, '404.html'), buildHtml(template, render('/404.html', origin)), 'utf8')
+  await writeFile(
+    path.join(distDir, '404.html'),
+    buildHtml(template, manifest, await render('/404.html', origin)),
+    'utf8'
+  )
 
   console.log(`Prerendered ${ROUTE_SEO.length} routes, ${routeAliases.length} aliases, and 404.html`)
 }

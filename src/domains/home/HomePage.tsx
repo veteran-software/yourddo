@@ -15,7 +15,6 @@ import ToolLayout from '../../shared/layout/ToolLayout'
 import { navigation } from '../../shared/navigation/navigation'
 import { homeTools, pinsKey, recentsKey, readShelf, writeShelf } from './shelves'
 
-import { GEAR_PLANNER_STORAGE_KEY, parsePersistedGearPlannerState } from '../gearPlanner/plannerStorage'
 import styles from './home.module.css'
 
 const forum = 'https://forums.ddo.com/index.php?forums/announcements.5/'
@@ -89,8 +88,9 @@ function shelfEntries(saved: string[]) {
   })
 }
 
-function readActiveSetupName() {
+async function readActiveSetupName() {
   try {
+    const { GEAR_PLANNER_STORAGE_KEY, parsePersistedGearPlannerState } = await import('../gearPlanner/plannerStorage')
     const saved = parsePersistedGearPlannerState(JSON.parse(localStorage.getItem(GEAR_PLANNER_STORAGE_KEY) ?? 'null'))
     return saved.setups.find((s) => s.id === saved.activeSetupId)?.name
   } catch {
@@ -122,7 +122,17 @@ export default function HomePage() {
   }
   const recentTools = shelfEntries(recent)
   const latest = recentTools[0]
-  const [setup] = useState(() => (latest?.path === '/gear-planner' ? readActiveSetupName() : undefined))
+  const [setup, setSetup] = useState<string>()
+  useEffect(() => {
+    if (latest?.path !== '/gear-planner') return
+    let active = true
+    void readActiveSetupName().then((name) => {
+      if (active) setSetup(name)
+    })
+    return () => {
+      active = false
+    }
+  }, [latest?.path])
   return (
     <ToolLayout>
       <header className={styles.masthead}>
