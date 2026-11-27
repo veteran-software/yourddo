@@ -1,10 +1,28 @@
 import { ActionIcon, Alert, Anchor, Button, Center, Group, List, Loader, Modal, Stack, Tabs, Text } from '@mantine/core'
-import { IconSparkles, IconBasket, IconShare, IconListDetails, IconQuestionMark, IconSearch } from '@tabler/icons-react'
+import {
+  IconSparkles,
+  IconBasket,
+  IconShare,
+  IconListDetails,
+  IconHistory,
+  IconQuestionMark,
+  IconSearch
+} from '@tabler/icons-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  PlannerEditActions,
+  PlannerEditingHelp,
+  PlannerHistoryTool,
+  PlannerSaveWarning
+} from '../../shared/layout/PlannerEditActions'
+import { usePlannerAutosave } from '../../shared/layout/usePlannerAutosave'
+import { usePlannerShortcuts } from '../../shared/layout/usePlannerShortcuts'
+import { usePlannerHistory } from '../../shared/layout/usePlannerHistory'
 import WorkspaceHeader from '../../shared/layout/WorkspaceHeader'
 import layout from '../../shared/layout/PlannerWorkspace.module.css'
 import WorkspaceLayout, { type WorkspaceTool } from '../../shared/layout/WorkspaceLayout.tsx'
 import { InvalidEssenceCraftingDataError, loadEssenceCraftingData } from './data.ts'
+import { describePlanEdit } from './describePlanEdit'
 import { EQUIPMENT_SLOTS, type EquipmentSlotId } from './equipment.ts'
 import type { EssenceCraftingData } from './essenceCrafting.types.ts'
 import SharingTool from './SharingTool.tsx'
@@ -30,9 +48,11 @@ import RecipesTool from './RecipesTool.tsx'
 import ShardLookup from './ShardLookup'
 import lookupStyles from './ShardLookup.module.css'
 
+type RecipeBinding = 'bound' | 'unbound'
+
 type DataState =
   | { status: 'loading' }
-  | { status: 'loaded'; data: EssenceCraftingData; plan: EssencePlanState }
+  | { status: 'loaded'; data: EssenceCraftingData; plan: EssencePlanState; binding: RecipeBinding }
   | { status: 'error'; kind: 'load' | 'invalid'; cause: unknown }
 
 type Confirmation =
@@ -116,16 +136,44 @@ function EquipmentConflictDialog({
 }
 
 const EssenceCraftingPage = () => {
-  const [dataState, setDataState] = useState<DataState>({ status: 'loading' })
+  const history = usePlannerHistory<DataState>(() => ({ status: 'loading' }), 'essence-crafting')
+  const { current: dataState, edit, reset, clear } = history
   const [loadAttempt, setLoadAttempt] = useState(0)
   const [confirmation, setConfirmation] = useState<Confirmation>(null)
   const [helpOpen, setHelpOpen] = useState(false)
+  usePlannerShortcuts({
+    undo: history.canUndo ? history.undo : undefined,
+    redo: history.canRedo ? history.redo : undefined,
+    help: () => {
+      setHelpOpen(true)
+    }
+  })
+  const historyTool = useMemo<WorkspaceTool>(
+    () => ({
+      id: 'history',
+      label: 'History',
+      icon: <IconHistory stroke={2} />,
+      content: <PlannerHistoryTool entries={history.entries} />
+    }),
+    [history.entries]
+  )
   const [equipmentConflict, setEquipmentConflict] = useState<EquipmentConflict | null>(null)
-  const [binding, setBinding] = useState<'bound' | 'unbound'>('bound')
+  const binding = dataState.status === 'loaded' ? dataState.binding : 'bound'
+  const setBinding = useCallback(
+    (next: RecipeBinding) => {
+      edit((current) =>
+        current.status === 'loaded' && current.binding !== next ? { ...current, binding: next } : current
+      )
+    },
+    [edit]
+  )
+  const autosave = usePlannerAutosave(
+    dataState.status === 'loaded' ? dataState.plan : null,
+    (plan) => saveEssenceCraftingPlan(plan) && history.saveEntries()
+  )
   const [view, setView] = useState<string | null>('plan')
   const [permalinkError, setPermalinkError] = useState<string | null>(null)
   const permalinkToImportRef = useRef(readEssenceCraftingPermalinkFromSearch())
-  const hydrationCompleteRef = useRef(false)
   const planMaterials = useMemo(
     () => (dataState.status === 'loaded' ? calculatePlanMaterials(dataState.data, dataState.plan, binding) : undefined),
     [binding, dataState]
@@ -162,6 +210,7 @@ const EssenceCraftingPage = () => {
                 />
               )
             },
+            historyTool,
             {
               id: 'sharing',
               label: 'Sharing',
@@ -169,8 +218,11 @@ const EssenceCraftingPage = () => {
               content: (
                 <SharingTool
                   onRestore={({ plan, binding: restoredBinding }) => {
-                    setBinding(restoredBinding)
-                    setDataState((current) => (current.status === 'loaded' ? { ...current, plan } : current))
+                    edit(
+                      (current) =>
+                        current.status === 'loaded' ? { ...current, plan, binding: restoredBinding } : current,
+                      'Restored an Essence Crafting backup'
+                    )
                   }}
                   binding={binding}
                   data={dataState.data}
@@ -181,7 +233,7 @@ const EssenceCraftingPage = () => {
             }
           ]
         : [],
-    [binding, dataState, planMaterials]
+    [binding, dataState, edit, historyTool, planMaterials, setBinding]
   )
 
   useEffect(() => {
@@ -200,12 +252,11 @@ const EssenceCraftingPage = () => {
         } else if (decodedPermalink) {
           setPermalinkError(getPermalinkErrorMessage(decodedPermalink.reason))
         }
-        hydrationCompleteRef.current = true
-        setDataState({ status: 'loaded', data, plan })
+        reset({ status: 'loaded', data, plan, binding: 'bound' })
       })
       .catch((cause: unknown) => {
         if (!active) return
-        setDataState({
+        reset({
           status: 'error',
           kind: cause instanceof InvalidEssenceCraftingDataError ? 'invalid' : 'load',
           cause
@@ -215,20 +266,22 @@ const EssenceCraftingPage = () => {
     return () => {
       active = false
     }
-  }, [loadAttempt])
+  }, [loadAttempt, reset])
 
-  useEffect(() => {
-    if (dataState.status !== 'loaded' || !hydrationCompleteRef.current) return
-    saveEssenceCraftingPlan(dataState.plan)
-  }, [dataState])
-
-  const dispatch = useCallback((action: EssencePlanAction) => {
-    setDataState((current) =>
-      current.status === 'loaded'
-        ? { ...current, plan: transitionEssencePlan(current.data, current.plan, action) }
-        : current
-    )
-  }, [])
+  const dispatch = useCallback(
+    (action: EssencePlanAction) => {
+      edit(
+        (current) => {
+          if (current.status !== 'loaded') return current
+          const plan = transitionEssencePlan(current.data, current.plan, action)
+          return plan === current.plan ? current : { ...current, plan }
+        },
+        (previous) =>
+          previous.status === 'loaded' ? describePlanEdit(action, previous.data, previous.plan) : undefined
+      )
+    },
+    [edit]
+  )
 
   const requestDeactivate = useCallback((equipmentSlotId: EquipmentSlotId) => {
     setConfirmation({ type: 'deactivate-equipment-slot', equipmentSlotId })
@@ -245,7 +298,7 @@ const EssenceCraftingPage = () => {
   }
 
   const retry = () => {
-    setDataState({ status: 'loading' })
+    reset({ status: 'loading' })
     setLoadAttempt((attempt) => attempt + 1)
   }
 
@@ -253,7 +306,13 @@ const EssenceCraftingPage = () => {
     if (confirmation?.type === 'deactivate-equipment-slot') {
       dispatch({ type: 'deactivate-equipment-slot', equipmentSlotId: confirmation.equipmentSlotId })
     }
-    if (confirmation?.type === 'reset-plan') dispatch({ type: 'reset-plan' })
+    if (confirmation?.type === 'reset-plan') {
+      clear((current) =>
+        current.status === 'loaded'
+          ? { ...current, plan: transitionEssencePlan(current.data, current.plan, { type: 'reset-plan' }) }
+          : current
+      )
+    }
     setConfirmation(null)
   }
 
@@ -263,7 +322,7 @@ const EssenceCraftingPage = () => {
       : undefined
 
   return (
-    <WorkspaceLayout tools={view === 'plan' ? tools : []} scrollMain={false}>
+    <WorkspaceLayout tools={view === 'plan' ? tools : [historyTool]} scrollMain={false}>
       <Stack className={layout.planner} gap='sm' p={{ base: 'xs', sm: 'md' }}>
         <WorkspaceHeader
           title='Essence Crafting'
@@ -294,6 +353,8 @@ const EssenceCraftingPage = () => {
             </Group>
           }
         />
+
+        {autosave.saveFailed && <PlannerSaveWarning retry={autosave.retrySave} />}
 
         {dataState.status === 'loading' ? (
           <Center mih={160} role='status' aria-live='polite'>
@@ -349,6 +410,8 @@ const EssenceCraftingPage = () => {
                   tools={tools}
                   data={dataState.data}
                   plan={dataState.plan}
+                  hasEditHistory={history.entries.length > 0}
+                  editActions={<PlannerEditActions {...history} />}
                   onAction={(action) => {
                     if (action.type === 'set-two-handed') requestEquipmentChange(action)
                     else dispatch(action)
@@ -389,6 +452,7 @@ const EssenceCraftingPage = () => {
         centered
       >
         <Stack gap='md'>
+          <PlannerEditingHelp />
           <Alert title='Search for what the effect does' icon={<IconSearch size={18} />}>
             Looking for <strong>Deception</strong>? Search for <strong>Sneak Attack</strong> in Master Shard Lookup. The
             catalog lists the underlying effects that improve sneak attacks. If a search comes up empty, try the stat or
@@ -430,7 +494,7 @@ const EssenceCraftingPage = () => {
         <Stack gap='md'>
           <Text>
             {confirmation?.type === 'reset-plan'
-              ? 'This removes every planned item and all of their selections.'
+              ? 'This removes every planned item and clears edit history. You cannot undo this reset.'
               : `This removes the ${confirmationSlot?.label ?? 'selected'} item and all of its selections.`}
           </Text>
           <Group justify='flex-end'>

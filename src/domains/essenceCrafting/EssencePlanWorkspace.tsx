@@ -21,7 +21,7 @@ import {
   IconSwords,
   IconWand
 } from '@tabler/icons-react'
-import { useRef, useState } from 'react'
+import { type ReactNode, useRef, useState } from 'react'
 import layout from '../../shared/layout/PlannerWorkspace.module.css'
 import { EQUIPMENT_SLOTS, type EquipmentSlotId } from './equipment'
 import type { EssenceCraftingData } from './essenceCrafting.types'
@@ -57,6 +57,8 @@ interface Props {
   tools: readonly WorkspaceTool[]
   data: EssenceCraftingData
   plan: EssencePlanState
+  hasEditHistory: boolean
+  editActions: ReactNode
   onAction: (action: EssencePlanAction) => void
   onRequestActivate: (slot: EquipmentSlotId, onActivated: () => void) => void
   onRequestDeactivate: (slot: EquipmentSlotId) => void
@@ -66,6 +68,8 @@ interface Props {
 export default function EssencePlanWorkspace({
   data,
   plan,
+  hasEditHistory,
+  editActions,
   onAction,
   onRequestActivate,
   onRequestDeactivate,
@@ -113,15 +117,22 @@ export default function EssencePlanWorkspace({
             allowDeselect={false}
           />
         </Group>
-        <Button
-          variant='subtle'
-          color='red'
-          size='compact-sm'
-          disabled={!plan.activeSlotIds.length}
-          onClick={onRequestReset}
-        >
-          Reset plan
-        </Button>
+        <Group gap='xs' wrap='nowrap'>
+          <Button
+            variant='subtle'
+            color='red'
+            size='compact-sm'
+            disabled={
+              !plan.activeSlotIds.length &&
+              !hasEditHistory &&
+              plan.masterMinimumLevel === data.rules.supportedItemLevels.minimum
+            }
+            onClick={onRequestReset}
+          >
+            Reset plan
+          </Button>
+          {editActions}
+        </Group>
         <PlannerViewToolbar
           tools={tools}
           view={view}

@@ -2,6 +2,9 @@ import { ActionIcon, Button, Checkbox, Divider, Group, Modal, Stack, Text, Title
 import { IconInfoCircle } from '@tabler/icons-react'
 import { useState } from 'react'
 
+import { PlannerEditingHelp } from '../../../shared/layout/PlannerEditActions'
+import { usePlannerShortcuts } from '../../../shared/layout/usePlannerShortcuts'
+
 const preferenceKey = 'yourddo:gear-planner:guide-dismissed'
 
 function readDismissed() {
@@ -17,6 +20,12 @@ export default function GearPlannerGuide() {
   const [opened, setOpened] = useState(() => {
     const url = new URL(window.location.href)
     return !dismissed && !url.searchParams.has('gp') && !new URLSearchParams(url.hash.slice(1)).has('gp')
+  })
+
+  usePlannerShortcuts({
+    help: () => {
+      setOpened(true)
+    }
   })
 
   return (
@@ -49,6 +58,7 @@ export default function GearPlannerGuide() {
             an Artificer or Druid. Select a slot to browse gear. <strong>Enchantments</strong> shows which bonuses stack
             or overlap. <strong>Set Bonuses</strong> shows how many pieces you need for the next bonus.
           </Text>
+          <PlannerEditingHelp />
           <Divider />
           <Stack gap={4}>
             <Title order={3} size='h5'>

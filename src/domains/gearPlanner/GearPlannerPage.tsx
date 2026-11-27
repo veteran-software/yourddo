@@ -65,6 +65,7 @@ import {
 } from '@mantine/core'
 import {
   IconCopy,
+  IconHistory,
   IconColumns2,
   IconUserCog,
   IconMapPin,
@@ -100,6 +101,15 @@ import {
   IconTrash,
   IconX
 } from '@tabler/icons-react'
+import {
+  PlannerEditActions,
+  PlannerHistoryTool,
+  PlannerSaveWarning,
+  RevealFilteredResults
+} from '../../shared/layout/PlannerEditActions'
+import { usePlannerAutosave } from '../../shared/layout/usePlannerAutosave'
+import { usePlannerShortcuts } from '../../shared/layout/usePlannerShortcuts'
+import { usePlannerHistory } from '../../shared/layout/usePlannerHistory'
 import { useEffect, useEffectEvent, useId, useMemo, useRef, useState } from 'react'
 import ItemIcon from '../../shared/items/ItemIcon.tsx'
 import type { WorkspaceTool } from '../../shared/layout/WorkspaceLayout.tsx'
@@ -582,17 +592,21 @@ const ItemBrowser = ({
   const [slotFilter, setSlotFilter] = useState<string | null>(null)
   const [bonusType, setBonusType] = useState<string | null>(effectTarget?.bonusType ?? null)
   const [filtersOpen, setFiltersOpen] = useState(false)
+  const [showFiltered, setShowFiltered] = useState(false)
   const filtersId = useId()
   const filterSlot = finding ? slotFilter : slot
   const effectQuery = search.trim().toLowerCase()
   const { inventory, ownedOnly, setOwnedOnly } = useTroveInventory()
-  const candidates = useMemo(() => {
+  const eligibleCandidates = useMemo(() => {
     return catalogItems.filter(
       ({ item }) =>
-        (!filterSlot || item.slot === filterSlot) &&
-        (item.slot !== 'Off Hand' || allowsOffHand(equipment['Main Hand'], item))
+        (finding || item.slot === slot) && (item.slot !== 'Off Hand' || allowsOffHand(equipment['Main Hand'], item))
     )
-  }, [catalogItems, equipment, filterSlot])
+  }, [catalogItems, equipment, finding, slot])
+  const candidates = useMemo(
+    () => (filterSlot ? eligibleCandidates.filter(({ item }) => item.slot === filterSlot) : eligibleCandidates),
+    [eligibleCandidates, filterSlot]
+  )
   const bonusTypes = useMemo(
     () =>
       finding
@@ -668,9 +682,26 @@ const ItemBrowser = ({
     ]
   )
 
+  const hidden = useMemo(() => {
+    if (catalog === 'Filigrees') return []
+    const visible = new Set(filtered)
+    return filterGearPlannerCandidates(eligibleCandidates, {
+      search,
+      exactEffect,
+      inventory,
+      minimumLevel: -Infinity,
+      maximumLevel: Infinity,
+      type: null,
+      setName: null
+    }).filter((candidate) => !visible.has(candidate))
+  }, [catalog, eligibleCandidates, exactEffect, filtered, inventory, search])
+  const results = showFiltered ? [...filtered, ...hidden] : filtered
+  const hiddenCandidates = new Set(hidden)
+
   useEffect(() => {
     setVisibleCount(pageSize)
-  }, [search, minimumLevel, maximumLevel, type, setName, slotFilter, bonusType, ownedOnly, showConflicts])
+    setShowFiltered(false)
+  }, [search, exactEffect, minimumLevel, maximumLevel, type, setName, slotFilter, bonusType, ownedOnly, showConflicts])
 
   const changeSlotFilter = (value: string | null) => {
     setSlotFilter(value)
@@ -803,8 +834,16 @@ const ItemBrowser = ({
           )}
           <Group gap='xs'>
             <Text aria-live='polite' c='dimmed' size='sm'>
-              {filtered.length === 1 ? '1 item' : `${String(filtered.length)} items`}
+              {results.length === 1 ? '1 item' : `${String(results.length)} items`}
             </Text>
+            <RevealFilteredResults
+              count={hidden.length}
+              revealed={showFiltered}
+              onToggle={() => {
+                setVisibleCount(pageSize)
+                setShowFiltered(!showFiltered)
+              }}
+            />
             {finding && (
               <div className={classes.compactFilters}>
                 <Button
@@ -911,7 +950,8 @@ const ItemBrowser = ({
           )}
 
           <ul className={classes.results} data-finder={finding || undefined}>
-            {filtered.slice(0, visibleCount).map(({ item, sets: itemSets, effects, craftGroups }) => {
+            {results.slice(0, visibleCount).map((candidate) => {
+              const { item, sets: itemSets, effects, craftGroups } = candidate
               const incumbent = equipment[item.slot]
               const equipped = incumbent?.id === item.id
               const membershipLabel = incumbentSetLabel(memberships, incumbent, setName)
@@ -943,6 +983,11 @@ const ItemBrowser = ({
                         <Text fw={700} size='md'>
                           {item.source.name}
                         </Text>
+                        {hiddenCandidates.has(candidate) && (
+                          <Badge variant='outline' color='gray' size='sm'>
+                            Outside filters
+                          </Badge>
+                        )}
                         {equipped && (
                           <Badge variant='light' color='teal' size='sm'>
                             Equipped
@@ -970,7 +1015,10 @@ const ItemBrowser = ({
                           <ItemSetLinks names={itemSets} onOpen={openSet} />
                         </details>
                       ) : (
-                        <ItemSetLinks names={setName ? [setName] : itemSets} onOpen={openSet} />
+                        <ItemSetLinks
+                          names={setName && itemSets.includes(setName) ? [setName] : itemSets}
+                          onOpen={openSet}
+                        />
                       )}
                       {matchingRecipes.length > 1 && item.slaveLordsBase ? (
                         <details>
@@ -1052,15 +1100,15 @@ const ItemBrowser = ({
               )
             })}
           </ul>
-          {filtered.length === 0 && <Text c='dimmed'>{emptyCatalogMessage(filterSlot, equipment['Main Hand'])}</Text>}
-          {visibleCount < filtered.length && (
+          {results.length === 0 && <Text c='dimmed'>{emptyCatalogMessage(filterSlot, equipment['Main Hand'])}</Text>}
+          {visibleCount < results.length && (
             <Button
               variant='subtle'
               onClick={() => {
                 setVisibleCount((current) => current + pageSize)
               }}
             >
-              Show {String(Math.min(pageSize, filtered.length - visibleCount))} more
+              Show {String(Math.min(pageSize, results.length - visibleCount))} more
             </Button>
           )}
         </>
@@ -1091,7 +1139,12 @@ function gearDetailTitle(
 const GearPlannerWorkspace = () => {
   const [dataState, setDataState] = useState<DataState>({ status: 'loading' })
   const [attempt, setAttempt] = useState(0)
-  const [plannerState, setPlannerState] = useState(createDefaultGearPlannerState)
+  const history = usePlannerHistory(createDefaultGearPlannerState, 'gear-planner')
+  const { current: plannerState, edit: editPlanner, reset: resetPlanner } = history
+  usePlannerShortcuts({
+    undo: history.canUndo ? history.undo : undefined,
+    redo: history.canRedo ? history.redo : undefined
+  })
   const [requestedSlot, setRequestedSlot] = useState<GearPlannerSlot>('Eyes')
   const [mode, setMode] = useState<'equipped' | 'replace' | 'find' | 'paths' | { filigreeSlot: number }>('equipped')
   const [pathSearch, setPathSearch] = useState<{
@@ -1270,7 +1323,9 @@ const GearPlannerWorkspace = () => {
     findGear({ kind: 'item', name })
   }
   function updateLevels(update: Partial<LevelRange>) {
-    applySetupState((current) => updateGearPlannerSetupLevels(current, activeSetup.id, update))
+    applySetupState('Changed the gear level range', (current) =>
+      updateGearPlannerSetupLevels(current, activeSetup.id, update)
+    )
   }
 
   const tools: readonly WorkspaceTool[] = [
@@ -1289,7 +1344,7 @@ const GearPlannerWorkspace = () => {
                     effects={effects}
                     names={activeSetup.character.focusStats ?? []}
                     onChange={(focusStats) => {
-                      applySetupState((current) =>
+                      applySetupState('Updated Focus Stats', (current) =>
                         updateSetupCharacter(current, activeSetup.id, { ...activeSetup.character, focusStats })
                       )
                     }}
@@ -1300,7 +1355,9 @@ const GearPlannerWorkspace = () => {
                 weaponTypes={weaponTypes}
                 settings={activeSetup.character}
                 onChange={(character) => {
-                  applySetupState((current) => updateSetupCharacter(current, activeSetup.id, character))
+                  applySetupState('Updated character settings', (current) =>
+                    updateSetupCharacter(current, activeSetup.id, character)
+                  )
                 }}
               />
             )
@@ -1353,13 +1410,24 @@ const GearPlannerWorkspace = () => {
                 slots={effectiveAugmentSlots}
                 effects={allEffects}
                 onChange={(socket, augment) => {
-                  applySetupState((current) =>
-                    setGearPlannerSetupAugment(current, socket.item.id, socket.index, augment, dataState.data.reforging)
+                  applySetupState(
+                    augment
+                      ? `Slotted ${augment.name} on ${socket.item.source.name}`
+                      : `Removed an augment from ${socket.item.source.name}`,
+                    (current) =>
+                      setGearPlannerSetupAugment(
+                        current,
+                        socket.item.id,
+                        socket.index,
+                        augment,
+                        dataState.data.reforging
+                      )
                   )
                 }}
                 onExchange={(from, to) => {
-                  applySetupState((current) =>
-                    exchangeSetupAugments(current, activeSetup.id, from, to, dataState.data.reforging)
+                  applySetupState(
+                    `Transferred augments between ${from.item.source.name} and ${to.item.source.name}`,
+                    (current) => exchangeSetupAugments(current, activeSetup.id, from, to, dataState.data.reforging)
                   )
                 }}
                 openSet={(name) => {
@@ -1407,6 +1475,12 @@ const GearPlannerWorkspace = () => {
             content: <FarmingTool key={activeSetup.id} setup={activeSetup} />
           },
           {
+            id: 'history',
+            label: 'History',
+            icon: <IconHistory stroke={2} />,
+            content: <PlannerHistoryTool entries={history.entries} />
+          },
+          {
             id: 'sharing',
             label: 'Sharing',
             icon: <IconShare stroke={2} />,
@@ -1419,7 +1493,7 @@ const GearPlannerWorkspace = () => {
                 essenceData={dataState.essenceData}
                 onRestore={(state) => {
                   setReturnSlot(null)
-                  setPlannerState(state)
+                  editPlanner(() => state, 'Restored a Gear Planner backup')
                   setMode('equipped')
                   setDetailOnMobile(false)
                   setRequestedSlot(
@@ -1469,7 +1543,7 @@ const GearPlannerWorkspace = () => {
           console.warn('Gear Planner persistence restore issues:', restored.issues)
         }
         setRequestedSlot(characterSlotLayout.find((s) => activeGearPlannerSetup(restored.state).equipment[s]) ?? 'Eyes')
-        setPlannerState(restored.state)
+        resetPlanner(restored.state)
         legacySaveImported.current = restored.legacySaveImported === true
         setPersistenceEnabled(false)
         if (restored.issues.length && !restored.carryover) {
@@ -1490,7 +1564,7 @@ const GearPlannerWorkspace = () => {
     return () => {
       active = false
     }
-  }, [attempt])
+  }, [attempt, resetPlanner])
 
   const openSharedSetup = useEffectEvent(() => {
     if (dataState.status !== 'ready') return
@@ -1501,7 +1575,7 @@ const GearPlannerWorkspace = () => {
     try {
       const imported = openGearPlannerLink(shared, plannerState, dataState.data, dataState.essenceData)
       setReturnSlot(null)
-      setPlannerState(imported.state)
+      editPlanner(() => imported.state, 'Opened shared setup ' + activeGearPlannerSetup(imported.state).name)
       setPersistenceEnabled(true)
       setRequestedSlot(characterSlotLayout.find((s) => activeGearPlannerSetup(imported.state).equipment[s]) ?? 'Eyes')
       setMode('equipped')
@@ -1533,10 +1607,10 @@ const GearPlannerWorkspace = () => {
     }
   }, [dataState.status])
 
-  useEffect(() => {
-    if (dataState.status === 'ready' && persistenceEnabled)
-      saveGearPlannerState(plannerState, undefined, legacySaveImported.current)
-  }, [dataState.status, persistenceEnabled, plannerState])
+  const autosave = usePlannerAutosave(
+    dataState.status === 'ready' && persistenceEnabled ? plannerState : null,
+    (state) => saveGearPlannerState(state, undefined, legacySaveImported.current) && history.saveEntries()
+  )
 
   useEffect(() => {
     setRenameOpen(false)
@@ -1552,7 +1626,9 @@ const GearPlannerWorkspace = () => {
     if (dataState.status !== 'ready') return
     if (finding) setReturnSlot(slot)
     setRequestedSlot(targetSlot)
-    setPlannerState((current) => equipGearPlannerSetupItem(current, targetSlot, item, dataState.essenceData))
+    applySetupState(item ? `Equipped ${item.source.name} in ${targetSlot}` : `Unequipped ${targetSlot}`, (current) =>
+      equipGearPlannerSetupItem(current, targetSlot, item, dataState.essenceData)
+    )
     setMode('equipped')
     setPersistenceEnabled(true)
     if (view === 'grid' && !finding) {
@@ -1565,14 +1641,17 @@ const GearPlannerWorkspace = () => {
     requestAnimationFrame(() => detailHeadingRef.current?.focus({ preventScroll: true }))
   }
 
-  const applySetupState = (transition: (state: GearPlannerSetupsState) => GearPlannerSetupsState) => {
-    setPlannerState((current) => transition(current))
+  const applySetupState = (
+    description: string,
+    transition: (state: GearPlannerSetupsState) => GearPlannerSetupsState
+  ) => {
+    editPlanner(transition, description + ' · ' + activeSetup.name)
     setPersistenceEnabled(true)
   }
 
   const duplicateSetup = () => {
     const id = createGearPlannerSetupId()
-    applySetupState((current) => duplicateGearPlannerSetup(current, id))
+    applySetupState('Duplicated setup', (current) => duplicateGearPlannerSetup(current, id))
     setCompareOpen(false)
     setReturnSlot(null)
     setMode('equipped')
@@ -1686,31 +1765,46 @@ const GearPlannerWorkspace = () => {
           equip(currentSlot, null)
         }}
         setAugment={(itemId, slotIndex, augment) => {
-          applySetupState((current) =>
-            setGearPlannerSetupAugment(current, itemId, slotIndex, augment, dataState.data.reforging)
+          applySetupState(
+            augment
+              ? `Slotted ${augment.name} on ${cardItem.source.name}`
+              : `Removed an augment from ${cardItem.source.name}`,
+            (current) => setGearPlannerSetupAugment(current, itemId, slotIndex, augment, dataState.data.reforging)
           )
         }}
         setCraft={(itemId, system, choiceId) => {
-          applySetupState((current) =>
+          applySetupState(`Changed ${system.replaceAll('-', ' ')} crafting on ${cardItem.source.name}`, (current) =>
             setGearPlannerSetupCraft(current, cardSlot, itemId, system, choiceId, dataState.data.crafting)
           )
         }}
         setCurse={(itemId, curseId) => {
-          applySetupState((current) => setGearPlannerSetupCurse(current, itemId, curseId, dataState.data.curses))
+          applySetupState(
+            curseId
+              ? `Applied ${dataState.data.curses.find(({ id }) => id === curseId)?.name ?? 'a curse'} to ${cardItem.source.name}`
+              : `Cleared the curse on ${cardItem.source.name}`,
+            (current) => setGearPlannerSetupCurse(current, itemId, curseId, dataState.data.curses)
+          )
         }}
         setFiligree={(itemId, slotIndex, filigree) => {
-          applySetupState((current) => setGearPlannerSetupFiligree(current, itemId, slotIndex, filigree))
+          applySetupState(
+            filigree
+              ? `Slotted ${filigree.name} on ${cardItem.source.name}`
+              : `Removed a filigree from ${cardItem.source.name}`,
+            (current) => setGearPlannerSetupFiligree(current, itemId, slotIndex, filigree)
+          )
         }}
         setUnlockedFiligreeSlots={(itemId, count) => {
-          applySetupState((current) => setGearPlannerSetupUnlockedFiligreeSlots(current, itemId, count))
+          applySetupState(`Set ${cardItem.source.name} to ${count.toString()} unlocked filigree slots`, (current) =>
+            setGearPlannerSetupUnlockedFiligreeSlots(current, itemId, count)
+          )
         }}
         setEssenceConfiguration={(itemId, update) => {
-          applySetupState((current) =>
+          applySetupState(`Changed Essence Crafting on ${cardItem.source.name}`, (current) =>
             setGearPlannerSetupEssenceCraftingConfiguration(current, itemId, update, dataState.essenceData)
           )
         }}
         setReforging={(itemId, stage, update) => {
-          applySetupState((current) =>
+          applySetupState(`Changed ${stage.replaceAll('-', ' ')} on ${cardItem.source.name}`, (current) =>
             setGearPlannerSetupReforgingState(current, itemId, stage, update, dataState.data.reforging)
           )
         }}
@@ -1746,6 +1840,8 @@ const GearPlannerWorkspace = () => {
             </Group>
           )}
         </Group>
+
+        {autosave.saveFailed && <PlannerSaveWarning retry={autosave.retrySave} />}
 
         {dataState.status === 'loading' && (
           <Center mih={160} role='status' aria-live='polite'>
@@ -1791,7 +1887,8 @@ const GearPlannerWorkspace = () => {
                   if (id) {
                     setReturnSlot(null)
                     setMode('equipped')
-                    applySetupState((current) => selectGearPlannerSetup(current, id))
+                    editPlanner((current) => selectGearPlannerSetup(current, id))
+                    setPersistenceEnabled(true)
                   }
                 }}
               >
@@ -1803,7 +1900,7 @@ const GearPlannerWorkspace = () => {
                   ))}
                 </Tabs.List>
               </Tabs>
-              <Group className={classes.setupActions} gap='xs' wrap='nowrap'>
+              <Group className={classes.setupActions} gap='xs'>
                 <Button
                   size='xs'
                   variant='light'
@@ -1822,7 +1919,8 @@ const GearPlannerWorkspace = () => {
                     onClick={() => {
                       setReturnSlot(null)
                       setMode('equipped')
-                      applySetupState((current) => addGearPlannerSetup(current, createGearPlannerSetupId()))
+                      const id = createGearPlannerSetupId()
+                      applySetupState('Added a setup', (current) => addGearPlannerSetup(current, id))
                     }}
                   >
                     <IconPlus size={16} />
@@ -1872,6 +1970,7 @@ const GearPlannerWorkspace = () => {
                     </Menu.Item>
                   </Menu.Dropdown>
                 </Menu>
+                <PlannerEditActions {...history} />
               </Group>
               <PlannerViewToolbar
                 tools={tools}
@@ -1923,7 +2022,9 @@ const GearPlannerWorkspace = () => {
                         setFeedback({ kind: 'error', message: 'Setup name cannot be blank.' })
                         return
                       }
-                      applySetupState((current) => renameGearPlannerSetup(current, activeSetup.id, renameValue))
+                      applySetupState(`Renamed setup to ${renameValue.trim()}`, (current) =>
+                        renameGearPlannerSetup(current, activeSetup.id, renameValue)
+                      )
                       setRenameOpen(false)
                     }
                   }}
@@ -1936,7 +2037,9 @@ const GearPlannerWorkspace = () => {
                       setFeedback({ kind: 'error', message: 'Setup name cannot be blank.' })
                       return
                     }
-                    applySetupState((current) => renameGearPlannerSetup(current, activeSetup.id, renameValue))
+                    applySetupState(`Renamed setup to ${renameValue.trim()}`, (current) =>
+                      renameGearPlannerSetup(current, activeSetup.id, renameValue)
+                    )
                     setRenameOpen(false)
                   }}
                 >
@@ -2170,7 +2273,7 @@ const GearPlannerWorkspace = () => {
                         essence={dataState.essenceData}
                         onSave={(draft) => {
                           const id = createGearPlannerSetupId()
-                          applySetupState((current) => {
+                          applySetupState('Saved an upgrade path as a new setup', (current) => {
                             if (activeGearPlannerSetup(current) !== activeSetup) return current
                             const name = nextSetupName(current.setups, draft.name)
                             return {
@@ -2210,8 +2313,8 @@ const GearPlannerWorkspace = () => {
                 <Text size='sm'>
                   <strong>{activeSetup.name}</strong> ·{' '}
                   {setupAction === 'Clear'
-                    ? 'Remove all equipment and reset character settings and level filters?'
-                    : 'Permanently delete this setup?'}
+                    ? 'Remove all equipment, reset character settings and level filters, and clear this planner’s edit history? You cannot undo this reset.'
+                    : 'Delete this setup? You can undo this while the planner is open.'}
                 </Text>
                 <Group justify='flex-end'>
                   <Button
@@ -2228,10 +2331,11 @@ const GearPlannerWorkspace = () => {
                     onClick={() => {
                       setReturnSlot(null)
                       if (setupAction === 'Clear') {
-                        applySetupState((current) => clearGearPlannerSetup(current, activeSetup.id))
+                        history.clear((current) => clearGearPlannerSetup(current, activeSetup.id))
+                        setPersistenceEnabled(true)
                         setFeedback({ kind: 'success', message: activeSetup.name + ' cleared.' })
                       } else if (setupAction === 'Delete') {
-                        applySetupState((current) => deleteGearPlannerSetup(current, activeSetup.id))
+                        applySetupState('Deleted setup', (current) => deleteGearPlannerSetup(current, activeSetup.id))
                       }
                       setSetupAction(null)
                     }}

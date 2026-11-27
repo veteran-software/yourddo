@@ -175,6 +175,53 @@ afterAll(() => {
 })
 
 describe('GearPlannerPage', () => {
+  it('can reveal gear outside the filters without changing the current search or level range', async () => {
+    await renderReadyPage(
+      dataWithItems([
+        item('low', gearPlannerSlots.head, 'Quiet Helm', 10),
+        item('high', gearPlannerSlots.head, 'Loud Helm', 20)
+      ])
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Find gear' }))
+    fireEvent.change(screen.getByLabelText('Maximum level'), { target: { value: '15' } })
+    expect(screen.queryByRole('button', { name: 'Equip Loud Helm in Head' })).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Show 1 hidden by filters' }))
+    expect(screen.getByRole('button', { name: 'Equip Loud Helm in Head' })).toBeTruthy()
+    expect(screen.getByText('Outside filters')).toBeTruthy()
+    expect(screen.getByLabelText('Maximum level')).toHaveProperty('value', '15')
+    fireEvent.click(screen.getByRole('button', { name: 'Hide filtered results' }))
+    expect(screen.queryByRole('button', { name: 'Equip Loud Helm in Head' })).toBeNull()
+  })
+
+  it('records equipment edits, supports undo and redo, and clears history only after confirming Clear setup', async () => {
+    await renderReadyPage(dataWithItems([item('helm', gearPlannerSlots.head, 'Quiet Helm')]))
+    fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Equip Quiet Helm' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Undo plan edit' }))
+    expect(screen.getByTestId('gear-slot-Head').textContent).toContain('Empty')
+    fireEvent.keyDown(document.body, { key: 'z', ctrlKey: true, shiftKey: true })
+    expect(screen.getByTestId('gear-slot-Head').textContent).toContain('Quiet Helm')
+
+    fireEvent.click(within(screen.getByTestId('workspace-mobile-tools')).getByRole('button', { name: 'History' }))
+    const history = await screen.findByRole('dialog', { name: 'History' })
+    expect(within(history).getByText('Redo · Equipped Quiet Helm in Head · Default Setup')).toBeTruthy()
+    fireEvent.click(within(history).getByRole('button', { name: 'Close workspace tool' }))
+
+    fireEvent.click(screen.getByRole('button', { name: 'Setup actions' }))
+    fireEvent.click(await screen.findByRole('menuitem', { name: 'Clear setup…' }))
+    let confirm = await screen.findByRole('dialog', { name: 'Clear setup?' })
+    expect(confirm.textContent).toContain('clear this planner’s edit history')
+    fireEvent.click(within(confirm).getByRole('button', { name: 'Cancel' }))
+    expect(localStorage.getItem('yourddo:gear-planner:edit-history:v1')).toContain('Equipped Quiet Helm')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Setup actions' }))
+    fireEvent.click(await screen.findByRole('menuitem', { name: 'Clear setup…' }))
+    confirm = await screen.findByRole('dialog', { name: 'Clear setup?' })
+    fireEvent.click(within(confirm).getByRole('button', { name: 'Clear setup' }))
+    expect(localStorage.getItem('yourddo:gear-planner:edit-history:v1')).toBeNull()
+    expect(screen.getByRole<HTMLButtonElement>('button', { name: 'Undo plan edit' }).disabled).toBe(true)
+  })
+
   it('keeps farming checkmarks without showing the old drop location', async () => {
     const helm = item('helm', gearPlannerSlots.head, 'Helm of Fire & Ice')
     helm.source = { ...helm.source, dropLocations: [{ questWildernessChain: 'The Vault' }] }

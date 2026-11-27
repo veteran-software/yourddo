@@ -16,6 +16,7 @@ import {
 } from '@mantine/core'
 import { IconArrowDown, IconArrowUp, IconArrowsSort, IconCheck, IconSearch } from '@tabler/icons-react'
 import { useMemo, useRef, useState } from 'react'
+import { RevealFilteredResults } from '../../shared/layout/PlannerEditActions'
 import { formatResolvedEffectModifier, resolveEssenceEffects } from './enhancementEffects'
 import { EQUIPMENT_SLOTS } from './equipment'
 import type { EssenceBinding, EssenceCraftingData, EssenceEnhancement, EssenceRecipe } from './essenceCrafting.types'
@@ -202,6 +203,7 @@ const ShardLookup = ({ data, plan, onAction }: ShardLookupProps) => {
     descending: false
   })
   const [page, setPage] = useState(1)
+  const [showFiltered, setShowFiltered] = useState(false)
   const [selectedId, setSelectedId] = useState<string>()
   const [previewLevel, setPreviewLevel] = useState(data.rules.supportedItemLevels.minimum)
   const [pending, setPending] = useState<ApplyShardAction | null>(null)
@@ -245,19 +247,11 @@ const ShardLookup = ({ data, plan, onAction }: ShardLookupProps) => {
     }
   }, [data])
 
-  const matches = useMemo(() => {
+  const { matches, hidden } = useMemo(() => {
     const { query, slot, position } = filters
     const tokens = query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean)
-    return rows
-      .filter(
-        ({ searchText, enhancement }) =>
-          tokens.every((token) => searchText.includes(token)) &&
-          ((!slot && !position) ||
-            enhancement?.placements.some(
-              (placement) =>
-                (!slot || placement.itemCategoryIds.includes(slot)) && (!position || placement.position === position)
-            ))
-      )
+    const searched = rows
+      .filter(({ searchText }) => tokens.every((token) => searchText.includes(token)))
       .sort((a, b) => {
         let comparison = a.name.localeCompare(b.name, undefined, { numeric: true })
         if (sort.key === 'minimumItemLevel') comparison = a.minimumItemLevel - b.minimumItemLevel || comparison
@@ -268,9 +262,23 @@ const ShardLookup = ({ data, plan, onAction }: ShardLookupProps) => {
         }
         return sort.descending ? -comparison : comparison
       })
+    if (!slot && !position) return { matches: searched, hidden: [] }
+    const inFilters: ShardRow[] = []
+    const outsideFilters: ShardRow[] = []
+    for (const row of searched) {
+      const compatible = row.enhancement?.placements.some(
+        (placement) =>
+          (!slot || placement.itemCategoryIds.includes(slot)) && (!position || placement.position === position)
+      )
+      const destination = compatible ? inFilters : outsideFilters
+      destination.push(row)
+    }
+    return { matches: inFilters, hidden: outsideFilters }
   }, [binding, filters, recipes, rows, sort])
 
-  const visibleRows = matches.slice((page - 1) * pageSize, page * pageSize)
+  const results = showFiltered ? [...matches, ...hidden] : matches
+  const hiddenIds = new Set(hidden.map(({ id }) => id))
+  const visibleRows = results.slice((page - 1) * pageSize, page * pageSize)
   const selected = visibleRows.find(({ id }) => id === selectedId) ?? visibleRows[0]
   const recipe = selected ? recipes.get(selected.recipeIds[binding]) : undefined
   const effectiveLevel = selected ? Math.max(selected.minimumItemLevel, previewLevel) : previewLevel
@@ -282,13 +290,14 @@ const ShardLookup = ({ data, plan, onAction }: ShardLookupProps) => {
   const effects = selected?.enhancement ? resolveEssenceEffects(data, selected.enhancement.effects, effectiveLevel) : []
   const updateFilters = (next: Partial<typeof filters>) => {
     setFilters((current) => ({ ...current, ...next }))
+    setShowFiltered(false)
     setPage(1)
   }
   const selectShard = (id: string) => {
     setSelectedId(id)
-    const results = resultRef.current?.getBoundingClientRect()
+    const resultBounds = resultRef.current?.getBoundingClientRect()
     const details = detailRef.current?.getBoundingClientRect()
-    if (results && details && details.top >= results.bottom) {
+    if (resultBounds && details && details.top >= resultBounds.bottom) {
       detailRef.current?.focus({ preventScroll: true })
       detailRef.current?.scrollIntoView({ block: 'start' })
     }
@@ -371,11 +380,19 @@ const ShardLookup = ({ data, plan, onAction }: ShardLookupProps) => {
               Shards
             </Title>
             <Text size='sm' c='dimmed' role='status'>
-              {matches.length.toLocaleString()} of {rows.length.toLocaleString()} shards
+              {results.length.toLocaleString()} of {rows.length.toLocaleString()} shards
             </Text>
+            <RevealFilteredResults
+              count={hidden.length}
+              revealed={showFiltered}
+              onToggle={() => {
+                setPage(1)
+                setShowFiltered(!showFiltered)
+              }}
+            />
           </Group>
 
-          {matches.length ? (
+          {results.length ? (
             <>
               <Table.ScrollContainer minWidth={280} type='native'>
                 <Table verticalSpacing='xs' fz='sm' aria-label='Shard results' className={styles.table}>
@@ -416,6 +433,11 @@ const ShardLookup = ({ data, plan, onAction }: ShardLookupProps) => {
                             <Text span inherit fw={600}>
                               {row.name}
                             </Text>
+                            {hiddenIds.has(row.id) && (
+                              <Badge variant='outline' color='gray' size='xs' ml={6}>
+                                Outside filters
+                              </Badge>
+                            )}
                             <Text span size='xs' c='dimmed' display='block'>
                               {row.enhancement?.effects.map(({ displayName }) => displayName).join(' · ') ??
                                 'Minimum level shard'}
@@ -429,11 +451,11 @@ const ShardLookup = ({ data, plan, onAction }: ShardLookupProps) => {
                   </Table.Tbody>
                 </Table>
               </Table.ScrollContainer>
-              {matches.length > pageSize && (
+              {results.length > pageSize && (
                 <Group justify='center' p='sm' className={styles.pagination}>
                   <Pagination
                     aria-label='Shard results pages'
-                    total={Math.ceil(matches.length / pageSize)}
+                    total={Math.ceil(results.length / pageSize)}
                     value={page}
                     onChange={setPage}
                     size='sm'
@@ -520,7 +542,9 @@ const ShardLookup = ({ data, plan, onAction }: ShardLookupProps) => {
                           </dt>
                           <dd>
                             {formatResolvedEffectModifier(modifier) ??
-                              (modifier.status === 'no-match-for-item-level' ? 'No value at this level' : '—')}
+                              (modifier.status === 'no-match-for-item-level'
+                                ? 'No value at this level'
+                                : 'No numeric value listed')}
                           </dd>
                         </div>
                       ))}
