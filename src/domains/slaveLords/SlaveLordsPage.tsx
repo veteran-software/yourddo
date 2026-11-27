@@ -1,3 +1,4 @@
+import IngredientLabel from '../../shared/items/IngredientLabel'
 import {
   Alert,
   Badge,
@@ -166,7 +167,7 @@ function IngredientList({ selected }: { selected: SlaveLordsOption[] }) {
             <Stack gap={3} key={cost.id}>
               <Group justify='space-between' align='baseline' wrap='nowrap' gap='xs'>
                 <Text size='sm' fw={600}>
-                  {cost.name}
+                  <IngredientLabel name={cost.name} ingredientId={cost.id} />
                 </Text>
                 <Badge variant='light'>×{cost.quantity.toLocaleString()}</Badge>
               </Group>

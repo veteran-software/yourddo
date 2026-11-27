@@ -1,3 +1,4 @@
+import IngredientLabel from '../../shared/items/IngredientLabel'
 import {
   Alert,
   Badge,
@@ -59,7 +60,7 @@ function Costs({ costs, showStock = false }: { costs: AlchemicalCost[]; showStoc
         <Stack key={cost.id} gap={2}>
           <Group wrap='nowrap' justify='space-between' align='baseline'>
             <Text fw={500} size='sm'>
-              {cost.name}
+              <IngredientLabel name={cost.name} ingredientId={cost.id} />
             </Text>
             <Badge variant='light'>×{cost.quantity.toLocaleString()}</Badge>
           </Group>

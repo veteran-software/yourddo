@@ -1,3 +1,4 @@
+import IngredientLabel from '../../shared/items/IngredientLabel'
 import { keyedEntries } from '../../shared/ui/keyedEntries'
 import {
   Alert,
@@ -274,7 +275,7 @@ const NearlyCompletePage = () => {
                       {selectedRecipe.requirements.map((requirement) => (
                         <List.Item key={requirement.name}>
                           <Text component='span' size='sm'>
-                            {requirement.name}
+                            <IngredientLabel name={requirement.name} />
                           </Text>{' '}
                           <Badge variant='light' color='gray' size='sm'>
                             ×{requirement.quantity ?? 1}

@@ -35,7 +35,7 @@ const IngredientsTool = ({
           This valid configuration has no published material requirements.
         </Alert>
       ) : (
-        <RequirementList requirements={calculation.ingredients} icons />
+        <RequirementList requirements={calculation.ingredients} />
       )}
     </Stack>
   )

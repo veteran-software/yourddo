@@ -1,3 +1,4 @@
+import IngredientLabel from '../../shared/items/IngredientLabel'
 import { Badge, Group, SegmentedControl, Stack, Text } from '@mantine/core'
 import { useState } from 'react'
 import IngredientStock from '../../shared/items/IngredientStock'
@@ -25,7 +26,7 @@ function CostList({ costs }: Readonly<{ costs: ThunderBase['costs'] }>) {
       {costs.map(({ id, name, quantity }) => (
         <li key={id}>
           <div className={styles.costRow}>
-            <span>{name}</span>
+            <IngredientLabel name={name} ingredientId={id} />
             <strong>×{quantity.toLocaleString()}</strong>
           </div>
           <div className={styles.stock}>

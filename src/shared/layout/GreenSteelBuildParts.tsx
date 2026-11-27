@@ -1,3 +1,4 @@
+import IngredientLabel from '../items/IngredientLabel'
 import type { ReactNode } from 'react'
 import ItemIcon, { type ItemIconSource } from '../items/ItemIcon'
 import IngredientStock from '../items/IngredientStock'
@@ -37,7 +38,7 @@ export function MaterialRow({
   return (
     <li>
       <div className={styles.costRow}>
-        <span>{name}</span>
+        <IngredientLabel name={name} />
         <strong>×{quantity.toLocaleString()}</strong>
       </div>
       {children && <div className={styles.stock}>{children}</div>}

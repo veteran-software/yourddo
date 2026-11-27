@@ -1,3 +1,4 @@
+import IngredientLabel from '../../shared/items/IngredientLabel'
 import { Badge, Group, List, Paper, SegmentedControl, Select, Stack, Text, Title } from '@mantine/core'
 import { useState } from 'react'
 import styles from '../../shared/layout/workspace.module.css'
@@ -46,7 +47,9 @@ export default function FerrocrystalRecipes({ weapons }: Readonly<{ weapons: Wea
             </Title>
             {current.requirements.map((input) => (
               <Group key={input.name}>
-                <Text>{input.name}</Text>
+                <Text>
+                  <IngredientLabel name={input.name} />
+                </Text>
                 <Badge variant='light'>×{input.quantity}</Badge>
               </Group>
             ))}

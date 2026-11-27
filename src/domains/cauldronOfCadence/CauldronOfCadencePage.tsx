@@ -1,3 +1,4 @@
+import IngredientLabel from '../../shared/items/IngredientLabel'
 import {
   Alert,
   Anchor,
@@ -172,7 +173,7 @@ const CauldronOfCadencePage = () => {
                   <List.Item key={requirement.name}>
                     <Group component='span' gap='xs' wrap='nowrap'>
                       <Text component='span' size='sm'>
-                        {requirement.name}
+                        <IngredientLabel name={requirement.name} />
                       </Text>
                       <Badge variant='light' color='gray' size='sm'>
                         ×{requirement.quantity}
