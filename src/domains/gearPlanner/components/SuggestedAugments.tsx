@@ -1,10 +1,10 @@
 import { Button, Group, Stack, Text } from '@mantine/core'
-import type { RecommendedAugment } from '../augmentRecommendations'
+import type { AugmentSelection } from '../augmentRecommendations'
 
 export default function SuggestedAugments({
   augments,
   onApply
-}: Readonly<{ augments: readonly RecommendedAugment[]; onApply?: () => void }>) {
+}: Readonly<{ augments: readonly AugmentSelection[]; onApply?: () => void }>) {
   if (!augments.length) return null
 
   return (

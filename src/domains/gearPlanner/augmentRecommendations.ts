@@ -28,10 +28,13 @@ import type { GearPlannerSetup } from './setups'
 import { objectiveEffect } from './statObjectives'
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types'
 
-export interface RecommendedAugment {
+export interface AugmentSelection {
   index: number
   socket: GearPlannerAugmentSlot
   augment: GearPlannerAugment
+}
+
+export interface RecommendedAugment extends AugmentSelection {
   effects: readonly GearPlannerEffect[]
 }
 
@@ -83,7 +86,12 @@ export function collectRecommendationEffects(
   })
 }
 
-function itemAugmentLevel(setup: GearPlannerSetup, item: GearPlannerItem) {
+export type AugmentRecommendationSetup = Pick<
+  GearPlannerSetup,
+  'equipment' | 'slottedAugments' | 'maximumLevel' | 'essenceCrafting' | 'reforging'
+>
+
+function itemAugmentLevel(setup: AugmentRecommendationSetup, item: GearPlannerItem) {
   return Math.min(setup.maximumLevel, setup.essenceCrafting[item.id]?.minimumLevel ?? item.minimumLevel)
 }
 
@@ -91,7 +99,7 @@ export function applyRecommendedAugments(
   setup: GearPlannerSetup,
   item: GearPlannerItem,
   reforging: GearPlannerReforgingData,
-  augments: readonly RecommendedAugment[]
+  augments: readonly AugmentSelection[]
 ): GearPlannerSetup {
   if (setup.equipment[item.slot]?.id !== item.id) return setup
   const slots = getEffectiveGearPlannerAugmentSlots(item, setup.reforging[item.id], reforging)
@@ -114,6 +122,7 @@ function augmentScoring(
   const labels = new Map(names.map((name) => [recommendationStatKey(name), name]))
   const priorities = [...labels.keys()]
   const keys = new Set(priorities)
+  const priorityIndex = new Map(priorities.map((key, index) => [key, index]))
   const retained: GearPlannerEffectSource[] = loadoutEffects.flatMap((source) => {
     const effect = recommendationSource(source.effect, 'equipped-item', source.id)
     return !effect.effect.displayOnly && keys.has(effect.normalizedName) ? [{ ...source, ...effect }] : []
@@ -122,26 +131,70 @@ function augmentScoring(
     const effects = augment.effectsAdded.filter((effect) => !effect.displayOnly)
     const matching = effects.flatMap((effect, index) => {
       const source = recommendationSource(effect, 'augment', index.toString())
-      return keys.has(source.normalizedName) && (!bonusType || source.normalizedBonusType === bonusType) ? [source] : []
+      const priority = priorityIndex.get(source.normalizedName)
+      return priority !== undefined && (!bonusType || source.normalizedBonusType === bonusType)
+        ? [{ ...source, priority }]
+        : []
     })
-    return matching.some(({ comparisonValue }) => comparisonValue > 0) ? [{ augment, matching }] : []
+    return matching.some(({ comparisonValue }) => comparisonValue > 0)
+      ? [{ augment, byStat: Map.groupBy(matching, (source) => source.priority) }]
+      : []
   })
   const values = (sources: readonly GearPlannerEffectSource[]) => {
     const stats = recommendationStats(sources)
     return priorities.map((key) => stats.get(key))
   }
+  const projected = new WeakMap<readonly GearPlannerEffectSource[], Map<string, ReturnType<typeof statValue>>>()
   function bestAugment(
     options: typeof catalog,
     baseline: readonly GearPlannerEffectSource[],
-    current: ReturnType<typeof values>,
+    baselineValues: ReturnType<typeof values>,
     item: GearPlannerItem,
-    equipment: GearPlannerEquipment
+    equipment: GearPlannerEquipment,
+    current = baselineValues
   ) {
+    const byStat = Map.groupBy(baseline, (source) => source.normalizedName)
+    const retainedStats = priorities.map((key) => {
+      const sources = byStat.get(key) ?? []
+      // Only the values, units and Prowess item identities influence the stat summary.
+      const signature = JSON.stringify(
+        sources.map((source) => [
+          source.effect.name,
+          source.effect.modifier,
+          source.effect.calculationValue,
+          source.effect.roundToNearest,
+          source.normalizedBonusType,
+          source.comparisonValue,
+          source.filigreeType === 71 ? [source.itemId] : undefined
+        ])
+      )
+      return { sources, signature }
+    })
     let best:
       { augment: GearPlannerAugment; sources: GearPlannerEffectSource[]; values: ReturnType<typeof values> } | undefined
-    for (const { augment, matching } of options) {
-      const sources = matching.filter(({ effect }) => matchesAugmentAttackForm(effect, item, equipment))
-      const next = values([...baseline, ...sources])
+    for (const { augment, byStat: additions } of options) {
+      const next = baselineValues.slice()
+      const sources: GearPlannerEffectSource[] = []
+      for (const [index, group] of additions) {
+        const eligible = group.every(({ effect }) => matchesAugmentAttackForm(effect, item, equipment))
+          ? group
+          : group.filter(({ effect }) => matchesAugmentAttackForm(effect, item, equipment))
+        if (!eligible.length) continue
+        const stat = retainedStats[index]
+        let scores = projected.get(group)
+        if (!scores) {
+          scores = new Map()
+          projected.set(group, scores)
+        }
+        const key = eligible === group ? stat.signature : undefined
+        let score = key === undefined ? undefined : scores.get(key)
+        if (!score) {
+          score = statValue(aggregateEffectSummary([...stat.sources, ...eligible])[0], true)
+          if (key !== undefined) scores.set(key, score)
+        }
+        next[index] = score
+        sources.push(...eligible)
+      }
       const change = firstFocusChange(best?.values ?? current, next)
       if (change && change.delta > 0) best = { augment, sources, values: next }
     }
@@ -173,14 +226,15 @@ export function recommendSocketAugment(
   const isSocket = (source: GearPlannerEffectSource) =>
     source.itemId === item.id && source.augmentSlotIndex === slotIndex
   const baseline = retained.filter((source) => !isSocket(source))
+  const baselineValues = values(baseline)
   const current = values(retained)
-  const best = bestAugment(catalog, baseline, current, item, setup.equipment)
+  const best = bestAugment(catalog, baseline, baselineValues, item, setup.equipment, current)
   const selectedId = selected && gearPlannerAugmentIdentity(selected)
   const canKeep = selectedId && catalog.some(({ augment }) => gearPlannerAugmentIdentity(augment) === selectedId)
   const change = best
     ? firstFocusChange(current, best.values)
     : canKeep
-      ? firstFocusChange(values(baseline), current)
+      ? firstFocusChange(baselineValues, current)
       : undefined
   if (change && change.delta > 0) {
     const gain = formatAmount(change.delta, change.unit, true, change.rounding) + ' ' + labels[change.index]
@@ -191,7 +245,7 @@ export function recommendSocketAugment(
 }
 
 export function createAugmentRecommender(
-  setup: GearPlannerSetup,
+  setup: AugmentRecommendationSetup,
   reforging: GearPlannerReforgingData,
   augments: readonly GearPlannerAugment[],
   names: readonly string[],
@@ -200,16 +254,22 @@ export function createAugmentRecommender(
 ) {
   if (!names.length) return (_item: GearPlannerItem): RecommendedAugment[] => []
   const { catalog, keys, retained, values, bestAugment } = augmentScoring(augments, names, loadoutEffects, bonusType)
-  const compatible = new Map<string, typeof catalog>()
+  const compatible = new Map<string, { options: typeof catalog; levels: Map<number, typeof catalog> }>()
 
   const socketOptions = (socket: GearPlannerAugmentSlot, level: number) => {
-    const key = JSON.stringify([socket.augmentType, socket.slotTypes, level])
-    const cached = compatible.get(key)
+    const key = JSON.stringify([socket.augmentType, socket.slotTypes])
+    let socketIndex = compatible.get(key)
+    if (!socketIndex) {
+      socketIndex = {
+        options: catalog.filter(({ augment }) => isCompatibleGearPlannerAugment(socket, augment)),
+        levels: new Map()
+      }
+      compatible.set(key, socketIndex)
+    }
+    const cached = socketIndex.levels.get(level)
     if (cached) return cached
-    const options = catalog.filter(
-      ({ augment }) => augment.minLevel <= level && isCompatibleGearPlannerAugment(socket, augment)
-    )
-    compatible.set(key, options)
+    const options = socketIndex.options.filter(({ augment }) => augment.minLevel <= level)
+    socketIndex.levels.set(level, options)
     return options
   }
 

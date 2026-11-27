@@ -1178,6 +1178,57 @@ describe('GearPlannerPage', () => {
     expect(setup.slottedAugments).toEqual({})
   })
 
+  it('keeps a distinct augmented path only when it changes the loadout outcome', () => {
+    const effectsAdded = [{ name: 'Skill: Jump', modifier: 8, bonus: 'Insight' }]
+    const augment: GearPlannerAugment = {
+      name: 'Insightful Jump',
+      augmentType: 'Blue',
+      minLevel: 10,
+      effectsAdded,
+      source: { name: 'Insightful Jump', augmentType: 'Blue', minLevel: 10, effectsAdded }
+    }
+    const helm = item(
+      'head',
+      'Head',
+      'Socket Helm',
+      10,
+      [{ name: 'Dexterity', modifier: 4 }],
+      [],
+      [{ augmentType: 'Blue' }]
+    )
+    const belt = item('belt', 'Waist', 'Jump Belt', 10, [], ['Jump Set'])
+    const setup = createGearPlannerSetup('a', 'Focus')
+    setup.character.focusStats = ['Skill: Jump', 'Dexterity']
+    setup.equipment.Waist = belt
+    const pathsFor = (option: GearPlannerAugment) => {
+      const catalog = dataWithItems([helm, belt], [option])
+      catalog.standardSets = new Map([
+        [
+          'Jump Set',
+          {
+            name: 'Jump Set',
+            thresholds: [{ threshold: 1, effects: [{ name: 'Skill: Jump', modifier: 10, bonus: 'Insight' }] }]
+          }
+        ]
+      ])
+      const search = searchUpgradePaths(
+        setup,
+        'Character',
+        catalog,
+        essenceData,
+        { kind: 'Focus stats', objective: '', locked: [], protectedTiers: [], character: '' },
+        new Map()
+      )
+      let step = search.next()
+      while (!step.done) step = search.next()
+      return step.value
+    }
+    expect(pathsFor(augment)).toMatchObject([{ name: 'Socket Helm', augments: [] }])
+    expect(
+      pathsFor({ ...augment, setBonus: [{ name: 'Another Set' }] }).map(({ augments }) => augments.length)
+    ).toEqual([0, 1])
+  })
+
   it('compares same-slot replacements against overlapping bonuses and preserves unique effect losses', () => {
     const stat = (name: string, modifier: number) => ({ name, modifier, bonus: 'Enhancement' })
     const host = item('gloves', 'Hands', 'Original gloves', 10, [stat('Strength', 12), { name: 'Ghostly' }])

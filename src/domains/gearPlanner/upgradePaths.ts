@@ -51,7 +51,9 @@ export function* searchUpgradePaths(
   request: PathRequest,
   inventory: TroveInventory
 ) {
-  const before = loadoutSnapshot(setup, owner, data, essence, request.kind === 'Stat' ? request.objective : undefined)
+  const snapshot = (next: GearPlannerSetup) =>
+    loadoutSnapshot(next, owner, data, essence, request.kind === 'Stat' ? request.objective : undefined, false)
+  const before = snapshot(setup)
   const paths: UpgradePath[] = []
   const objectiveName = request.objective.toLowerCase()
   const stat = (entries: typeof before.Stats) =>
@@ -67,6 +69,20 @@ export function* searchUpgradePaths(
     collectRecommendationEffects(setup, essence, data.reforging),
     request.bonusType
   )
+  function sameValues(left: typeof before.Stats, right: typeof before.Stats) {
+    if (left.size !== right.size) return false
+    for (const [name, value] of left) {
+      const other = right.get(name)
+      if (
+        value.text !== other?.text ||
+        value.amount !== other.amount ||
+        value.unit !== other.unit ||
+        value.rounding !== other.rounding
+      )
+        return false
+    }
+    return true
+  }
   function objectiveGain(after: typeof before) {
     if (request.kind === 'Set tier') {
       if (!after.Sets.has(request.objective) || before.Sets.has(request.objective)) return undefined
@@ -94,15 +110,24 @@ export function* searchUpgradePaths(
     slot: GearPlannerSlot,
     name: string,
     change: string,
-    augments: readonly RecommendedAugment[] = []
+    augments: readonly RecommendedAugment[] = [],
+    plain?: typeof before
   ) {
     if (
       next === setup ||
       ownerSlots[owner].some((key) => request.locked.includes(key) && setup.equipment[key] !== next.equipment[key])
     )
       return
-    const after = loadoutSnapshot(next, owner, data, essence, request.kind === 'Stat' ? request.objective : undefined)
-    if (request.protectedTiers.some((tier) => !after.Sets.has(tier))) return
+    const after = snapshot(next)
+    if (
+      plain &&
+      augments.every(({ augment }) => !augment.setBonus?.length && !augment.clearSecondarySet) &&
+      sameValues(after.Stats, plain.Stats) &&
+      sameValues(after.Sets, plain.Sets) &&
+      sameValues(after.objectiveBonuses, plain.objectiveBonuses)
+    )
+      return after
+    if (request.protectedTiers.some((tier) => !after.Sets.has(tier))) return after
     const focus = focusChanges(setup.character.focusStats ?? [], before.Stats, after.Stats)
     const count = focus.filter((entry) => entry.delta > 0).length
     const improvement =
@@ -111,7 +136,7 @@ export function* searchUpgradePaths(
           ? { gain: 0, delta: String(count) + (count === 1 ? ' focus gain' : ' focus gains'), totals: undefined }
           : undefined
         : objectiveGain(after)
-    if (!improvement) return
+    if (!improvement) return after
     const losses = [...comparisonRows(before.Sets, after.Sets), ...comparisonRows(before.Stats, after.Stats)]
       .filter((row) => row.direction === 'loss')
       .map((row) => row.label + ' ' + row.delta)
@@ -119,10 +144,14 @@ export function* searchUpgradePaths(
       const displaced = setup.equipment[key]
       if (key !== slot && displaced && !next.equipment[key]) losses.unshift('Unequips ' + displaced.source.name)
     }
-    const required = new Set([name, ...augments.map(({ augment }) => augment.name)].map((value) => value.toLowerCase()))
-    const needs = farmingList(next, inventory, request.character).filter((task) =>
-      required.has(task.name.toLowerCase())
-    )
+    const needs = inventory.size
+      ? farmingList(
+          next,
+          inventory,
+          request.character,
+          new Set([name, ...augments.map(({ augment }) => augment.name)].map((value) => value.toLowerCase()))
+        )
+      : []
     const task =
       needs.find((t) => t.status === 'Farm') ??
       needs.find((t) => t.status === 'Check') ??
@@ -143,6 +172,7 @@ export function* searchUpgradePaths(
       location: task ? [task.group, ...task.notes].filter(Boolean).join(' · ') : '',
       augments
     })
+    return after
   }
   function* equipmentChanges(slot: GearPlannerSlot, host: GearPlannerItem | null) {
     for (const item of data.itemsBySlot[slot]) {
@@ -157,10 +187,15 @@ export function* searchUpgradePaths(
       if (selection !== setup) {
         const next = { ...setup, ...selection }
         const change = host ? 'Replace ' + host.source.name : 'Equip in empty slot'
-        evaluate(next, slot, item.source.name, change)
-        const augments = recommend(item)
-        const augmented = applyRecommendedAugments(next, item, data.reforging, augments)
-        if (augmented !== next) evaluate(augmented, slot, item.source.name, change + ' with augments', augments)
+        const plain = evaluate(next, slot, item.source.name, change)
+        if (plain) {
+          const augments = recommend(item)
+          if (augments.some(({ augment }) => !plain.augmentIsCovered?.(item, augment))) {
+            const augmented = applyRecommendedAugments(next, item, data.reforging, augments)
+            if (augmented !== next)
+              evaluate(augmented, slot, item.source.name, change + ' with augments', augments, plain)
+          }
+        }
       }
       yield
     }

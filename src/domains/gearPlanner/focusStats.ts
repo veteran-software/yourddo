@@ -1,6 +1,7 @@
 import { formatAmount } from './effectAmounts'
 import {
   itemRecommendationSources,
+  type AugmentSelection,
   type RecommendedAugment,
   recommendationStatKey,
   recommendationStats
@@ -60,11 +61,9 @@ export function focusSummary(changes: FocusChange[]) {
     .join(' · ')
 }
 
-/** Rank visible equipment by its built-in effects and suggested augments in setup priority order. */
-const emptyRecommendations: readonly RecommendedAugment[] = []
+const emptyRecommendations: readonly AugmentSelection[] = []
 
-export function rankBrowserFocus(
-  candidates: readonly GearPlannerCandidate[],
+export function createBrowserFocusRanker(
   names: readonly string[],
   recommend: (item: GearPlannerItem) => readonly RecommendedAugment[]
 ) {
@@ -74,24 +73,39 @@ export function rankBrowserFocus(
     key: recommendationStatKey(name)
   }))
   const keys = new Set(priorities.map(({ key }) => key))
-  if (!keys.size) return candidates.map((candidate) => ({ candidate, matches: [], augments: emptyRecommendations }))
-
-  const rows = candidates.map((candidate) => {
-    const augments = recommend(candidate.item)
-    const stats = recommendationStats(itemRecommendationSources(candidate.item, keys, augments))
+  function score(item: GearPlannerItem) {
+    const recommended = recommend(item)
+    const stats = recommendationStats(itemRecommendationSources(item, keys, recommended))
+    const augments: readonly AugmentSelection[] = recommended
     const matches = priorities.flatMap(({ name, position, key }) => {
       const value = stats.get(key)
       return value?.amount !== undefined && value.amount > 0 ? [{ name, position, ...value }] : []
     })
-    return { candidate, matches, stats, augments }
-  })
-  return rows.sort((a, b) => {
-    for (const { key } of priorities) {
-      const left = a.stats.get(key)?.amount ?? 0
-      const right = b.stats.get(key)?.amount ?? 0
-      const difference = Math.max(right, 0) - Math.max(left, 0)
-      if (difference) return difference
-    }
-    return 0
-  })
+    return { matches, augments, amounts: priorities.map(({ key }) => Math.max(stats.get(key)?.amount ?? 0, 0)) }
+  }
+  const scores = new WeakMap<GearPlannerItem, ReturnType<typeof score>>()
+  function rank(candidates: readonly GearPlannerCandidate[], focusFirst: boolean) {
+    if (!focusFirst || !keys.size)
+      return candidates.map((candidate) => ({ candidate, matches: [], augments: emptyRecommendations }))
+
+    return candidates
+      .map((candidate) => {
+        let result = scores.get(candidate.item)
+        if (!result) {
+          result = score(candidate.item)
+          scores.set(candidate.item, result)
+        }
+        return { candidate, ...result }
+      })
+      .sort((a, b) => {
+        for (const [index, amount] of a.amounts.entries()) {
+          const difference = b.amounts[index] - amount
+          if (difference) return difference
+        }
+        return 0
+      })
+  }
+  return { rank, score, scores }
 }
+
+export type BrowserFocusScore = ReturnType<ReturnType<typeof createBrowserFocusRanker>['score']>

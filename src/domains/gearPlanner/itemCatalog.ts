@@ -503,13 +503,16 @@ function enchantmentLabels(value: unknown): string[] {
 
 const scopedGroups = new Set(['standard', 'moon', 'sun'])
 
-// Gear Planner and its embedded crafting editor request the same release files concurrently.
-const pendingAugmentFiles = new Map<string, Promise<unknown>>()
+// Both planners read these resources from the same pinned release.
+const augmentFiles = new Map<string, Promise<unknown>>()
 function augmentFile(path: string) {
-  const cached = pendingAugmentFiles.get(path)
+  const cached = augmentFiles.get(path)
   if (cached) return cached
-  const pending = loadDatasetFile<unknown>('items/augments/' + path).finally(() => pendingAugmentFiles.delete(path))
-  pendingAugmentFiles.set(path, pending)
+  const pending = loadDatasetFile<unknown>('items/augments/' + path).catch((error: unknown) => {
+    augmentFiles.delete(path)
+    throw error
+  })
+  augmentFiles.set(path, pending)
   return pending
 }
 

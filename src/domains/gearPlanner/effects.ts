@@ -89,6 +89,7 @@ export interface GearPlannerEffectConflictResolution {
 
 const stackableBonusTypes = new Set(['no type', 'reaper', 'mythic'])
 const summingBonusTypes = new Set(['reaper', 'mythic'])
+export const isSummingBonusType = (bonusType: string) => summingBonusTypes.has(bonusType)
 const legacyUpgradePlaceholders = new Set([
   'Craftable Rune Arm',
   'Nearly Finished',
@@ -323,7 +324,7 @@ const withEffectiveEntries = (
   entries: readonly GearPlannerEffectSource[],
   bonusType: string
 ): GearPlannerEffectSummaryGroup => {
-  const summing = summingBonusTypes.has(bonusType)
+  const summing = isSummingBonusType(bonusType)
   const prowessStrength = stackedProwessStrength(entries)
   const effectiveValue = summing
     ? entries.reduce((total, entry) => total + entry.comparisonValue, 0)

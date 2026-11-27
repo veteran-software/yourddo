@@ -21,7 +21,8 @@ import { usePlannerHistory } from '../../shared/layout/usePlannerHistory'
 import WorkspaceHeader from '../../shared/layout/WorkspaceHeader'
 import layout from '../../shared/layout/PlannerWorkspace.module.css'
 import WorkspaceLayout, { type WorkspaceTool } from '../../shared/layout/WorkspaceLayout.tsx'
-import { InvalidEssenceCraftingDataError, loadEssenceCraftingData } from './data.ts'
+import { InvalidEssenceCraftingDataError } from './data.ts'
+import { useEssenceCraftingCatalog } from './useEssenceCraftingCatalog'
 import { describePlanEdit } from './describePlanEdit'
 import { EQUIPMENT_SLOTS, type EquipmentSlotId } from './equipment.ts'
 import type { EssenceCraftingData } from './essenceCrafting.types.ts'
@@ -136,6 +137,7 @@ function EquipmentConflictDialog({
 }
 
 const EssenceCraftingPage = () => {
+  const loadCatalog = useEssenceCraftingCatalog()
   const history = usePlannerHistory<DataState>(() => ({ status: 'loading' }), 'essence-crafting')
   const { current: dataState, edit, reset, clear } = history
   const [loadAttempt, setLoadAttempt] = useState(0)
@@ -239,7 +241,7 @@ const EssenceCraftingPage = () => {
   useEffect(() => {
     let active = true
 
-    loadEssenceCraftingData()
+    loadCatalog()
       .then((data) => {
         if (!active) return
         const storedPlan = loadEssenceCraftingPlan(data).plan
@@ -266,7 +268,7 @@ const EssenceCraftingPage = () => {
     return () => {
       active = false
     }
-  }, [loadAttempt, reset])
+  }, [loadAttempt, loadCatalog, reset])
 
   const dispatch = useCallback(
     (action: EssencePlanAction) => {

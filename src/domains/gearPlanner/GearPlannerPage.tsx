@@ -18,8 +18,8 @@ import AugmentsTool from './tools/AugmentsTool'
 import FarmingTool from './tools/FarmingTool'
 import LevelRangeInputs, { type LevelRange } from './components/LevelRangeInputs'
 import FocusStatEditor from './tools/FocusStatEditor'
-import { applyRecommendedAugments, createAugmentRecommender, type RecommendedAugment } from './augmentRecommendations'
-import { rankBrowserFocus } from './focusStats'
+import { applyRecommendedAugments, type AugmentSelection } from './augmentRecommendations'
+import { useBrowserFocusRank } from './useBrowserFocusRank'
 import CharacterSetupTool from './tools/CharacterSetupTool'
 import { ownsTroveItem } from './trove'
 import { gearPlannerAugmentIdentity } from './augments'
@@ -116,7 +116,9 @@ import { useEffect, useEffectEvent, useId, useMemo, useRef, useState } from 'rea
 import ItemIcon from '../../shared/items/ItemIcon.tsx'
 import type { WorkspaceTool } from '../../shared/layout/WorkspaceLayout.tsx'
 import WorkspaceLayout from '../../shared/layout/WorkspaceLayout.tsx'
-import { InvalidEssenceCraftingDataError, loadEssenceCraftingData } from '../essenceCrafting/data.ts'
+import { InvalidEssenceCraftingDataError } from '../essenceCrafting/data.ts'
+import { useEssenceCraftingCatalog } from '../essenceCrafting/useEssenceCraftingCatalog'
+import { createCraftingCatalog } from '../../shared/layout/craftingSession'
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
 import AugmentSlotSelector from './components/AugmentSlotSelector.tsx'
 import CurseSelector from './components/CurseSelector.tsx'
@@ -202,6 +204,7 @@ type DataState =
   | { status: 'error'; cause: unknown }
 
 const pageSize = 50
+const useGearCatalog = createCraftingCatalog(loadGearPlannerData)
 
 const characterSlotLayout = [
   'Eyes',
@@ -532,7 +535,7 @@ interface ItemBrowserProps extends Pick<EquipmentEditorProps, 'effectiveAugmentS
   equipment: GearPlannerEquipment
   minimumLevel: number
   maximumLevel: number
-  equip: (slot: GearPlannerSlot, item: GearPlannerItem | null, augments?: readonly RecommendedAugment[]) => void
+  equip: (slot: GearPlannerSlot, item: GearPlannerItem | null, augments?: readonly AugmentSelection[]) => void
   onMinorArtifactRejected: () => void
   updateLevels: (update: { minimumLevel?: number; maximumLevel?: number }) => void
 }
@@ -704,23 +707,25 @@ const ItemBrowser = ({
     }).filter((candidate) => !visible.has(candidate))
   }, [catalog, eligibleCandidates, exactEffect, filtered, inventory, search])
   const focusStats = setup.character.focusStats
-  const recommend = useMemo(
+  const availableAugments = useMemo(
     () =>
-      createAugmentRecommender(
-        setup,
-        data.reforging,
-        ownedOnly && inventory.size
-          ? data.augments.filter((augment) => ownsTroveItem(inventory, augment.name))
-          : data.augments,
-        focusStats ?? [],
-        recommendationEffects
-      ),
-    [setup, data, focusStats, inventory, ownedOnly, recommendationEffects]
+      ownedOnly && inventory.size
+        ? data.augments.filter((augment) => ownsTroveItem(inventory, augment.name))
+        : data.augments,
+    [data.augments, inventory, ownedOnly]
   )
-  const results = useMemo(() => {
-    const priorities = focusFirst ? (focusStats ?? []) : []
-    return rankBrowserFocus(showFiltered ? [...filtered, ...hidden] : filtered, priorities, recommend)
-  }, [filtered, focusFirst, focusStats, hidden, recommend, showFiltered])
+  const rankCandidates = useMemo(
+    () => (showFiltered ? [...filtered, ...hidden] : filtered),
+    [filtered, hidden, showFiltered]
+  )
+  const { results, pending: ranking } = useBrowserFocusRank({
+    candidates: rankCandidates,
+    focusFirst,
+    setup,
+    augments: availableAugments,
+    reforging: data.reforging,
+    effects: recommendationEffects
+  })
   const hiddenCandidates = new Set(hidden)
 
   useEffect(() => {
@@ -787,7 +792,7 @@ const ItemBrowser = ({
       }
     }
   ]
-  const select = (item: GearPlannerItem, augments?: readonly RecommendedAugment[]) => {
+  const select = (item: GearPlannerItem, augments?: readonly AugmentSelection[]) => {
     const targetSlot = item.slot
     if (!slots.includes(targetSlot) || (!finding && targetSlot !== slot)) return
     if (hasOtherGearPlannerMinorArtifact(equipment, targetSlot, item)) {
@@ -859,7 +864,11 @@ const ItemBrowser = ({
           )}
           <Group gap='xs'>
             <Text aria-live='polite' c='dimmed' size='sm'>
-              {results.length === 1 ? '1 item' : `${String(results.length)} items`}
+              {ranking
+                ? 'Ranking gear by Focus Stats…'
+                : results.length === 1
+                  ? '1 item'
+                  : `${String(results.length)} items`}
             </Text>
             <RevealFilteredResults
               count={hidden.length}
@@ -1150,7 +1159,9 @@ const ItemBrowser = ({
               )
             })}
           </ul>
-          {results.length === 0 && <Text c='dimmed'>{emptyCatalogMessage(filterSlot, equipment['Main Hand'])}</Text>}
+          {!ranking && results.length === 0 && (
+            <Text c='dimmed'>{emptyCatalogMessage(filterSlot, equipment['Main Hand'])}</Text>
+          )}
           {visibleCount < results.length && (
             <Button
               variant='subtle'
@@ -1187,6 +1198,8 @@ function gearDetailTitle(
 }
 
 const GearPlannerWorkspace = () => {
+  const loadGearCatalog = useGearCatalog()
+  const loadEssenceCatalog = useEssenceCraftingCatalog()
   const [dataState, setDataState] = useState<DataState>({ status: 'loading' })
   const [attempt, setAttempt] = useState(0)
   const history = usePlannerHistory(createDefaultGearPlannerState, 'gear-planner')
@@ -1585,7 +1598,7 @@ const GearPlannerWorkspace = () => {
 
   useEffect(() => {
     let active = true
-    Promise.all([loadGearPlannerData(), loadEssenceCraftingData()])
+    Promise.all([loadGearCatalog(), loadEssenceCatalog()])
       .then(([data, essenceData]) => {
         if (!active) return
         const restored = loadGearPlannerState(data, essenceData)
@@ -1614,7 +1627,7 @@ const GearPlannerWorkspace = () => {
     return () => {
       active = false
     }
-  }, [attempt, resetPlanner])
+  }, [attempt, loadGearCatalog, loadEssenceCatalog, resetPlanner])
 
   const openSharedSetup = useEffectEvent(() => {
     if (dataState.status !== 'ready') return
@@ -1672,11 +1685,7 @@ const GearPlannerWorkspace = () => {
     setAttempt((current) => current + 1)
   }
 
-  const equip = (
-    targetSlot: GearPlannerSlot,
-    item: GearPlannerItem | null,
-    augments?: readonly RecommendedAugment[]
-  ) => {
+  const equip = (targetSlot: GearPlannerSlot, item: GearPlannerItem | null, augments?: readonly AugmentSelection[]) => {
     if (dataState.status !== 'ready') return
     if (finding) setReturnSlot(slot)
     setRequestedSlot(targetSlot)
