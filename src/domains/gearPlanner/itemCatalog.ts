@@ -211,7 +211,7 @@ function effectStats(effect: Row, source: EffectSource): GearPlannerEffect[] {
 
 function indexedEffects<T>(
   effects: unknown,
-  adapt: (record: Row) => T,
+  adapt: (record: Row, parent: Row) => T,
   visible: (record: Row) => boolean = isVisibleEffect
 ) {
   const index = new Map<string, T | null>()
@@ -219,11 +219,11 @@ function indexedEffects<T>(
     const key = String(id(effect.id, 'effect'))
     const variants = rows(effect.variants ?? [], 'variants')
     if (effect.variants === undefined || effect.enchantments !== undefined)
-      index.set(key, visible(effect) ? adapt(effect) : null)
+      index.set(key, visible(effect) ? adapt(effect, effect) : null)
     for (const variant of variants)
       index.set(
         key + '/' + text(variant.variant, 'effect variant'),
-        visible(effect) && visible(variant) ? adapt(variant) : null
+        visible(effect) && visible(variant) ? adapt(variant, effect) : null
       )
   }
   return index
@@ -242,13 +242,18 @@ function referencedEffect<T>(index: ReadonlyMap<string, T | null>, ref: Row, nam
 
 const publicRecord = (record: Row) => isVisibleEffect(record) && record.internal !== true
 
-function scopedEnchantmentRows(effect: Row): GearPlannerEffect[] {
+function scopedEnchantmentRows(effect: Row, hiddenGrant = false): GearPlannerEffect[] {
   return rows(effect.enchantments ?? [], 'augment enchantments').flatMap((stat) => {
     if (!publicRecord(stat) || stat.bonusType === 'Condition' || stat.type === 'script' || stat.type === 'condition')
       return []
-    const nested = stat.type === 'grantedFeat' ? scopedEnchantmentRows(stat) : []
-    if (typeof stat.displayName !== 'string') return nested
-    const name = stat.displayName
+    const nested = stat.type === 'grantedFeat' ? scopedEnchantmentRows(stat, hiddenGrant) : []
+    const name =
+      typeof stat.displayName === 'string'
+        ? stat.displayName
+        : hiddenGrant && stat.property === 'Feat_SneakDiceBonus'
+          ? 'Sneak Attack Dice'
+          : undefined
+    if (!name) return nested
     const hasAmount = typeof stat.value === 'number'
     return [
       {
@@ -263,6 +268,7 @@ function scopedEnchantmentRows(effect: Row): GearPlannerEffect[] {
         stat.requiresActiveBlocking ||
         stat.targetEligibility ||
         stat.weaponType ||
+        (hiddenGrant && stat.sourceStat) ||
         (!hasAmount && stat.value !== true && stat.type !== 'grantedFeat')
           ? { displayOnly: true }
           : {})
@@ -270,6 +276,31 @@ function scopedEnchantmentRows(effect: Row): GearPlannerEffect[] {
       ...nested
     ]
   })
+}
+
+function directlyGrantsAugmentEffects(ref: Row) {
+  return ref.activation === 'Augment_OnEquipEffects' || ref.activation === 'Augment_OnSlottedEffects'
+}
+
+export function craftingAugmentGrantReader(effects: unknown) {
+  // Crafting augments can grant passive stats through effects hidden from the game tooltip.
+  const index = indexedEffects(
+    effects,
+    (effect, parent) => {
+      if (isVisibleEffect(effect) && isVisibleEffect(parent)) return []
+      const stats = scopedEnchantmentRows(effect, true).filter(
+        (stat) => !stat.displayOnly && stat.modifier !== undefined
+      )
+      const discrepancies = discrepancyNotes(effect, 'augment')
+      if (stats.length && discrepancies.length) stats[0].discrepancyNotes = discrepancies
+      return stats
+    },
+    (effect) => effect.internal !== true
+  )
+  return (item: Row, name: string) =>
+    rows(item.effects ?? [], name)
+      .filter((ref) => publicRecord(ref) && directlyGrantsAugmentEffects(ref))
+      .flatMap((ref) => referencedEffect(index, ref, name) ?? [])
 }
 
 export function scopedAugmentReader(effects: unknown, names: readonly string[]) {
@@ -296,11 +327,7 @@ export function scopedAugmentReader(effects: unknown, names: readonly string[]) 
       if (group.name || group.rows.length) presentation.push(group)
       for (const label of [group.name, ...group.rows.map((stat) => stat.name)])
         if (labels.has(label)) searchLabels.add(label)
-      if (
-        ref.activation === 'Augment_OnEquipEffects' ||
-        ref.activation === 'Augment_OnSlottedEffects' ||
-        ref.activation === undefined
-      )
+      if (directlyGrantsAugmentEffects(ref) || ref.activation === undefined)
         effectsAdded.push(...group.rows.filter((stat) => !stat.displayOnly))
     }
     return {
@@ -618,6 +645,7 @@ export async function loadSocketCatalog() {
   const names = exportedLabels === undefined ? undefined : enchantmentLabels(exportedLabels)
   const scoped = names && scopedAugmentReader(effectData, names)
   const index = effectIndex(effectData, 'augment')
+  const craftingGrants = craftingAugmentGrantReader(effectData)
   // Filigrees grant effects whose records are hidden from the game's effect tooltips.
   const filigreeIndex = indexedEffects(
     effectData,
@@ -661,8 +689,10 @@ export async function loadSocketCatalog() {
           .map((item) => {
             const { name, slotTypes, minimumLevel } = socketItem(item)
             const override = item.hostSetOverride ? row(item.hostSetOverride, name) : undefined
-            const details = scoped && scopedGroups.has(groupNames[i]) ? scoped(item) : undefined
+            const isScoped = scopedGroups.has(groupNames[i])
+            const details = scoped && isScoped ? scoped(item) : undefined
             const effectsAdded = details?.effectsAdded ?? resolveEffects(item, name, index, spells)
+            if (!isScoped) effectsAdded.push(...craftingGrants(item, name))
             const set = override ? sets.byId.get(id(override.primarySetId, name)) : undefined
             const discrepancy = [...new Set([...itemDiscrepancies(item, effectsAdded), ...setDiscrepancies(set)])]
             return {

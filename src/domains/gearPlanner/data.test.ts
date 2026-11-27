@@ -6,6 +6,7 @@ import { getRingUpgrades, validateIncrediblePotentialData } from '../incredibleP
 import {
   adaptItemCategory,
   adaptItemSetDefinitions,
+  craftingAugmentGrantReader,
   effectIndex,
   loadCatalogCurses,
   resolveEffects,
@@ -17,7 +18,8 @@ import {
   parseGearPlannerAugmentDataset,
   parseGearPlannerItemDataset
 } from './data.ts'
-import { aggregateEffectSummary } from './effects.ts'
+import { getGearPlannerBaseAugmentSlots, isCompatibleGearPlannerAugment } from './augments.ts'
+import { aggregateEffectSummary, collectEquippedEffects } from './effects.ts'
 import { gearPlannerSlots, type GearPlannerSourceItem } from './gearPlanner.types.ts'
 import {
   gearPlannerFiligreeId,
@@ -116,6 +118,58 @@ describe('Gear Planner data validation', () => {
     expect(read(other)).toEqual({ presentation: [], effectsAdded: [], searchLabels: [] })
     expect(resolveEffects(other, 'Filigree', effectIndex(effects, 'augment'), new Map())).toEqual([])
     expect(() => read({ effects: [{ ...ref, variant: 'missing' }] })).toThrow('Missing effect 17/missing')
+  })
+
+  it('counts hidden crafting augment grants in equipment totals using the selected variant', () => {
+    const grants = craftingAugmentGrantReader([
+      {
+        id: 17,
+        hidden: true,
+        variants: [
+          { variant: 'other', enchantments: [{ displayName: 'Wisdom', value: 1, bonusType: 'Quality' }] },
+          {
+            variant: 'upgrade',
+            enchantments: [
+              { displayName: 'Wisdom', value: 3, bonusType: 'Quality' },
+              { property: 'Feat_SneakDiceBonus', value: 2, bonusType: 'Profane' },
+              { property: 'setbonus_epicgreensteel_focuscount_air', value: 1 },
+              { displayName: 'Armor Class', value: 5, requiresActiveBlocking: true },
+              { displayName: 'Spell Penetration', value: null },
+              { displayName: 'Strength', value: 8, internal: true }
+            ]
+          }
+        ]
+      },
+      { id: 18, variants: [{ variant: 'trigger', hidden: true, enchantments: [{ displayName: 'Wisdom', value: 12 }] }] }
+    ])
+    const ring = normalize('ring.json', [
+      { ...item('Ring', 'Ring'), augments: [{ name: 'Upgrade Slot', augmentType: 'Upgrade' }] }
+    ]).itemsBySlot['First Finger'][0]
+    const equipment = createEmptyGearPlannerEquipment()
+    equipment['First Finger'] = ring
+    const name = 'Test Upgrade'
+    const effectsAdded = grants(
+      {
+        effects: [
+          { effectId: 17, variant: 'upgrade', activation: 'Augment_OnEquipEffects' },
+          { effectId: 18, variant: 'trigger', activation: 'onHit' }
+        ]
+      },
+      name
+    )
+    expect(effectsAdded).toEqual([
+      { name: 'Wisdom', modifier: 3, bonus: 'Quality' },
+      { name: 'Sneak Attack Dice', modifier: 2, bonus: 'Profane' }
+    ])
+    const sources = collectEquippedEffects(equipment, {
+      [ring.id]: { 0: { name, augmentType: 'Upgrade', minLevel: 1, effectsAdded, source: {} } }
+    })
+    expect(aggregateEffectSummary(sources)).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ name: 'Wisdom', total: 3 }),
+        expect.objectContaining({ name: 'Sneak Attack Dice', total: 2 })
+      ])
+    )
   })
 
   it('omits hidden effects and variants without hiding visible siblings', () => {
@@ -523,6 +577,37 @@ describe('Gear Planner production CDN validation', () => {
     })
     try {
       const [data, rings] = await Promise.all([loadGearPlannerData(), loadIncrediblePotentialData()])
+      for (const [augmentName, minLevel, name, bonus, total] of [
+        ['Melancholic: Wisdom', 34, 'Wisdom', 'Enhancement', 15],
+        ['Bronzescale', 31, 'Skill: Hide', 'Enhancement', 5],
+        [
+          'Green Steel Augment (Equipment, Tier 1, air dominion ethereal)',
+          26,
+          'Spell Critical Damage: Electric',
+          'Enhancement',
+          20
+        ]
+      ] as const) {
+        const augment = data.augments.find((entry) => entry.name === augmentName && entry.minLevel === minLevel)
+        if (!augment) throw new Error('Missing upgrade ' + augmentName)
+        const host = data.items.find(
+          (entry) =>
+            !entry.source.enchantments?.some((effect) => effect.name === name) &&
+            getGearPlannerBaseAugmentSlots(entry).some((socket) => isCompatibleGearPlannerAugment(socket, augment))
+        )
+        if (!host) throw new Error('Missing compatible gear for ' + augmentName)
+        const socket = getGearPlannerBaseAugmentSlots(host).findIndex((slot) =>
+          isCompatibleGearPlannerAugment(slot, augment)
+        )
+        const gear = createEmptyGearPlannerEquipment()
+        gear[host.slot] = host
+        const sources = collectEquippedEffects(gear, { [host.id]: { [socket]: augment } })
+        const grant = sources.find(
+          (source) => source.category === 'augment' && source.augmentName === augmentName && source.effect.name === name
+        )
+        expect(grant?.effect.bonus, augmentName).toBe(bonus)
+        expect(aggregateEffectSummary(sources), augmentName).toContainEqual(expect.objectContaining({ name, total }))
+      }
       validateIncrediblePotentialData(rings)
       expect(rings.rings).toHaveLength(32)
       expect(rings.rings.filter(({ setName }) => setName)).toHaveLength(32)
