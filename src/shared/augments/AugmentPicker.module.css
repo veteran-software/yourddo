@@ -21,6 +21,10 @@
 .row + .row {
   border-top: 1px solid var(--app-border);
 }
+.row[data-recommended] {
+  border-inline-start: 3px solid var(--mantine-color-teal-filled);
+  padding: 0.5rem;
+}
 .row:hover,
 .row:focus-visible,
 .row[aria-pressed='true'] {

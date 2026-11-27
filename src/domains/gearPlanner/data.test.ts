@@ -6,6 +6,7 @@ import { getRingUpgrades, validateIncrediblePotentialData } from '../incredibleP
 import {
   adaptItemCategory,
   adaptItemSetDefinitions,
+  craftingAugmentGrantReader,
   effectIndex,
   loadCatalogCurses,
   resolveEffects,
@@ -17,8 +18,15 @@ import {
   parseGearPlannerAugmentDataset,
   parseGearPlannerItemDataset
 } from './data.ts'
-import { aggregateEffectSummary } from './effects.ts'
-import { gearPlannerSlots, type GearPlannerSourceItem } from './gearPlanner.types.ts'
+import { getGearPlannerBaseAugmentSlots, isCompatibleGearPlannerAugment } from './augments.ts'
+import { aggregateEffectSummary, collectEquippedEffects } from './effects.ts'
+import { applyGearCraft, gearCraftGroups } from './crafting.ts'
+import {
+  gearPlannerSlots,
+  type GearPlannerData,
+  type GearPlannerItem,
+  type GearPlannerSourceItem
+} from './gearPlanner.types.ts'
 import {
   gearPlannerFiligreeId,
   gearPlannerItemId,
@@ -26,7 +34,9 @@ import {
   normalizeGearPlannerSources
 } from './normalize.ts'
 import { createEmptyGearPlannerEquipment } from './planner.ts'
+import { restorePersistedGearPlannerState, serializeGearPlannerState } from './plannerStorage.ts'
 import { collectActiveSetEffectSources, resolveGearPlannerSetState } from './sets.ts'
+import { createDefaultGearPlannerState } from './setups.ts'
 
 const item = (name: string, type?: string): GearPlannerSourceItem => ({
   name,
@@ -37,6 +47,70 @@ const item = (name: string, type?: string): GearPlannerSourceItem => ({
 
 const normalize = (fileName: string, records: readonly GearPlannerSourceItem[]) =>
   normalizeGearPlannerSources([{ fileName, records }], [])
+
+function verifyHeroismUpgrades(data: GearPlannerData) {
+  const heroism = data.crafting.heroism
+  if (!heroism) throw new Error('Missing Attuned to Heroism package')
+  const groups = (gear: GearPlannerItem) =>
+    gearCraftGroups(gear, data.crafting).filter(({ system }) => system.startsWith('attuned-to-heroism-'))
+  const byId = (id: number) => {
+    const gear = data.items.find((candidate) => candidate.source.catalogId === id)
+    if (!gear) throw new Error('Missing Attuned to Heroism item ' + String(id))
+    return gear
+  }
+  const recipeIds = new Set<string>()
+  function walk(gear: GearPlannerItem, tier = 0) {
+    const group = groups(gear)[tier]
+    if (!group) return
+    for (const { id } of group.choices) {
+      const upgraded = applyGearCraft(gear, group, id, data.crafting)
+      expect(upgraded, gear.source.name).not.toBe(gear)
+      recipeIds.add(id)
+      walk(upgraded, tier + 1)
+    }
+  }
+  for (const id of heroism.items.keys()) walk(byId(id))
+  expect(recipeIds.size).toBe(112)
+
+  const pendant = byId(1879174660)
+  expect(groups(pendant)).toHaveLength(1)
+  const firstTier = groups(pendant)[0]
+  const socketedPendant = applyGearCraft(pendant, firstTier, firstTier.choices[0].id, data.crafting)
+  const secondTier = groups(socketedPendant)[1]
+  const upgradedPendant = applyGearCraft(socketedPendant, secondTier, secondTier.choices[0].id, data.crafting)
+  expect(getGearPlannerBaseAugmentSlots(upgradedPendant).map(({ augmentType }) => augmentType)).toEqual(['Yellow'])
+
+  let twilight = byId(1879161291)
+  for (const [tier, id] of ['1879161602', '1879165545', '1879165537', '1879173093'].entries())
+    twilight = applyGearCraft(twilight, groups(twilight)[tier], id, data.crafting)
+  const state = createDefaultGearPlannerState()
+  const equipment = state.setups[0].equipment
+  equipment[upgradedPendant.slot] = upgradedPendant
+  equipment[twilight.slot] = twilight
+  const ordinary = aggregateEffectSummary(collectEquippedEffects(equipment))
+  expect(ordinary).toContainEqual(expect.objectContaining({ name: 'Elemental Resistance: Electric', total: 50 }))
+  expect(ordinary).toContainEqual(expect.objectContaining({ name: 'Spell Power: Fire', total: 120 }))
+  expect(getGearPlannerBaseAugmentSlots(twilight).map(({ augmentType }) => augmentType)).toEqual(['Red'])
+  expect(
+    resolveGearPlannerSetState(equipment, {}, data.standardSets)
+      .sets.flatMap(({ thresholds }) => thresholds)
+      .some(({ isActive }) => isActive)
+  ).toBe(false)
+  const focus = byId(1879160957)
+  equipment[focus.slot] = focus
+  const active = resolveGearPlannerSetState(equipment, {}, data.standardSets)
+  expect(aggregateEffectSummary(collectActiveSetEffectSources(active))).toContainEqual(
+    expect.objectContaining({ name: 'Maximum Spell Points', total: 250 })
+  )
+
+  const restored = restorePersistedGearPlannerState(serializeGearPlannerState(state), data)
+  expect(restored.issues).toEqual([])
+  expect(restored.state.setups[0].equipment[twilight.slot]?.crafts).toEqual(twilight.crafts)
+  const cleared = applyGearCraft(twilight, groups(twilight)[0], null, data.crafting)
+  expect(cleared.crafts).toEqual([])
+  expect(getGearPlannerBaseAugmentSlots(cleared)).toEqual([])
+  expect(cleared.source.setBonus).toEqual([])
+}
 
 describe('Gear Planner data validation', () => {
   it('joins native effect variants and keeps identically named game items distinct in both ring slots', () => {
@@ -116,6 +190,58 @@ describe('Gear Planner data validation', () => {
     expect(read(other)).toEqual({ presentation: [], effectsAdded: [], searchLabels: [] })
     expect(resolveEffects(other, 'Filigree', effectIndex(effects, 'augment'), new Map())).toEqual([])
     expect(() => read({ effects: [{ ...ref, variant: 'missing' }] })).toThrow('Missing effect 17/missing')
+  })
+
+  it('counts hidden crafting augment grants in equipment totals using the selected variant', () => {
+    const grants = craftingAugmentGrantReader([
+      {
+        id: 17,
+        hidden: true,
+        variants: [
+          { variant: 'other', enchantments: [{ displayName: 'Wisdom', value: 1, bonusType: 'Quality' }] },
+          {
+            variant: 'upgrade',
+            enchantments: [
+              { displayName: 'Wisdom', value: 3, bonusType: 'Quality' },
+              { property: 'Feat_SneakDiceBonus', value: 2, bonusType: 'Profane' },
+              { property: 'setbonus_epicgreensteel_focuscount_air', value: 1 },
+              { displayName: 'Armor Class', value: 5, requiresActiveBlocking: true },
+              { displayName: 'Spell Penetration', value: null },
+              { displayName: 'Strength', value: 8, internal: true }
+            ]
+          }
+        ]
+      },
+      { id: 18, variants: [{ variant: 'trigger', hidden: true, enchantments: [{ displayName: 'Wisdom', value: 12 }] }] }
+    ])
+    const ring = normalize('ring.json', [
+      { ...item('Ring', 'Ring'), augments: [{ name: 'Upgrade Slot', augmentType: 'Upgrade' }] }
+    ]).itemsBySlot['First Finger'][0]
+    const equipment = createEmptyGearPlannerEquipment()
+    equipment['First Finger'] = ring
+    const name = 'Test Upgrade'
+    const effectsAdded = grants(
+      {
+        effects: [
+          { effectId: 17, variant: 'upgrade', activation: 'Augment_OnEquipEffects' },
+          { effectId: 18, variant: 'trigger', activation: 'onHit' }
+        ]
+      },
+      name
+    )
+    expect(effectsAdded).toEqual([
+      { name: 'Wisdom', modifier: 3, bonus: 'Quality' },
+      { name: 'Sneak Attack Dice', modifier: 2, bonus: 'Profane' }
+    ])
+    const sources = collectEquippedEffects(equipment, {
+      [ring.id]: { 0: { name, augmentType: 'Upgrade', minLevel: 1, effectsAdded, source: {} } }
+    })
+    expect(aggregateEffectSummary(sources)).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ name: 'Wisdom', total: 3 }),
+        expect.objectContaining({ name: 'Sneak Attack Dice', total: 2 })
+      ])
+    )
   })
 
   it('omits hidden effects and variants without hiding visible siblings', () => {
@@ -523,6 +649,51 @@ describe('Gear Planner production CDN validation', () => {
     })
     try {
       const [data, rings] = await Promise.all([loadGearPlannerData(), loadIncrediblePotentialData()])
+      verifyHeroismUpgrades(data)
+      for (const [input, output] of [
+        [1879110202, 1879110200],
+        [1879110212, 1879110213],
+        [1879110221, 1879110222],
+        [1879110224, 1879110220]
+      ]) {
+        const current = data.items.find(({ source }) => source.catalogId === input)
+        if (!current) throw new Error('Missing Dampened item ' + String(input))
+        expect(data.dampenedUpgrades?.get(current.id)).toMatchObject({
+          slot: current.slot,
+          source: { catalogId: output }
+        })
+      }
+      for (const [augmentName, minLevel, name, bonus, total] of [
+        ['Melancholic: Wisdom', 34, 'Wisdom', 'Enhancement', 15],
+        ['Bronzescale', 31, 'Skill: Hide', 'Enhancement', 5],
+        [
+          'Green Steel Augment (Equipment, Tier 1, air dominion ethereal)',
+          26,
+          'Spell Critical Damage: Electric',
+          'Enhancement',
+          20
+        ]
+      ] as const) {
+        const augment = data.augments.find((entry) => entry.name === augmentName && entry.minLevel === minLevel)
+        if (!augment) throw new Error('Missing upgrade ' + augmentName)
+        const host = data.items.find(
+          (entry) =>
+            !entry.source.enchantments?.some((effect) => effect.name === name) &&
+            getGearPlannerBaseAugmentSlots(entry).some((socket) => isCompatibleGearPlannerAugment(socket, augment))
+        )
+        if (!host) throw new Error('Missing compatible gear for ' + augmentName)
+        const socket = getGearPlannerBaseAugmentSlots(host).findIndex((slot) =>
+          isCompatibleGearPlannerAugment(slot, augment)
+        )
+        const gear = createEmptyGearPlannerEquipment()
+        gear[host.slot] = host
+        const sources = collectEquippedEffects(gear, { [host.id]: { [socket]: augment } })
+        const grant = sources.find(
+          (source) => source.category === 'augment' && source.augmentName === augmentName && source.effect.name === name
+        )
+        expect(grant?.effect.bonus, augmentName).toBe(bonus)
+        expect(aggregateEffectSummary(sources), augmentName).toContainEqual(expect.objectContaining({ name, total }))
+      }
       validateIncrediblePotentialData(rings)
       expect(rings.rings).toHaveLength(32)
       expect(rings.rings.filter(({ setName }) => setName)).toHaveLength(32)

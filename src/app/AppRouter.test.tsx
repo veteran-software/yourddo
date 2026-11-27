@@ -32,6 +32,10 @@ vi.mock('../domains/slaveLords/SlaveLordsPage.tsx', () => ({
   default: () => <h1>Slave Lords Crafting domain</h1>
 }))
 
+vi.mock('../domains/thunderForged/ThunderForgedPage.tsx', () => ({
+  default: () => <h1>Thunder-Forged Crafting domain</h1>
+}))
+
 vi.mock('../domains/incrediblePotential/IncrediblePotentialPage.tsx', () => ({
   default: () => <h1>Incredible Potential domain</h1>
 }))
@@ -175,6 +179,7 @@ describe('AppRouter', () => {
     ['/dinosaur-bone', 'Dinosaur Bone Crafting', 'Dinosaur Bone'],
     ['/alchemical', 'Alchemical Crafting', 'Alchemical Crafting'],
     ['/slave-lords', 'Slave Lords Crafting', 'Slave Lords Crafting'],
+    ['/thunder-forged', 'Thunder-Forged Crafting', 'Thunder-Forged Crafting'],
     ['/incredible-potential', 'Incredible Potential', 'Incredible Potential'],
     ['/cauldron-of-cadence', 'Cauldron of Cadence', 'Cauldron of Cadence'],
     ['/nearly-complete', 'Nearly Complete', 'Nearly Complete'],
@@ -184,9 +189,9 @@ describe('AppRouter', () => {
     ['/total-chaos', 'Total Chaos', 'Total Chaos'],
     ['/the-shroud', 'The Shroud', 'Shroud'],
     ['/the-shadow-crypt', 'The Shadow Crypt', 'Shadow Crypt']
-  ])('renders %s with active navigation on direct visits and remounts', (path, label, domain) => {
-    const checkRoute = () => {
-      expect(screen.getByRole('heading', { name: `${domain} domain` })).toBeTruthy()
+  ])('renders %s with active navigation on direct visits and remounts', async (path, label, domain) => {
+    const checkRoute = async () => {
+      expect(await screen.findByRole('heading', { name: `${domain} domain` })).toBeTruthy()
       expect(screen.queryByRole('heading', { name: 'Page not found' })).toBeNull()
       const link = screen.getByRole('link', { name: label })
       expect(link.getAttribute('href')).toBe(path)
@@ -194,10 +199,10 @@ describe('AppRouter', () => {
     }
 
     const firstRender = renderRoute(path)
-    checkRoute()
+    await checkRoute()
     firstRender.unmount()
     renderRoute(path)
-    checkRoute()
+    await checkRoute()
   })
 
   it.each(['/nearly-complete', '/reavers-fate', '/monastery-of-the-scorpion', '/total-chaos'])(

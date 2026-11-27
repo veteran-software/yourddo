@@ -132,7 +132,18 @@ describe('Gear Planner character setup', () => {
     const data = normalizeGearPlannerSources([], [])
     const state = createDefaultGearPlannerState()
     const setup = activeGearPlannerSetup(state)
-    const focusStats = ['Wisdom', 'Spell DC: Evocation', 'Maximum Hit Points']
+    const focusStats = [
+      'Wisdom',
+      'Spell DC: Evocation',
+      'Maximum Hit Points',
+      'Strength',
+      'Dexterity',
+      'Constitution',
+      'Intelligence',
+      'Charisma',
+      'Skill: Jump',
+      'Armor Class'
+    ]
     const focused = updateSetupCharacter(state, setup.id, { ...setup.character, focusStats })
     const exported = createGearPlannerExport(focused)
     const imported = importGearPlannerState(JSON.stringify(exported), data)
@@ -143,7 +154,7 @@ describe('Gear Planner character setup', () => {
     }
     for (const invalid of [
       ['Wisdom', 'wisdom'],
-      ['A', 'B', 'C', 'D', 'E', 'F']
+      [...focusStats, 'Fortification']
     ]) {
       expect(() =>
         importGearPlannerState(

@@ -3,6 +3,8 @@ import ScopedAugmentDetails from '../../../shared/augments/ScopedAugmentDetails'
 import AugmentPicker from '../../../shared/augments/AugmentPicker'
 import EquippedEffect from './EquippedEffect'
 import ItemSetLinks from './ItemSetLinks'
+import { recommendSocketAugment } from '../augmentRecommendations'
+import type { GearPlannerSetup } from '../setups'
 import { useTroveInventory } from '../troveContext'
 import { TroveOwnership, OwnedFilter } from './TroveInventory'
 import { ownsTroveItem } from '../trove'
@@ -42,6 +44,7 @@ interface AugmentSlotSelectorProps {
   augments: readonly GearPlannerAugment[]
   conflicts: GearPlannerEffectConflictResolution
   conflictSources: readonly GearPlannerEffectSource[]
+  setup?: Pick<GearPlannerSetup, 'character' | 'equipment' | 'maximumLevel'>
   selected: GearPlannerAugment | null
   onChange: (augment: GearPlannerAugment | null) => void
 }
@@ -56,12 +59,17 @@ const AugmentSlotSelector = ({
   enchantmentNames,
   conflicts,
   conflictSources,
+  setup,
   selected,
   onChange
 }: AugmentSlotSelectorProps) => {
   const { inventory, ownedOnly, setOwnedOnly } = useTroveInventory()
   const [showAll, setShowAll] = useState(false)
   const compatible = useMemo(() => getCompatibleGearPlannerAugments(augmentSlot, augments), [augmentSlot, augments])
+  const showType = useMemo(
+    () => new Set(compatible.map(({ augmentType }) => normaliseAugmentSlotType(augmentType))).size > 1,
+    [compatible]
+  )
   const sourcesByEffect = useMemo(
     () =>
       Map.groupBy(
@@ -89,70 +97,66 @@ const AugmentSlotSelector = ({
     [visible]
   )
   const selectedOverLevel = selected !== null && selected.minLevel > hostLevel
-  const label = augmentSlot.name ?? augmentSlot.augmentType
+  const socketLabel = augmentSlot.name ?? augmentSlot.augmentType
 
   const byId = useMemo(() => new Map(compatible.map((a) => [gearPlannerAugmentIdentity(a), a])), [compatible])
-  function compareAugment(augment: GearPlannerAugment) {
-    const comparisons = new Map<keyof typeof comparisonColors, string[]>()
-    for (const effect of augment.effectsAdded) {
-      const sources = sourcesByEffect.get(normalizeEffectName(effect.name))
-      if (!sources) continue
-      const preview = previewPotentialEffectConflict(effect, sources)
-      if (!preview.isConflict) continue
-      const lesser = preview.isOverpowered ? 'Overpowered' : 'Redundant'
-      const status = preview.isUpgrade ? 'Upgrade' : lesser
-      const detail =
-        effectLabel(effect) + (preview.currentModifier != null ? ` · equipped ${String(preview.currentModifier)}` : '')
-      const group = comparisons.get(status)
-      if (group) group.push(detail)
-      else comparisons.set(status, [detail])
-    }
-    return comparisons
+  function renderEffect(effect: GearPlannerAugment['effectsAdded'][number], label: string) {
+    const sources = sourcesByEffect.get(normalizeEffectName(effect.name))
+    if (!sources || effect.displayOnly) return label
+    const preview = previewPotentialEffectConflict(effect, sources)
+    if (!preview.isConflict) return label
+    const lesser = preview.isOverpowered ? 'Overpowered' : 'Redundant'
+    const status = preview.isUpgrade ? 'Upgrade' : lesser
+    const detail = label + (preview.currentModifier != null ? ` · equipped ${String(preview.currentModifier)}` : '')
+    return (
+      <span title={detail}>
+        <span>{detail}</span>
+        <Badge component='span' ml={6} size='xs' variant='light' color={comparisonColors[status]}>
+          {status}
+        </Badge>
+      </span>
+    )
   }
   const renderAugment = (augment: GearPlannerAugment) => {
-    const comparisons = compareAugment(augment)
+    const overLevel = augment.minLevel > hostLevel
     return (
       <Stack gap={2} w='100%'>
         <Group justify='space-between' wrap='nowrap'>
           <Text size='sm' style={{ overflowWrap: 'anywhere' }}>
             {augment.name}
           </Text>
-          <Badge component='span' color='gray' size='sm' variant='light'>
+          <Badge component='span' color={overLevel ? 'orange' : 'gray'} size='sm' variant='light' flex='0 0 auto'>
             ML {String(augment.minLevel)}
+            {overLevel && (
+              <>
+                {' · '}
+                <span>Above item ML {hostLevel}</span>
+              </>
+            )}
           </Badge>
         </Group>
-        <Text c='dimmed' size='xs'>
-          {augment.augmentType}
-          {!augment.presentation && augment.effectsAdded[0] && !comparisons.size
-            ? ` · ${effectLabel(augment.effectsAdded[0])}`
-            : ''}
-          {!augment.presentation && augment.effectsAdded.length > 1
-            ? ` · ${String(augment.effectsAdded.length)} effects`
-            : ''}
-        </Text>
-        {augment.presentation && (
-          <ScopedAugmentDetails
-            augmentName={augment.name}
-            presentation={augment.presentation}
-            fallbackDescription={augment.fallbackDescription}
-          />
-        )}
-        {augment.minLevel > hostLevel && (
-          <Text size='xs' c='orange' fw={600}>
-            Above item ML {hostLevel}
+        {showType && (
+          <Text c='dimmed' size='xs'>
+            {augment.augmentType}
           </Text>
         )}
-        {[...comparisons].map(([status, details]) => (
-          <Group key={status} gap={6} align='baseline' wrap='wrap' title={details.join('\n')}>
-            <Badge size='xs' variant='light' color={comparisonColors[status]}>
-              {status}
-            </Badge>
-            <Text size='xs' style={{ overflowWrap: 'anywhere' }}>
-              {details[0]}
-              {details.length > 1 ? ` (+${String(details.length - 1)} more)` : ''}
-            </Text>
-          </Group>
-        ))}
+        {augment.presentation ? (
+          <ScopedAugmentDetails
+            augmentName={augment.name}
+            compact
+            presentation={augment.presentation}
+            fallbackDescription={augment.fallbackDescription}
+            renderRow={renderEffect}
+          />
+        ) : (
+          [...new Map(augment.effectsAdded.map((effect) => [effectLabel(effect), effect] as const))].map(
+            ([label, effect]) => (
+              <Text key={label} size='xs'>
+                {renderEffect(effect, label)}
+              </Text>
+            )
+          )
+        )}
         <TroveOwnership name={augment.name} inOption />
         {augment.setBonus?.length ? (
           <Text c='dimmed' size='xs'>
@@ -167,7 +171,7 @@ const AugmentSlotSelector = ({
       {hasColorPicker(augmentSlot.augmentType) ? (
         <AugmentPicker
           placeholder='Select augment'
-          label={label}
+          label={socketLabel}
           enchantmentNames={enchantmentNames}
           colors={getCompatibleAugmentTypes(augmentSlot.augmentType)}
           options={compatible.map((a) => ({
@@ -182,6 +186,17 @@ const AugmentSlotSelector = ({
           ownedOnly={ownedOnly}
           onOwnedChange={setOwnedOnly}
           hostLevel={hostLevel}
+          recommend={
+            setup &&
+            ((options) => {
+              const maxLevel = Math.min(hostLevel, setup.maximumLevel)
+              const candidates = options.flatMap(({ value }) => {
+                const augment = byId.get(value)
+                return augment && augment.minLevel <= maxLevel ? [augment] : []
+              })
+              return recommendSocketAugment(candidates, item, slotIndex, setup, conflictSources, selected)
+            })
+          }
           onChange={(v) => {
             onChange(v === null ? null : (byId.get(v) ?? null))
           }}
@@ -195,7 +210,7 @@ const AugmentSlotSelector = ({
           <Select
             size={'xs'}
             p={0}
-            label={label}
+            label={socketLabel}
             placeholder='Select augment'
             data={selectData}
             value={selectedId}

@@ -151,6 +151,7 @@ describe('SidebarNavigation', () => {
       'Nearly Complete',
       'Nearly Finished',
       'Slave Lords Crafting',
+      'Thunder-Forged Crafting',
       'Viktranium Experiment'
     ])
   })

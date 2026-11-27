@@ -58,7 +58,8 @@ const toPercentageValue = (value: number): number => Number((value * 100).toFixe
 const getRepresentation = (unit: EssenceModifierUnit, value: number | string): EssenceEffectModifierRepresentation => {
   if (unit === 'text') return 'text'
   if (unit === 'dice') return 'dice'
-  if (unit === 'percent' || (typeof value === 'number' && isFractionalNumericValue(value))) return 'percentage'
+  if (unit === 'percent' || unit === 'ratio' || (typeof value === 'number' && isFractionalNumericValue(value)))
+    return 'percentage'
   return 'number'
 }
 
@@ -68,15 +69,18 @@ const resolveEffectModifier = (effect: EssenceEffect, itemLevel: number): Essenc
   const value = getModifierValueAtItemLevel(effect.modifier, itemLevel)
   if (value === undefined) return { status: 'no-match-for-item-level', itemLevel }
 
-  const representation = getRepresentation(effect.modifier.unit, value)
+  const weaponDice = effect.displayName === 'Weapon Damage Dice'
+  const representation = weaponDice ? 'dice' : getRepresentation(effect.modifier.unit, value)
   return {
     status: 'resolved',
     value:
-      representation === 'percentage' && typeof value === 'number' && isFractionalNumericValue(value)
-        ? toPercentageValue(value)
+      representation === 'percentage' &&
+      typeof value === 'number' &&
+      (effect.modifier.unit === 'ratio' || isFractionalNumericValue(value))
+        ? Number(toPercentageValue(value).toFixed(effect.modifier.unit === 'ratio' ? 5 : 10))
         : value,
     representation,
-    ...(representation === 'dice' ? { diceSuffix: effect.modifier.die } : {})
+    ...(representation === 'dice' ? { diceSuffix: weaponDice ? '[W]' : effect.modifier.die } : {})
   }
 }
 

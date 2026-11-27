@@ -39,10 +39,17 @@ function equippedNeeds(setup: GearPlannerSetup) {
   return needs
 }
 
-export function farmingList(setup: GearPlannerSetup, inventory: TroveInventory, character: string) {
+export function farmingList(
+  setup: GearPlannerSetup,
+  inventory: TroveInventory,
+  character: string,
+  names?: ReadonlySet<string>
+) {
   const tasks: FarmTask[] = []
   const target = character.trim().toLowerCase()
-  for (const [key, need] of equippedNeeds(setup)) tasks.push(...farmingTasks(key, need, inventory, target))
+  for (const [key, need] of equippedNeeds(setup)) {
+    if (!names || names.has(need.name.toLowerCase())) tasks.push(...farmingTasks(key, need, inventory, target))
+  }
   return tasks
 }
 

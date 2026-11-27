@@ -1,5 +1,6 @@
 import { getAvailableAugmentEffectNames } from './augmentRules.ts'
-import type { EquipmentSlotId } from './equipment.ts'
+import { EQUIPMENT_SLOTS, type EquipmentSlotId } from './equipment.ts'
+import { placementMinimumLevel } from './enhancementEligibility'
 import type { EssenceCraftingData } from './essenceCrafting.types.ts'
 import { createEmptyEssencePlan, type EssencePlanState } from './plannerState.ts'
 import { transitionEssencePlan } from './plannerTransitions.ts'
@@ -47,6 +48,7 @@ export type EssenceCraftingStorageSource = 'empty' | 'v2' | 'legacy'
 export interface LoadedEssenceCraftingPlan {
   plan: EssencePlanState
   source: EssenceCraftingStorageSource
+  removedShardSelections?: readonly string[]
 }
 
 const LEGACY_SLOT_ID_BY_KEY: Readonly<Partial<Record<string, EquipmentSlotId>>> = {
@@ -236,7 +238,35 @@ export const loadEssenceCraftingPlan = (
 ): LoadedEssenceCraftingPlan => {
   const storedPayload = readStoredJson(storage, ESSENCE_CRAFTING_SESSION_STORAGE_KEY)
   if (hasVersionOneShape(storedPayload)) {
-    return { plan: planFromExternalState(data, storedPayload), source: 'v2' }
+    const plan = planFromExternalState(data, storedPayload)
+    const removedShardSelections = data.previousEnhancementById
+      ? EQUIPMENT_SLOTS.flatMap(({ id, label, itemCategoryIds }) => {
+          const saved = storedPayload.itemsBySlotId[id]
+          const restored = plan.itemsBySlotId[id]
+          if (!saved || !restored) return []
+          return (['prefix', 'suffix', 'extra'] as const).flatMap((position) => {
+            const key = `${position}EnhancementId` as const
+            const selection = saved[key]
+            if (!selection || restored[key]) return []
+            const previous = data.previousEnhancementById?.get(selection)
+            if (
+              !previous ||
+              placementMinimumLevel(previous, itemCategoryIds, position) >
+                (saved.minimumLevelOverride ?? storedPayload.masterMinimumLevel)
+            )
+              return []
+            return [label + ' ' + position + ' · ' + previous.displayName]
+          })
+        })
+      : []
+    if (!removedShardSelections.length) return { plan, source: 'v2' }
+    const backupKey = ESSENCE_CRAFTING_SESSION_STORAGE_KEY + ':before-native-shards'
+    try {
+      if (!storage?.getItem(backupKey)) storage?.setItem(backupKey, JSON.stringify(storedPayload))
+    } catch {
+      // The planner can still show the affected selections when storage is unavailable.
+    }
+    return { plan, source: 'v2', removedShardSelections }
   }
 
   const migratedPayload = migrateLegacyEssenceCraftingPayload(

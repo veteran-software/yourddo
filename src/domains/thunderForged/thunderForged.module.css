@@ -1,0 +1,77 @@
+.canvas {
+  container-type: inline-size;
+}
+.workbench {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+  grid-template-areas: 'base preview' 'upgrades preview';
+  gap: var(--mantine-spacing-md);
+  align-items: start;
+}
+.base {
+  grid-area: base;
+}
+.upgrades {
+  grid-area: upgrades;
+}
+.preview {
+  grid-area: preview;
+  min-width: 0;
+  border-top: 3px solid light-dark(var(--mantine-color-orange-7), var(--mantine-color-orange-5));
+  background: linear-gradient(130deg, var(--app-active), var(--app-panel) 72%);
+}
+.stage + .stage,
+.sockets {
+  border-top: 1px solid var(--app-border);
+  padding-top: var(--mantine-spacing-sm);
+}
+.art {
+  display: grid;
+  flex: 0 0 44px;
+}
+.art img {
+  grid-area: 1 / 1;
+}
+.sockets ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  list-style: none;
+  margin: 0.45rem 0 0;
+  padding: 0;
+}
+.sockets li {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+  border: 1px solid var(--app-border);
+  border-radius: var(--mantine-radius-sm);
+  padding: 0.2rem 0.45rem;
+  background: var(--app-panel);
+}
+.sockets li svg {
+  flex-shrink: 0;
+  color: var(--app-accent);
+}
+.sockets li[data-color='Orange'] svg {
+  color: light-dark(var(--mantine-color-orange-8), var(--mantine-color-orange-4));
+}
+.sockets li[data-color='Red'] svg {
+  color: light-dark(var(--mantine-color-red-8), var(--mantine-color-red-4));
+}
+.sockets li[data-color='Green'] svg {
+  color: light-dark(var(--mantine-color-green-8), var(--mantine-color-green-4));
+}
+.sockets li[data-color='Blue'] svg {
+  color: light-dark(var(--mantine-color-blue-8), var(--mantine-color-blue-4));
+}
+.sockets li[data-color='Purple'] svg {
+  color: light-dark(var(--mantine-color-grape-8), var(--mantine-color-grape-4));
+}
+@container (max-width: 43rem) {
+  .workbench {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'base' 'preview' 'upgrades';
+  }
+}

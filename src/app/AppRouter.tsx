@@ -1,58 +1,84 @@
+import { Alert, Button, Center, Loader, Stack, Text } from '@mantine/core'
+import { Component, Suspense, type ReactNode } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
-import CauldronOfCadencePage from '../domains/cauldronOfCadence/CauldronOfCadencePage.tsx'
-import DinosaurBonePage from '../domains/dinosaurBone/DinosaurBonePage.tsx'
-import EssenceCraftingPage from '../domains/essenceCrafting/EssenceCraftingPage.tsx'
-import GearPlannerPage from '../domains/gearPlanner/GearPlannerPage.tsx'
-import HeroicGreenSteelPage from '../domains/heroicGreenSteel/HeroicGreenSteelPage.tsx'
-import HomePage from '../domains/home/HomePage.tsx'
-import AlchemicalPage from '../domains/alchemical/AlchemicalPage.tsx'
-import SlaveLordsPage from '../domains/slaveLords/SlaveLordsPage.tsx'
-import IncrediblePotentialPage from '../domains/incrediblePotential/IncrediblePotentialPage.tsx'
-import LegendaryGreenSteelPage from '../domains/legendaryGreenSteel/LegendaryGreenSteelPage.tsx'
-import MastermindPage from '../domains/mastermind/MastermindPage.tsx'
-import MonasteryOfTheScorpionPage from '../domains/monasteryOfTheScorpion/MonasteryOfTheScorpionPage.tsx'
-import NearlyCompletePage from '../domains/nearlyComplete/NearlyCompletePage.tsx'
-import NearlyFinishedPage from '../domains/nearlyFinished/NearlyFinishedPage.tsx'
-import SagaTrackerPage from '../domains/sagaTracker/SagaTrackerPage.tsx'
-import ShadowCryptPage from '../domains/shadowCrypt/ShadowCryptPage.tsx'
-import ShroudPage from '../domains/shroud/ShroudPage.tsx'
-import TotalChaosPage from '../domains/totalChaos/TotalChaosPage.tsx'
-import ViktraniumPage from '../domains/viktranium/ViktraniumPage.tsx'
 import { routeAliases } from '../shared/seo/seoConfig'
 import NotFoundPage from '../shared/ui/NotFoundPage.tsx'
 import AppLayout from './AppLayout'
+import { pageRoutes, type PreparedRoutePage } from './routePages'
 
-function LegacyGearLink({ home = false }: Readonly<{ home?: boolean }>) {
+function LegacyGearLink({ children }: Readonly<{ children: ReactNode }>) {
   const { hash } = useLocation()
   // Older deployments put the Gear Planner route and its shared setup in the hash.
   if (hash.startsWith('#/gear-planner?') && new URLSearchParams(hash.slice('#/gear-planner?'.length)).has('gp')) {
     return <Navigate to={hash.slice(1)} replace />
   }
-  return home ? <HomePage /> : <GearPlannerPage />
+  return children
 }
 
-const AppRouter = ({ hostname = globalThis.window?.location.hostname ?? '' }: { hostname?: string } = {}) => (
+class RouteLoadBoundary extends Component<Readonly<{ children: ReactNode }>, { failed: boolean }> {
+  state = { failed: false }
+
+  static getDerivedStateFromError() {
+    return { failed: true }
+  }
+
+  render() {
+    return this.state.failed ? (
+      <Alert m='md' color='red' title='This page could not load'>
+        <Button
+          variant='light'
+          onClick={() => {
+            window.location.reload()
+          }}
+        >
+          Reload page
+        </Button>
+      </Alert>
+    ) : (
+      this.props.children
+    )
+  }
+}
+
+function RouteLoading() {
+  return (
+    <Center mih={160} role='status'>
+      <Stack align='center' gap='xs'>
+        <Loader size='sm' />
+        <Text size='sm'>Loading page…</Text>
+      </Stack>
+    </Center>
+  )
+}
+
+const AppRouter = ({
+  hostname = globalThis.window?.location.hostname ?? '',
+  prepared
+}: Readonly<{ hostname?: string; prepared?: PreparedRoutePage }> = {}) => (
   <Routes>
     <Route element={<AppLayout develop={hostname.startsWith('develop.')} />}>
-      <Route path='/' element={<LegacyGearLink home />} />
-      <Route path='/cauldron-of-cadence' element={<CauldronOfCadencePage />} />
-      <Route path='/dinosaur-bone' element={<DinosaurBonePage />} />
-      <Route path='/essence-crafting' element={<EssenceCraftingPage />} />
-      <Route path='/gear-planner' element={<LegacyGearLink />} />
-      <Route path='/green-steel' element={<HeroicGreenSteelPage />} />
-      <Route path='/legendary-green-steel' element={<LegendaryGreenSteelPage />} />
-      <Route path='/alchemical' element={<AlchemicalPage />} />
-      <Route path='/slave-lords' element={<SlaveLordsPage />} />
-      <Route path='/incredible-potential' element={<IncrediblePotentialPage />} />
-      <Route path='/nearly-complete' element={<NearlyCompletePage />} />
-      <Route path='/nearly-finished' element={<NearlyFinishedPage />} />
-      <Route path='/reavers-fate' element={<MastermindPage />} />
-      <Route path='/saga-tracker' element={<SagaTrackerPage />} />
-      <Route path='/monastery-of-the-scorpion' element={<MonasteryOfTheScorpionPage />} />
-      <Route path='/the-shadow-crypt' element={<ShadowCryptPage />} />
-      <Route path='/the-shroud' element={<ShroudPage />} />
-      <Route path='/total-chaos' element={<TotalChaosPage />} />
-      <Route path='/viktranium-experiment' element={<ViktraniumPage />} />
+      {pageRoutes.map((route) => {
+        const Page = prepared?.path === route.path ? prepared.Page : route.Page
+        const element =
+          route.path === '/' || route.path === '/gear-planner' ? (
+            <LegacyGearLink>
+              <Page />
+            </LegacyGearLink>
+          ) : (
+            <Page />
+          )
+        return (
+          <Route
+            key={route.path}
+            path={route.path}
+            element={
+              <RouteLoadBoundary key={route.path}>
+                <Suspense fallback={<RouteLoading />}>{element}</Suspense>
+              </RouteLoadBoundary>
+            }
+          />
+        )
+      })}
       {routeAliases.map(({ path, target }) => (
         <Route key={path} path={path} element={<Navigate to={target} state={{ recentToolPath: path }} replace />} />
       ))}

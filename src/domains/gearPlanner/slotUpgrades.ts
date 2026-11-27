@@ -1,4 +1,10 @@
 import { compareFocus, focusChanges, type FocusChange } from './focusStats'
+import {
+  applyRecommendedAugments,
+  collectRecommendationEffects,
+  createAugmentRecommender,
+  type RecommendedAugment
+} from './augmentRecommendations'
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types'
 import { characterAllowsItem, ownerSlots, slotOwner } from './character'
 import type { GearPlannerData, GearPlannerItem, GearPlannerSlot } from './gearPlanner.types'
@@ -10,6 +16,7 @@ type Changes = ReturnType<typeof comparisonRows>
 type Snapshot = ReturnType<typeof loadoutSnapshot>
 export interface SlotReplacement {
   item: GearPlannerItem
+  augments: readonly RecommendedAugment[]
   gains: Changes
   losses: Changes
   gainedSets: string[]
@@ -55,13 +62,23 @@ export function* findSlotReplacements(
   setup: GearPlannerSetup,
   slot: GearPlannerSlot,
   data: GearPlannerData,
-  essence: EssenceCraftingData
+  essence: EssenceCraftingData,
+  priority: string | null = null
 ) {
   const owner = slotOwner(slot)
   const snapshot = (next: GearPlannerSetup) => loadoutSnapshot(next, owner, data, essence)
   const before = snapshot(setup)
   const empty = snapshot({ ...setup, ...equipGearPlannerItemInSelection(setup, slot, null) })
   const contributions = incumbentContributions(before, empty)
+  const focuses = setup.character.focusStats ?? []
+  const goals = priority ? [priority, ...focuses] : focuses
+  const recommend = createAugmentRecommender(
+    setup,
+    data.reforging,
+    data.augments,
+    goals,
+    collectRecommendationEffects(setup, essence, data.reforging)
+  )
   function evaluate(item: GearPlannerItem): SlotReplacement | undefined {
     if (
       item.minimumLevel < setup.minimumLevel ||
@@ -71,7 +88,8 @@ export function* findSlotReplacements(
       return
     const next = equipGearPlannerItemInSelection(setup, slot, item)
     if (next === setup) return
-    const after = snapshot({ ...setup, ...next })
+    const augments = recommend(item)
+    const after = snapshot(applyRecommendedAugments({ ...setup, ...next }, item, data.reforging, augments))
     const changes = comparisonRows(before.Stats, after.Stats).filter((row) => row.changed)
     // A new numeric penalty can appear as an added row. Use its signed delta.
     const isGain = (row: Changes[number]) => row.delta.startsWith('+') || row.delta === 'Gained'
@@ -101,6 +119,7 @@ export function* findSlotReplacements(
     }
     return {
       item,
+      augments,
       gains,
       losses,
       gainedSets,

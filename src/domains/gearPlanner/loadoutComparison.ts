@@ -5,12 +5,15 @@ import { enabledOwners, ownerSlots, type GearOwner } from './character'
 import {
   aggregateEffectSummary,
   collectEquippedEffects,
+  isSummingBonusType,
+  matchesAugmentAttackForm,
+  normalizeBonusType,
   normalizeEffectName,
   effectAmount,
   type GearPlannerEffectSummary
 } from './effects'
-import type { GearPlannerData, GearPlannerItem } from './gearPlanner.types'
-import { createEmptyGearPlannerEquipment } from './planner'
+import type { GearPlannerAugment, GearPlannerData, GearPlannerEffect, GearPlannerItem } from './gearPlanner.types'
+import { createEmptyGearPlannerEquipment, gearPlannerUnlockedFiligreeSlotCount } from './planner'
 import {
   gearPlannerReforgingStages,
   gearPlannerReforgingStageLabel,
@@ -69,7 +72,8 @@ export function loadoutSnapshot(
   owner: GearOwner,
   data: GearPlannerData,
   essence: EssenceCraftingData,
-  objective?: string
+  objective?: string,
+  includeGear = true
 ) {
   const equipment = createEmptyGearPlannerEquipment()
   const gear: Entries = new Map()
@@ -78,7 +82,7 @@ export function loadoutSnapshot(
       const item = setup.equipment[slot]
       if (!item) continue
       equipment[slot] = item
-      addItemDetails(gear, slot, item, setup, essence, data)
+      if (includeGear) addItemDetails(gear, slot, item, setup, essence, data)
     }
   }
   const slots = getEffectiveGearPlannerAugmentSlotsByItem(equipment, setup.reforging, data.reforging)
@@ -103,10 +107,10 @@ export function loadoutSnapshot(
     }
   )
   const labels = publishedLabels(data.enchantmentNames)
+  const objectiveFor = (effect: GearPlannerEffect) => (labels?.has(effect.name) ? effect : objectiveEffect(effect))
   const summaries = aggregateEffectSummary(
     [...effects, ...collectActiveSetEffectSources(sets)].map((source) => {
-      if (labels?.has(source.effect.name)) return source
-      const effect = objectiveEffect(source.effect)
+      const effect = objectiveFor(source.effect)
       return effect === source.effect
         ? source
         : {
@@ -124,11 +128,25 @@ export function loadoutSnapshot(
     for (const group of selected.groups)
       objectiveBonuses.set(group.bonusType, statValue({ ...selected, total: group.effectiveValue, groups: [group] }))
   const tiers: Entries = activeSetTiers(sets)
+  function augmentIsCovered(item: GearPlannerItem, augment: GearPlannerAugment) {
+    if (augment.setBonus?.length || augment.clearSecondarySet) return false
+    return augment.effectsAdded.every((raw) => {
+      if (!matchesAugmentAttackForm(raw, item, equipment)) return true
+      const effect = objectiveFor(raw)
+      const bonus = normalizeBonusType(raw.bonus)
+      if (isSummingBonusType(bonus)) return false
+      const summary = summaries.find((entry) => entry.normalizedName === normalizeEffectName(effect.name))
+      const group = summary?.groups.find(({ bonusType }) => bonusType === bonus)
+      // A tie can contribute a new unit or label to the effective stat.
+      return group !== undefined && group.effectiveValue > effectAmount(effect)
+    })
+  }
   return {
     Stats: stats,
     objectiveBonuses,
     Sets: tiers,
     Gear: gear,
+    ...(includeGear ? {} : { augmentIsCovered }),
     predictsProwessStack: new Set(effects.filter((e) => e.filigreeType === 71).map((e) => e.itemId)).size > 1
   }
 }
@@ -157,7 +175,8 @@ function addItemDetails(
     add('Augment ' + String(Number(i) + 1), aug.name)
   for (const [i, fil] of Object.entries(setup.slottedFiligrees[id] ?? {}))
     add('Filigree ' + String(Number(i) + 1), fil.name)
-  if (setup.unlockedFiligreeSlots[id]) add('Unlocked sockets', String(setup.unlockedFiligreeSlots[id]))
+  const unlocked = gearPlannerUnlockedFiligreeSlotCount(item, setup.unlockedFiligreeSlots)
+  if (unlocked) add('Unlocked sockets', String(unlocked))
   if (setup.slottedCurses[id]) add('Curse', setup.slottedCurses[id].name)
   addCraftedAttributes(setup, id, add, essence)
   for (const stage of gearPlannerReforgingStages) {

@@ -89,6 +89,7 @@ export interface GearPlannerEffectConflictResolution {
 
 const stackableBonusTypes = new Set(['no type', 'reaper', 'mythic'])
 const summingBonusTypes = new Set(['reaper', 'mythic'])
+export const isSummingBonusType = (bonusType: string) => summingBonusTypes.has(bonusType)
 const legacyUpgradePlaceholders = new Set([
   'Craftable Rune Arm',
   'Nearly Finished',
@@ -143,7 +144,11 @@ const equippedItems = (equipment: GearPlannerEquipment): readonly GearPlannerIte
 export const augmentEffectId = (itemId: string, slotIndex: number, effectIndex: number) =>
   `${itemId}:augment:${String(slotIndex)}:${String(effectIndex)}`
 
-function matchesAugmentAttackForm(effect: GearPlannerEffect, host: GearPlannerItem, equipment: GearPlannerEquipment) {
+export function matchesAugmentAttackForm(
+  effect: GearPlannerEffect,
+  host: GearPlannerItem,
+  equipment: GearPlannerEquipment
+) {
   if (!effect.attackForms?.length) return true
   if (slotOwner(host.slot) !== 'Character') return effect.attackForms.includes('melee')
   const group = weaponGroup(equipment['Main Hand']?.source.type ?? 'Unarmed')
@@ -319,7 +324,7 @@ const withEffectiveEntries = (
   entries: readonly GearPlannerEffectSource[],
   bonusType: string
 ): GearPlannerEffectSummaryGroup => {
-  const summing = summingBonusTypes.has(bonusType)
+  const summing = isSummingBonusType(bonusType)
   const prowessStrength = stackedProwessStrength(entries)
   const effectiveValue = summing
     ? entries.reduce((total, entry) => total + entry.comparisonValue, 0)

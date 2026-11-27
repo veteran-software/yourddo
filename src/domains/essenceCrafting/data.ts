@@ -1,6 +1,6 @@
 import { withScopedAugments } from './scopedAugments'
 import { isVisibleEffect } from '../../shared/data/visibleEffect'
-import { loadDataset } from '../../shared/data/loadDataset.ts'
+import { hasDatasetFile, loadDataset, loadDatasetFile } from '../../shared/data/loadDataset.ts'
 import type {
   EssenceAffixPosition,
   EssenceAugment,
@@ -35,7 +35,7 @@ export class InvalidEssenceCraftingDataError extends Error {
 
 const affixPositions = new Set<EssenceAffixPosition>(['prefix', 'suffix', 'extra'])
 const bindings = new Set<EssenceBinding>(['bound', 'unbound'])
-const modifierUnits = new Set<EssenceModifierUnit>(['number', 'percent', 'dice', 'text'])
+const modifierUnits = new Set<EssenceModifierUnit>(['number', 'percent', 'ratio', 'dice', 'text'])
 
 const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null
 const nonEmptyString = (value: unknown): value is string => typeof value === 'string' && value.trim().length > 0
@@ -215,7 +215,14 @@ const parsePlacement = (value: unknown, owner: string): EssencePlacement => {
   }
   const ids = [...itemCategoryIds] as string[]
   assertUnique(ids, 'placement item category', (id) => id, owner)
-  return { position: record.position as EssenceAffixPosition, itemCategoryIds: ids }
+  const floors = record.minimumItemLevels === undefined ? undefined : expectRecord(record.minimumItemLevels, owner)
+  if (floors && Object.entries(floors).some(([category, floor]) => !ids.includes(category) || !positiveInteger(floor)))
+    invalid(`invalid placement minimum item level for ${owner}`)
+  return {
+    position: record.position as EssenceAffixPosition,
+    itemCategoryIds: ids,
+    ...(floors && { minimumItemLevels: floors as Record<string, number> })
+  }
 }
 
 const parseEnhancement = (value: unknown, minimum: number, maximum: number): EssenceEnhancement => {
@@ -269,7 +276,12 @@ const parseRecipe = (value: unknown, minimum: number, maximum: number, maximumCr
       sourceRecipeId: record.sourceRecipeId as string,
       binding: record.binding as EssenceBinding,
       craftingLevel: record.craftingLevel as number,
-      requirements
+      requirements,
+      ...(record.placements !== undefined && {
+        placements: expectArray(record.placements, 'recipe placements').map((placement) =>
+          parsePlacement(placement, String(record.id))
+        )
+      })
     }
   }
   if (record.kind === 'minimum-level-shard') {
@@ -579,5 +591,225 @@ export const validateEssenceCraftingDataset = (value: unknown): EssenceCraftingD
   }
 }
 
-export const loadEssenceCraftingData = async (): Promise<EssenceCraftingData> =>
-  withScopedAugments(validateEssenceCraftingDataset(await loadDataset<unknown>('essence-crafting')))
+const nativeSlots = new Map([
+  ['Armor', 'armor'],
+  ['Cloak', 'cloak'],
+  ['Eyes', 'goggles'],
+  ['Feet', 'boots'],
+  ['Hands', 'gloves'],
+  ['Head', 'head'],
+  ['Neck', 'necklace'],
+  ['Orb', 'orb'],
+  ['Pet Collar', 'pet-collar'],
+  ['Rings', 'ring'],
+  ['Runearm', 'rune-arm'],
+  ['Shield', 'shield'],
+  ['Trinket', 'trinket'],
+  ['Waist', 'belt'],
+  ['Weapon', 'weapon'],
+  ['Wrists', 'bracers']
+])
+
+const ratioEffects =
+  /(?:^Spell Critical Chance: | Absorption$|^(?:Arcane Spell Failure|Blurry|Dodge|Doubleshot|Doublestrike|Fortification(?: Bypass)?|Melee Attack Speed|Melee Threat|Movement Speed|Ranged Attack Speed|Ranged Threat|Secondary Shield Bash Chance|Spell Threat)$)/
+
+function nativeCategory(slot: unknown) {
+  return typeof slot === 'string'
+    ? (nativeSlots.get(slot) ?? invalid('unknown shard slot ' + slot))
+    : invalid('invalid shard slot')
+}
+
+function nativePlacements(recipe: Record<string, unknown>, level: number): EssencePlacement[] {
+  const rules = recipe.placementRules === undefined ? {} : expectRecord(recipe.placementRules, 'shard placement rules')
+  return [...affixPositions].flatMap((position) => {
+    const categories = expectArray(recipe[position], position + ' shard slots').map(nativeCategory)
+    if (!categories.length) return []
+    const floors = new Map<string, number>()
+    for (const entry of rules[position] === undefined ? [] : expectArray(rules[position], 'position rules')) {
+      const rule = expectRecord(entry, 'shard placement rule')
+      if (
+        (rule.itemClass !== undefined && rule.itemClass !== 'Shield' && rule.itemClass !== 'Weapon') ||
+        (rule.shieldType !== undefined && rule.shieldType !== 'Orb') ||
+        (rule.minItemLevel !== undefined && !positiveInteger(rule.minItemLevel))
+      )
+        return invalid('unsupported shard placement rule')
+      for (const slot of expectArray(rule.slots, 'placement slots').map(nativeCategory)) {
+        if (!categories.includes(slot) || (rule.shieldType === 'Orb' && slot !== 'orb'))
+          return invalid('shard placement rule does not match its slots')
+        const floor = positiveInteger(rule.minItemLevel) ? Math.max(rule.minItemLevel, level) : level
+        floors.set(slot, Math.min(floors.get(slot) ?? floor, floor))
+      }
+    }
+    return [{ position, itemCategoryIds: [...new Set(categories)], minimumItemLevels: Object.fromEntries(floors) }]
+  })
+}
+
+function combinePlacements(bound: readonly EssencePlacement[], unbound: readonly EssencePlacement[], level: number) {
+  return [...affixPositions].flatMap((position) => {
+    const floors = new Map<string, number>()
+    for (const placement of [...bound, ...unbound].filter((entry) => entry.position === position))
+      for (const category of placement.itemCategoryIds) {
+        const floor = placement.minimumItemLevels?.[category] ?? level
+        floors.set(category, Math.min(floors.get(category) ?? floor, floor))
+      }
+    return floors.size
+      ? [{ position, itemCategoryIds: [...floors.keys()], minimumItemLevels: Object.fromEntries(floors) }]
+      : []
+  })
+}
+
+function findOrAddNamed(records: Map<string, EssenceNamedRecord>, name: string, kind: string) {
+  const existing = records.get(name)
+  if (existing) return existing.id
+  const id = kind + '-native-' + encodeURIComponent(name)
+  records.set(name, { id, displayName: name })
+  return id
+}
+
+function nativeRecipe(
+  row: Record<string, unknown>,
+  binding: EssenceBinding,
+  level: number,
+  ingredients: Map<string, EssenceNamedRecord>
+) {
+  if (!positiveInteger(row.recipeId) || !positiveInteger(row.level) || !positiveInteger(row.essence))
+    return invalid('invalid native shard recipe')
+  const materials = expectArray(row.collectible, 'shard collectibles').map((entry) =>
+    expectRecord(entry, 'collectible')
+  )
+  const requirements = [{ name: 'Magic Item Essence', quantity: row.essence }, ...materials].map((material) => {
+    if (!nonEmptyString(material.name) || !positiveInteger(material.quantity))
+      return invalid('invalid native shard ingredient')
+    return {
+      kind: 'ingredient',
+      ingredientId: findOrAddNamed(ingredients, material.name, 'ingredient'),
+      quantity: material.quantity
+    }
+  })
+  return {
+    id: 'recipe-source-' + String(row.recipeId),
+    kind: 'enhancement-shard',
+    sourceRecipeId: String(row.recipeId),
+    binding,
+    craftingLevel: row.level,
+    requirements,
+    placements: nativePlacements(row, level)
+  }
+}
+
+function nativeEffects(
+  row: Record<string, unknown>,
+  enhancementId: string,
+  level: number,
+  maximum: number,
+  bonuses: Map<string, EssenceNamedRecord>,
+  previous: EssenceEnhancement | undefined
+) {
+  return expectArray(row.enchantments, 'shard enchantments').map((entry, index) => {
+    const effect = expectRecord(entry, 'shard enchantment')
+    if (!nonEmptyString(effect.name) || (effect.bonus !== null && !nonEmptyString(effect.bonus)))
+      return invalid('invalid native shard effect')
+    const displayName = effect.name === 'SkillEnhancement' ? 'All Skills' : effect.name
+    const bonus = effect.bonus === 'NaturalArmor' ? 'Natural Armor' : effect.bonus
+    const bonusTypeId = bonus ? findOrAddNamed(bonuses, bonus, 'bonus') : undefined
+    const die = effect.modifierDice
+    const percent = ratioEffects.test(displayName)
+    const unit = die ? 'dice' : percent ? 'ratio' : 'number'
+    const modifiers = expectArray(effect.modifiers, 'native shard modifier values')
+    const values = new Map<number, number>()
+    for (const modifier of modifiers) {
+      const point = expectRecord(modifier, 'native shard modifier')
+      if (
+        !positiveInteger(point.level) ||
+        point.level < level ||
+        point.level > maximum ||
+        values.has(point.level) ||
+        !finiteNumber(point.value)
+      )
+        return invalid('invalid native shard scale: ' + displayName)
+      values.set(point.level, point.value)
+    }
+    const legacy = previous?.effects.find(
+      (candidate) => candidate.displayName === displayName && candidate.bonusTypeId === bonusTypeId
+    )?.modifier
+    const bands: EssenceModifierBand[] = []
+    for (let itemLevel = level; values.size > 0 && itemLevel <= maximum; itemLevel++) {
+      const fallback =
+        legacy?.kind === 'by-item-level' && legacy.unit === unit && legacy.die === die
+          ? legacy.bands.find((band) => band.minimumItemLevel <= itemLevel && band.maximumItemLevel >= itemLevel)?.value
+          : undefined
+      const value = values.get(itemLevel) ?? fallback
+      if (value === undefined) continue
+      const last = bands.at(-1)
+      if (last?.value === value && last.maximumItemLevel === itemLevel - 1) last.maximumItemLevel = itemLevel
+      else bands.push({ minimumItemLevel: itemLevel, maximumItemLevel: itemLevel, value })
+    }
+    return {
+      id: enhancementId + '-effect-' + String(index),
+      displayName,
+      bonusTypeId,
+      ...(bands.length && { modifier: { kind: 'by-item-level', unit, die, bands } })
+    }
+  })
+}
+
+export function withPublishedEssenceShards(support: EssenceCraftingData, source: unknown): EssenceCraftingData {
+  const overlays = expectArray(source, 'native shards')
+  const enhancementsByName = new Map(support.enhancements.map((row) => [row.displayName, row]))
+  const ingredients = new Map(support.ingredients.map((row) => [row.displayName, row]))
+  const bonuses = new Map(support.bonusTypes.map((row) => [row.displayName, row]))
+  const recipes: unknown[] = support.recipes.filter(({ kind }) => kind === 'minimum-level-shard')
+  const itemCategories = [...support.itemCategories]
+  if (!itemCategories.some(({ id }) => id === 'pet-collar'))
+    itemCategories.push({ id: 'pet-collar', displayName: 'Pet Collar' })
+  const enhancements = overlays.map((entry) => {
+    const shard = expectRecord(entry, 'native shard')
+    if (!nonEmptyString(shard.name)) return invalid('unnamed native shard')
+    const bound = expectRecord(shard.bound, shard.name + ' bound')
+    const unbound = expectRecord(shard.unbound, shard.name + ' unbound')
+    const level = bound.minItemLevel
+    if (
+      !positiveInteger(level) ||
+      level !== unbound.minItemLevel ||
+      JSON.stringify(bound.enchantments) !== JSON.stringify(unbound.enchantments)
+    )
+      return invalid('inconsistent bound and unbound shard effects: ' + shard.name)
+    const boundRecipe = nativeRecipe(bound, 'bound', level, ingredients)
+    const unboundRecipe = nativeRecipe(unbound, 'unbound', level, ingredients)
+    const previous = enhancementsByName.get(shard.name)
+    const id = previous?.id ?? 'enhancement-native-' + boundRecipe.sourceRecipeId
+    recipes.push(boundRecipe, unboundRecipe)
+    return {
+      id,
+      displayName: shard.name,
+      minimumItemLevel: level,
+      placements: combinePlacements(boundRecipe.placements, unboundRecipe.placements, level),
+      effects: nativeEffects(bound, id, level, support.rules.supportedItemLevels.maximum, bonuses, previous),
+      recipes: { boundRecipeId: boundRecipe.id, unboundRecipeId: unboundRecipe.id }
+    }
+  })
+  const data = validateEssenceCraftingDataset({
+    ...support,
+    itemCategories,
+    enhancements,
+    recipes,
+    ingredients: [...ingredients.values()],
+    bonusTypes: [...bonuses.values()]
+  })
+  return { ...data, previousEnhancementById: support.indexes.enhancementById }
+}
+
+export async function loadEssenceCraftingData(): Promise<EssenceCraftingData> {
+  const manifestPath = 'essence/manifest.json'
+  const source = async () => {
+    if (!(await hasDatasetFile(manifestPath))) return undefined
+    const manifest = expectRecord(await loadDatasetFile<unknown>(manifestPath), 'native shard manifest')
+    const { shards } = expectRecord(manifest.resources, 'native shard resources')
+    if (manifest.system !== 'essence' || typeof shards !== 'string' || !/^[\w.-]+\.json$/.test(shards))
+      return invalid('invalid native shard manifest')
+    return loadDatasetFile<unknown>('essence/' + shards)
+  }
+  const [payload, native] = await Promise.all([loadDataset<unknown>('essence-crafting'), source()])
+  const support = validateEssenceCraftingDataset(payload)
+  return withScopedAugments(native === undefined ? support : withPublishedEssenceShards(support, native))
+}

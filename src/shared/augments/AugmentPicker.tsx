@@ -42,6 +42,7 @@ interface Props {
   hostLevel?: number
   levelFilter?: boolean
   renderOption?: (option: PickerOption) => ReactNode
+  recommend?: (options: readonly PickerOption[]) => { value?: string; detail: string }
   inventory?: TroveInventory
   ownedOnly?: boolean
   onOwnedChange?: (owned: boolean) => void
@@ -60,6 +61,7 @@ export default function AugmentPicker({
   hostLevel,
   levelFilter,
   renderOption,
+  recommend,
   inventory,
   ownedOnly,
   onOwnedChange,
@@ -90,6 +92,9 @@ export default function AugmentPicker({
           (!onlyOwned || !stock?.size || ownsTroveItem(stock, o.label))
       )
     : []
+  const recommendation = visible.length ? recommend?.(visible) : undefined
+  const featured = visible.find((o) => o.value === recommendation?.value)
+  const results = featured ? [featured, ...visible.filter((o) => o !== featured)] : visible
   function choose(v: string | null) {
     onChange(v)
     setOpen(false)
@@ -216,17 +221,33 @@ export default function AugmentPicker({
               </Button>
             )}
           </Group>
-          <div className={styles.results} key={JSON.stringify([color, search, onlyOwned, allLevels])}>
-            {visible.slice(0, limit).map((o) => (
+          {recommendation && !featured && (
+            <Text size='xs' c='dimmed'>
+              {recommendation.detail}
+            </Text>
+          )}
+          <div className={styles.results} key={JSON.stringify([color, enchantment, search, onlyOwned, allLevels])}>
+            {results.slice(0, limit).map((o) => (
               <UnstyledButton
                 key={o.value}
                 className={styles.row}
+                data-recommended={o === featured || undefined}
                 disabled={o.disabled}
                 aria-pressed={value === o.value}
                 onClick={() => {
                   choose(o.value)
                 }}
               >
+                {o === featured && (
+                  <Group gap='xs' mb={4}>
+                    <Badge size='xs' color='teal' variant='light'>
+                      Recommended
+                    </Badge>
+                    <Text size='xs' c='dimmed'>
+                      {recommendation?.detail}
+                    </Text>
+                  </Group>
+                )}
                 {renderOption ? (
                   renderOption(o)
                 ) : (

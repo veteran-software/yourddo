@@ -44,17 +44,17 @@ const SetBonusesTool = ({
       {setState.sets.map(({ name, count, category, memberships, definition, thresholds }) => (
         <Paper key={memberships[0].id} withBorder p='sm'>
           <Stack gap='xs'>
-            <Group justify='space-between' align='flex-start' gap='xs' wrap='nowrap'>
+            <Stack gap={4}>
               <Text fw={700} size='sm' style={{ overflowWrap: 'anywhere' }}>
                 {name}
               </Text>
-              <Group gap={4} wrap='nowrap'>
+              <Group gap={4}>
                 <Badge color={category === 'filigree' ? 'violet' : 'blue'} variant='light'>
                   {category === 'filigree' ? 'Filigree Set' : 'Item Set'}
                 </Badge>
                 <Badge variant='light'>{contributionLabel(count)}</Badge>
               </Group>
-            </Group>
+            </Stack>
             <Stack gap={2}>
               {memberships.map((membership) => (
                 <Text key={membership.id} c='dimmed' size='xs'>

@@ -1,4 +1,5 @@
 import { alchemicalRecipeHref } from '../alchemicalCrafting'
+import { thunderRecipeHref } from '../thunderForgedCrafting'
 import { TroveOwnership } from './TroveInventory'
 import { Anchor, Box, Select, Stack, Switch, Text } from '@mantine/core'
 import { gearCraftGroups, type GearCraftingData } from '../crafting.ts'
@@ -15,11 +16,11 @@ export default function ItemCraftingSelector({
 }>) {
   const groups = gearCraftGroups(item, data)
   if (!groups.length) return null
-  const recipeHref = alchemicalRecipeHref(item)
+  const recipeHref = alchemicalRecipeHref(item) ?? thunderRecipeHref(item, data.thunderForged)
   const selected = item.crafts ?? []
   return (
-    <Box component='details'>
-      <Text component='summary' size='sm' fw={600} style={{ cursor: 'pointer' }}>
+    <Box component='section' aria-label='Item upgrades'>
+      <Text component='h3' size='sm' fw={600} m={0}>
         Item upgrades{selected.length ? ` (${String(selected.length)})` : ''}
       </Text>
       <Stack mt='xs' gap='xs'>

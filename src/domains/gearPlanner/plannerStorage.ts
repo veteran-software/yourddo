@@ -1,11 +1,12 @@
 import { convertLegacyGearSave } from './legacyImport'
-import { alchemicalStageOrder } from './alchemicalCrafting'
-import { gearCraftGroups, applyGearCraft } from './crafting.ts'
+import { gearCraftGroups, applyGearCraft, craftStageOrder } from './crafting.ts'
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
+import { restoredShardLevel } from '../essenceCrafting/enhancementEligibility'
 import { gearPlannerAugmentIdentity, isCompatibleGearPlannerAugment } from './augments.ts'
 import { canApplyGearPlannerCurse, collectSelectedGearPlannerCurses, gearPlannerCurseIdentity } from './curses.ts'
 import {
   type GearPlannerEssenceCraftingConfiguration,
+  getGearPlannerEssenceCraftingLevel,
   isEssenceCraftedGearPlannerItem,
   isGearPlannerEssenceAffixValid,
   isGearPlannerEssenceCraftingMaterial,
@@ -18,6 +19,7 @@ import {
   savedWeaponFilterOptions,
   classNames,
   defaultCharacter,
+  maxFocusStats,
   slotOwner,
   proficiencyOptions,
   type CharacterSettings
@@ -226,11 +228,13 @@ function parseCharacter(value: unknown, path: string, availableWeapons: readonly
     const names: unknown = record.focusStats
     if (
       !Array.isArray(names) ||
-      names.length > 5 ||
+      names.length > maxFocusStats ||
       !names.every((name: unknown): name is string => typeof name === 'string' && Boolean(name.trim())) ||
       new Set(names.map((name) => name.toLowerCase())).size !== names.length
     )
-      throw new InvalidGearPlannerStateError(path + '.focusStats must contain up to five distinct stat names')
+      throw new InvalidGearPlannerStateError(
+        `${path}.focusStats must contain up to ${String(maxFocusStats)} distinct stat names`
+      )
     character.focusStats = names
   }
   if (record.disabledProficiencies !== undefined) {
@@ -695,7 +699,7 @@ function restoreGearCrafts(
   report: ReportIssue
 ) {
   for (const { itemId, system, choiceId } of (savedSetup.selectedCrafts ?? []).toSorted(
-    (a, b) => alchemicalStageOrder(a.system) - alchemicalStageOrder(b.system)
+    (a, b) => craftStageOrder(a.system) - craftStageOrder(b.system)
   )) {
     const slot = allGearPlannerSlots.find((s) => equipment[s]?.id === itemId)
     const item = slot && equipment[slot]
@@ -826,26 +830,24 @@ function restoreEssenceConfiguration(
   if (!isGearPlannerEssenceCraftingMaterial(savedEssence.material)) {
     report('ineligible-essence', 'Essence Crafted material is invalid')
   }
-  for (const [position, enhancementId] of [
+  const selections = [
     ['prefix', savedEssence.prefixId],
     ['suffix', savedEssence.suffixId],
     ['extra', savedEssence.extraId]
-  ] as const) {
+  ] as const
+  const curse = setup.slottedCurses[item.id]
+  if (item.essenceCrafting && essenceData.previousEnhancementById) {
+    const level = getGearPlannerEssenceCraftingLevel(essenceData, configuration, curse)
+    configuration.minimumLevel +=
+      restoredShardLevel(essenceData, [item.essenceCrafting.itemCategoryId], level, selections) - level
+  }
+  for (const [position, enhancementId] of selections) {
     if (enhancementId === null) continue
     if (!essenceData.indexes.enhancementById.has(enhancementId)) {
       report('missing-essence-enhancement', 'Essence enhancement is unavailable')
       continue
     }
-    if (
-      !isGearPlannerEssenceAffixValid(
-        essenceData,
-        item,
-        configuration,
-        setup.slottedCurses[item.id],
-        position,
-        enhancementId
-      )
-    ) {
+    if (!isGearPlannerEssenceAffixValid(essenceData, item, configuration, curse, position, enhancementId)) {
       report('ineligible-essence', 'Essence enhancement is no longer eligible')
       continue
     }

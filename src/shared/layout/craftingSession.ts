@@ -1,7 +1,25 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 
 // Each mounted app shell owns one session, including during static rendering.
 export const CraftingSession = createContext<object | null>(null)
+
+export function createCraftingCatalog<T>(load: () => Promise<T>) {
+  const catalogs = new WeakMap<object, Promise<T>>()
+  return function useCraftingCatalog() {
+    const session = useContext(CraftingSession)
+    return useCallback(() => {
+      if (!session) return load()
+      const cached = catalogs.get(session)
+      if (cached) return cached
+      const pending = load().catch((error: unknown) => {
+        catalogs.delete(session)
+        throw error
+      })
+      catalogs.set(session, pending)
+      return pending
+    }, [session])
+  }
+}
 
 export function createCraftingSelection<T>(initial: () => T) {
   const saved = new WeakMap<object, { value: T }>()

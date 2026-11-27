@@ -14,10 +14,12 @@ export default function ScopedAugmentDetails({
   presentation,
   fallbackDescription,
   augmentName,
+  compact,
   renderRow
 }: Readonly<
   ScopedAugmentPresentation & {
     augmentName?: string
+    compact?: boolean
     renderRow?: (row: GearPlannerEffect, label: string) => ReactNode
   }
 >) {
@@ -26,20 +28,25 @@ export default function ScopedAugmentDetails({
   if (!presentation.length) return fallbackDescription ? <Text size={size}>{fallbackDescription}</Text> : null
   return (
     <Stack gap='xs'>
-      {presentation.map(({ name, rows }, groupIndex) => (
-        <Box key={name + String(groupIndex)}>
-          {normalizeName(name) !== displayedName && (
-            <Text size={size} fw={600}>
-              {name}
-            </Text>
-          )}
-          {rows.map((row, index) => (
-            <Box key={row.name + String(index)} pl={normalizeName(name) === displayedName ? undefined : 'sm'}>
-              <Text size={size}>{renderRow ? renderRow(row, scopedEffectLabel(row)) : scopedEffectLabel(row)}</Text>
-            </Box>
-          ))}
-        </Box>
-      ))}
+      {presentation.map(({ name, rows }, groupIndex) => {
+        const heading = normalizeName(name)
+        const repeatsEffect = compact && rows.length === 1 && normalizeName(rows[0].name) === heading
+        const showHeading = heading !== displayedName && !repeatsEffect
+        return (
+          <Box key={name + String(groupIndex)}>
+            {showHeading && (
+              <Text size={size} fw={600}>
+                {name}
+              </Text>
+            )}
+            {rows.map((row, index) => (
+              <Box key={row.name + String(index)} pl={showHeading ? 'sm' : undefined}>
+                <Text size={size}>{renderRow ? renderRow(row, scopedEffectLabel(row)) : scopedEffectLabel(row)}</Text>
+              </Box>
+            ))}
+          </Box>
+        )
+      })}
     </Stack>
   )
 }

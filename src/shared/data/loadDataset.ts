@@ -1,15 +1,11 @@
-interface GeneratedFile {
+import { readDataset, type DatasetFile } from './datasetCache'
+
+interface GeneratedFile extends DatasetFile {
   domain: string
-  path: string
-  sizeBytes: number
-  sha256: string
 }
 
-interface ManualPayload {
+interface ManualPayload extends DatasetFile {
   name: string
-  path: string
-  sizeBytes: number
-  sha256: string
 }
 
 interface LatestRelease {
@@ -120,14 +116,6 @@ const fetchResponse = async (url: string, label: string, init?: RequestInit): Pr
   return response
 }
 
-const parseDataset = async <T>(response: Response): Promise<T> => {
-  try {
-    return (await response.json()) as T
-  } catch (cause) {
-    throw new Error('Invalid dataset response: expected valid JSON', { cause })
-  }
-}
-
 interface ResolvedRelease {
   manifest: DataManifest
   baseUrl: string
@@ -178,6 +166,9 @@ const loadRelease = (): Promise<ResolvedRelease> => {
   return releasePromise
 }
 
+const loadReleaseFile = async <T>(baseUrl: string, file: DatasetFile, label: string): Promise<T> =>
+  (await readDataset(cdnBaseUrl, file, () => fetchResponse(joinUrl(baseUrl, file.path), label))) as T
+
 export const loadDataset = async <T>(domain: string): Promise<T> => {
   const { manifest, baseUrl } = await loadRelease()
   const matches = manifest.generatedFiles.filter((file) => file.domain === domain)
@@ -190,10 +181,7 @@ export const loadDataset = async <T>(domain: string): Promise<T> => {
     throw new Error(`Data manifest contains multiple files for domain: ${domain}`)
   }
 
-  const datasetUrl = joinUrl(baseUrl, matches[0].path)
-  const datasetResponse = await fetchResponse(datasetUrl, 'Dataset')
-
-  return parseDataset<T>(datasetResponse)
+  return loadReleaseFile<T>(baseUrl, matches[0], 'Dataset')
 }
 
 export const loadDatasetFile = async <T>(path: string): Promise<T> => {
@@ -204,9 +192,7 @@ export const loadDatasetFile = async <T>(path: string): Promise<T> => {
     throw new Error(`Unknown dataset file: ${path}`)
   }
 
-  const datasetResponse = await fetchResponse(joinUrl(baseUrl, match.path), 'Dataset')
-
-  return parseDataset<T>(datasetResponse)
+  return loadReleaseFile<T>(baseUrl, match, 'Dataset')
 }
 
 export const loadManualPayload = async <T>(name: string): Promise<T> => {
@@ -221,10 +207,7 @@ export const loadManualPayload = async <T>(name: string): Promise<T> => {
     throw new Error(`Data manifest contains multiple manual payloads: ${name}`)
   }
 
-  const payloadUrl = joinUrl(baseUrl, matches[0].path)
-  const payloadResponse = await fetchResponse(payloadUrl, 'Manual payload')
-
-  return parseDataset<T>(payloadResponse)
+  return loadReleaseFile<T>(baseUrl, matches[0], 'Manual payload')
 }
 
 export const hasDatasetFile = async (path: string): Promise<boolean> => {

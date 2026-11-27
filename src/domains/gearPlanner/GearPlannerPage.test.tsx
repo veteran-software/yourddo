@@ -13,6 +13,7 @@ import {
   allGearPlannerSlots,
   gearPlannerCharacterSlots,
   type GearPlannerCurse,
+  type GearPlannerAugment,
   type GearPlannerData,
   type GearPlannerFiligree,
   type GearPlannerFiligreeSetDefinition,
@@ -175,6 +176,53 @@ afterAll(() => {
 })
 
 describe('GearPlannerPage', () => {
+  it('can reveal gear outside the filters without changing the current search or level range', async () => {
+    await renderReadyPage(
+      dataWithItems([
+        item('low', gearPlannerSlots.head, 'Quiet Helm', 10),
+        item('high', gearPlannerSlots.head, 'Loud Helm', 20)
+      ])
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Find gear' }))
+    fireEvent.change(screen.getByLabelText('Maximum level'), { target: { value: '15' } })
+    expect(screen.queryByRole('button', { name: 'Equip Loud Helm in Head' })).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Show 1 hidden by filters' }))
+    expect(screen.getByRole('button', { name: 'Equip Loud Helm in Head' })).toBeTruthy()
+    expect(screen.getByText('Outside filters')).toBeTruthy()
+    expect(screen.getByLabelText('Maximum level')).toHaveProperty('value', '15')
+    fireEvent.click(screen.getByRole('button', { name: 'Hide filtered results' }))
+    expect(screen.queryByRole('button', { name: 'Equip Loud Helm in Head' })).toBeNull()
+  })
+
+  it('records equipment edits, supports undo and redo, and clears history only after confirming Clear setup', async () => {
+    await renderReadyPage(dataWithItems([item('helm', gearPlannerSlots.head, 'Quiet Helm')]))
+    fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Equip Quiet Helm' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Undo plan edit' }))
+    expect(screen.getByTestId('gear-slot-Head').textContent).toContain('Empty')
+    fireEvent.keyDown(document.body, { key: 'z', ctrlKey: true, shiftKey: true })
+    expect(screen.getByTestId('gear-slot-Head').textContent).toContain('Quiet Helm')
+
+    fireEvent.click(within(screen.getByTestId('workspace-mobile-tools')).getByRole('button', { name: 'History' }))
+    const history = await screen.findByRole('dialog', { name: 'History' })
+    expect(within(history).getByText('Redo · Equipped Quiet Helm in Head · Default Setup')).toBeTruthy()
+    fireEvent.click(within(history).getByRole('button', { name: 'Close workspace tool' }))
+
+    fireEvent.click(screen.getByRole('button', { name: 'Setup actions' }))
+    fireEvent.click(await screen.findByRole('menuitem', { name: 'Clear setup…' }))
+    let confirm = await screen.findByRole('dialog', { name: 'Clear setup?' })
+    expect(confirm.textContent).toContain('clear this planner’s edit history')
+    fireEvent.click(within(confirm).getByRole('button', { name: 'Cancel' }))
+    expect(localStorage.getItem('yourddo:gear-planner:edit-history:v1')).toContain('Equipped Quiet Helm')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Setup actions' }))
+    fireEvent.click(await screen.findByRole('menuitem', { name: 'Clear setup…' }))
+    confirm = await screen.findByRole('dialog', { name: 'Clear setup?' })
+    fireEvent.click(within(confirm).getByRole('button', { name: 'Clear setup' }))
+    expect(localStorage.getItem('yourddo:gear-planner:edit-history:v1')).toBeNull()
+    expect(screen.getByRole<HTMLButtonElement>('button', { name: 'Undo plan edit' }).disabled).toBe(true)
+  })
+
   it('keeps farming checkmarks without showing the old drop location', async () => {
     const helm = item('helm', gearPlannerSlots.head, 'Helm of Fire & Ice')
     helm.source = { ...helm.source, dropLocations: [{ questWildernessChain: 'The Vault' }] }
@@ -847,9 +895,10 @@ describe('GearPlannerPage', () => {
   it('uses ordered focus stats for slot replacements and paths while preserving explicit objectives', () => {
     const stat = (name: string, modifier: number) => ({ name, modifier, bonus: 'Enhancement' })
     const candidates = [
-      item('dc', 'Head', 'DC helm', 10, [stat('Wisdom', 1)]),
+      item('dc', 'Head', 'DC helm', 10, [stat('Wisdom', 2)]),
       item('hp', 'Head', 'HP helm', 10, [stat('Maximum Hit Points', 20)]),
-      item('both', 'Head', 'Both', 10, [stat('Wisdom', 1), stat('Maximum Hit Points', 1)])
+      item('both', 'Head', 'Both', 10, [stat('Wisdom', 1), stat('Maximum Hit Points', 1)]),
+      item('lower', 'Head', 'Lesser DC helm', 10, [stat('Wisdom', 1)])
     ]
     const catalog = dataWithItems(candidates)
     const setup = createGearPlannerSetup('a', 'Focus')
@@ -872,11 +921,11 @@ describe('GearPlannerPage', () => {
       while (!step.done) step = search.next()
       return step.value.map((row) => row.name)
     }
-    expect(slots()).toEqual(['Both', 'DC helm', 'HP helm'])
+    expect(slots()).toEqual(['DC helm', 'Both', 'Lesser DC helm', 'HP helm'])
     expect(paths('Focus stats')).toEqual(slots())
     expect(paths('Stat')).toEqual(['HP helm', 'Both'])
     setup.character.focusStats.reverse()
-    expect(slots()).toEqual(['Both', 'HP helm', 'DC helm'])
+    expect(slots()).toEqual(['HP helm', 'Both', 'DC helm', 'Lesser DC helm'])
     expect(paths('Focus stats')).toEqual(slots())
   })
 
@@ -927,6 +976,23 @@ describe('GearPlannerPage', () => {
   })
 
   it('selects a setup focus stat and uses it to find upgrade paths', async () => {
+    const setup = createGearPlannerSetup('a', 'Focus')
+    const priorities = [
+      'Strength',
+      'Dexterity',
+      'Constitution',
+      'Intelligence',
+      'Wisdom',
+      'Charisma',
+      'Armor Class',
+      'Fortification',
+      'Maximum Hit Points'
+    ]
+    setup.character.focusStats = priorities
+    localStorage.setItem(
+      GEAR_PLANNER_STORAGE_KEY,
+      JSON.stringify(createGearPlannerExport({ setups: [setup], activeSetupId: setup.id }))
+    )
     await renderReadyPage(
       dataWithItems([
         item('focushelm', 'Head', 'Focus helm', 10, [{ name: 'Jump', modifier: 2, bonus: 'Enhancement' }])
@@ -942,10 +1008,260 @@ describe('GearPlannerPage', () => {
     await click('Jump')
     expect(await screen.findByRole('button', { name: 'Remove Skill: Jump' })).toBeTruthy()
     const saved = parsePersistedGearPlannerState(JSON.parse(localStorage.getItem(GEAR_PLANNER_STORAGE_KEY) ?? '{}'))
-    expect(saved.setups[0].character?.focusStats).toEqual(['Skill: Jump'])
+    expect(saved.setups[0].character?.focusStats).toEqual([...priorities, 'Skill: Jump'])
+    expect(screen.queryByRole('button', { name: 'Add focus stat' })).toBeNull()
     await user.click(screen.getAllByRole('button', { name: 'Upgrade paths' })[0])
     await click('Find paths')
     expect(await screen.findByText('Skill: Jump +2')).toBeTruthy()
+  })
+
+  it('ranks the strongest focus values first in slot and all-slot browsing and can restore the catalog order', async () => {
+    await renderReadyPage(
+      dataWithItems([
+        item('heavy', 'Head', 'Heavy Helm', 24, [{ name: 'Jump', modifier: -2 }]),
+        item('dex', 'Head', 'Agile Helm', 20, [{ name: 'Dexterity', modifier: 4 }]),
+        item('jump', 'Head', 'Leaping Helm', 10, [
+          { name: 'Jump +4', modifier: 4, bonus: 'Competence' },
+          { name: 'Jump', modifier: 2, bonus: 'Competence' },
+          { name: 'Jump', modifier: 1, bonus: 'Insight' }
+        ]),
+        item('both', 'Head', 'Acrobat Helm', 8, [
+          { name: 'Skill: Jump', modifier: 3 },
+          { name: 'Dexterity', modifier: 2 }
+        ])
+      ])
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Character setup' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Add focus stat' }))
+    fireEvent.change(screen.getByRole('textbox', { name: 'Search stats' }), { target: { value: 'jump' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Jump' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Add focus stat' }))
+    fireEvent.change(screen.getByRole('textbox', { name: 'Search stats' }), { target: { value: 'dexterity' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Dexterity' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Close workspace tool' }))
+
+    const ranked = ['Leaping', 'Acrobat', 'Agile', 'Heavy']
+    const resultOrder = () =>
+      screen
+        .getAllByRole('button', { name: /^Equip (?:Acrobat|Leaping|Agile|Heavy) Helm/ })
+        .map((button) => button.getAttribute('aria-label')?.split(' ')[1])
+
+    fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
+    expect(resultOrder()).toEqual(ranked)
+    expect(screen.getByText('Focus match · #1 Skill: Jump +5')).toBeTruthy()
+    expect(screen.getByText('Focus match · #1 Skill: Jump +3 · #2 Dexterity +2')).toBeTruthy()
+    const searchOptions = within(screen.getByRole('group', { name: 'Item search options' }))
+    expect(searchOptions.getByRole('checkbox', { name: 'Show conflicting or lesser items' })).toBeTruthy()
+    fireEvent.click(searchOptions.getByRole('checkbox', { name: 'Focus stats first' }))
+    expect(resultOrder()).toEqual(['Heavy', 'Agile', 'Leaping', 'Acrobat'])
+
+    fireEvent.click(screen.getByRole('button', { name: 'Find gear' }))
+    expect(resultOrder()).toEqual(ranked)
+  })
+
+  it('projects compatible augment gains in browse results and applies them only on request', async () => {
+    const jump = (modifier: number, bonus: string) => ({ name: 'Skill: Jump', modifier, bonus })
+    const augment = (
+      name: string,
+      augmentType: string,
+      minLevel: number,
+      modifier: number,
+      bonus: string,
+      stat = 'Skill: Jump'
+    ): GearPlannerAugment => {
+      const effectsAdded = [{ name: stat, modifier, bonus }]
+      return { name, augmentType, minLevel, effectsAdded, source: { name, augmentType, minLevel, effectsAdded } }
+    }
+    const socket = item('socket', 'Head', 'Socket Helm', 10, [jump(1, 'Insight')], [], [{ augmentType: 'Blue' }])
+    const plain = item('plain', 'Head', 'Plain Helm', 10, [jump(4, 'Quality')])
+    const boots = item('boots', 'Feet', 'Jump Boots', 10, [jump(6, 'Competence')])
+    const best = augment('Compatible Jump Augment', 'Blue', 10, 8, 'Insight')
+    const strength = augment('Fallback Strength Augment', 'Blue', 8, 20, 'Enhancement', 'Strength')
+    const catalog = dataWithItems(
+      [socket, plain, boots],
+      [
+        augment('Wrong Color', 'Red', 10, 50, 'Insight'),
+        augment('Too High', 'Blue', 12, 50, 'Insight'),
+        augment('Covered Jump Augment', 'Blue', 10, 5, 'Competence'),
+        strength,
+        best
+      ]
+    )
+    const setup = createGearPlannerSetup('a', 'Focus')
+    setup.character.focusStats = [
+      'Skill: Jump',
+      'Dexterity',
+      'Constitution',
+      'Intelligence',
+      'Wisdom',
+      'Charisma',
+      'Armor Class',
+      'Fortification',
+      'Maximum Hit Points',
+      'Strength'
+    ]
+    setup.equipment.Feet = boots
+    localStorage.setItem(
+      GEAR_PLANNER_STORAGE_KEY,
+      JSON.stringify(createGearPlannerExport({ setups: [setup], activeSetupId: setup.id }))
+    )
+    await renderReadyPage(catalog)
+    fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
+    const results = screen.getByTestId('gear-item-browser')
+    expect(within(results).getByText('With suggested augments · #1 Skill: Jump +8')).toBeTruthy()
+    expect(within(results).getByText('Blue 1 · Compatible Jump Augment')).toBeTruthy()
+    expect(within(results).queryByText(/Wrong Color|Too High|Covered Jump Augment/)).toBeNull()
+    expect(
+      within(results)
+        .getAllByRole('button', { name: /^Equip (?:Socket|Plain) Helm$/ })[0]
+        .getAttribute('aria-label')
+    ).toBe('Equip Socket Helm')
+
+    fireEvent.click(within(results).getByRole('button', { name: 'Equip with augments' }))
+    expect(screen.getByTestId('gear-slot-Head').textContent).toContain('Socket Helm')
+    expect(screen.getByTestId('augment-slot-socket-0').textContent).toContain(best.name)
+    fireEvent.click(screen.getByRole('button', { name: 'Undo plan edit' }))
+    expect(screen.getByTestId('gear-slot-Head').textContent).toContain('Empty')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
+    fireEvent.click(within(screen.getByTestId('gear-item-browser')).getByRole('button', { name: 'Equip Socket Helm' }))
+    const slot = within(screen.getByTestId('augment-slot-socket-0'))
+    fireEvent.click(slot.getByRole('combobox', { name: 'Blue' }))
+    const dialog = within(screen.getByRole('dialog', { name: 'Blue' }))
+    expect(dialog.getByText('Recommended')).toBeTruthy()
+    expect(dialog.getByText('+7 Skill: Jump for your loadout')).toBeTruthy()
+    const search = dialog.getByRole('textbox', { name: 'Search augments' })
+    fireEvent.change(search, { target: { value: 'Fallback' } })
+    expect(dialog.getByText('+20 Strength for your loadout')).toBeTruthy()
+    fireEvent.change(search, { target: { value: 'Covered' } })
+    expect(dialog.queryByText('Recommended')).toBeNull()
+    expect(dialog.getByText('No Focus Stat gains among these results.')).toBeTruthy()
+    fireEvent.change(search, { target: { value: '' } })
+    fireEvent.click(dialog.getByRole('button', { name: /Recommended.*Compatible Jump Augment/ }))
+    expect(slot.getByRole('combobox', { name: 'Blue' }).textContent).toBe(best.name)
+    fireEvent.click(slot.getByRole('combobox', { name: 'Blue' }))
+    expect(
+      within(screen.getByRole('dialog', { name: 'Blue' })).getByText(/Keep equipped · \+7 Skill: Jump/)
+    ).toBeTruthy()
+  })
+
+  it('includes suggested sockets in upgrade projections and Trove availability', () => {
+    const effectsAdded = [{ name: 'Skill: Jump', modifier: 8, bonus: 'Insight' }]
+    const augment: GearPlannerAugment = {
+      name: 'Insightful Jump',
+      augmentType: 'Blue',
+      minLevel: 10,
+      effectsAdded,
+      source: { name: 'Insightful Jump', augmentType: 'Blue', minLevel: 10, effectsAdded }
+    }
+    const helm = item('head', 'Head', 'Socket Helm', 10, [], [], [{ augmentType: 'Blue' }])
+    const catalog = dataWithItems([helm], [augment])
+    const setup = createGearPlannerSetup('a', 'Focus')
+    setup.character.focusStats = ['Skill: Jump']
+    const rows = [...findSlotReplacements(setup, 'Head', catalog, essenceData)]
+    expect(rows[0]).toMatchObject({ augments: [{ index: 0, augment }], focus: [{ name: 'Skill: Jump', delta: 8 }] })
+
+    const paths = searchUpgradePaths(
+      setup,
+      'Character',
+      catalog,
+      essenceData,
+      { kind: 'Stat', objective: 'Skill: Jump', locked: [], protectedTiers: [], character: 'Hero' },
+      new Map([['socket helm', ['Hero (Inventory)']]])
+    )
+    let step = paths.next()
+    while (!step.done) step = paths.next()
+    expect(step.value).toMatchObject([
+      { name: 'Socket Helm', delta: '+8', availability: 'Farm', augments: [{ index: 0, augment }] }
+    ])
+    expect(step.value[0]?.setup.slottedAugments[helm.id]?.[0]).toBe(augment)
+    expect(setup.slottedAugments).toEqual({})
+  })
+
+  it.each([
+    [gearPlannerSlots.mainHand, 'Long Sword', 'Dagger'],
+    [gearPlannerSlots.offHand, 'Large Shield', 'Tower Shield'],
+    [gearPlannerSlots.armor, 'Light Armor', 'Heavy Armor']
+  ] as const)('prefers upgrades that keep the equipped type in %s', (slot, equippedType, alternateType) => {
+    function candidate(name: string, type: string, modifier: number) {
+      const gear = item(name, slot, name, 10, [{ name: 'Skill: Jump', modifier, bonus: 'Competence' }])
+      return { ...gear, source: { ...gear.source, type } }
+    }
+    const equipped = candidate('Equipped', equippedType, 1)
+    const setup = createGearPlannerSetup('a', 'A')
+    setup.equipment[slot] = equipped
+    const catalog = dataWithItems([
+      equipped,
+      candidate('Different type', alternateType, 10),
+      candidate('Same type, smaller gain', equippedType, 2),
+      candidate('Same type, greater gain', equippedType, 4)
+    ])
+    const search = searchUpgradePaths(
+      setup,
+      'Character',
+      catalog,
+      essenceData,
+      { kind: 'Stat', objective: 'Skill: Jump', locked: [], protectedTiers: [], character: '' },
+      new Map()
+    )
+    let step = search.next()
+    while (!step.done) step = search.next()
+    expect(step.value.map(({ name }) => name)).toEqual([
+      'Same type, greater gain',
+      'Same type, smaller gain',
+      'Different type'
+    ])
+  })
+
+  it('keeps a distinct augmented path only when it changes the loadout outcome', () => {
+    const effectsAdded = [{ name: 'Skill: Jump', modifier: 8, bonus: 'Insight' }]
+    const augment: GearPlannerAugment = {
+      name: 'Insightful Jump',
+      augmentType: 'Blue',
+      minLevel: 10,
+      effectsAdded,
+      source: { name: 'Insightful Jump', augmentType: 'Blue', minLevel: 10, effectsAdded }
+    }
+    const helm = item(
+      'head',
+      'Head',
+      'Socket Helm',
+      10,
+      [{ name: 'Dexterity', modifier: 4 }],
+      [],
+      [{ augmentType: 'Blue' }]
+    )
+    const belt = item('belt', 'Waist', 'Jump Belt', 10, [], ['Jump Set'])
+    const setup = createGearPlannerSetup('a', 'Focus')
+    setup.character.focusStats = ['Skill: Jump', 'Dexterity']
+    setup.equipment.Waist = belt
+    const pathsFor = (option: GearPlannerAugment) => {
+      const catalog = dataWithItems([helm, belt], [option])
+      catalog.standardSets = new Map([
+        [
+          'Jump Set',
+          {
+            name: 'Jump Set',
+            thresholds: [{ threshold: 1, effects: [{ name: 'Skill: Jump', modifier: 10, bonus: 'Insight' }] }]
+          }
+        ]
+      ])
+      const search = searchUpgradePaths(
+        setup,
+        'Character',
+        catalog,
+        essenceData,
+        { kind: 'Focus stats', objective: '', locked: [], protectedTiers: [], character: '' },
+        new Map()
+      )
+      let step = search.next()
+      while (!step.done) step = search.next()
+      return step.value
+    }
+    expect(pathsFor(augment)).toMatchObject([{ name: 'Socket Helm', augments: [] }])
+    expect(
+      pathsFor({ ...augment, setBonus: [{ name: 'Another Set' }] }).map(({ augments }) => augments.length)
+    ).toEqual([0, 1])
   })
 
   it('compares same-slot replacements against overlapping bonuses and preserves unique effect losses', () => {
@@ -1236,13 +1552,54 @@ describe('GearPlannerPage', () => {
     expect(await screen.findAllByText(/Essence Crafting · prefix: Split Prefix Test/)).toHaveLength(2)
   })
 
-  it('applies and clears a Reaper Forge upgrade on the equipped card', async () => {
+  it('previews a Dampened upgrade and only replaces the item on confirmation', async () => {
+    const current = item('dampened', 'Armor', 'Dampened Frozen Plate', 1, [
+      { name: 'Enhancement Bonus', modifier: 3 },
+      { name: 'Cold Guard' }
+    ])
+    const upgrade = item('cleansed', 'Armor', 'Frozen Plate', 6, [
+      { name: 'Enhancement Bonus', modifier: 4 },
+      { name: 'Physical Resistance Rating', modifier: 10 }
+    ])
+    current.source.baseStats = { hardness: 5, maxDurability: 60 }
+    upgrade.source.baseStats = { hardness: 3, maxDurability: 50 }
+    await renderReadyPage({
+      ...dataWithItems([current, upgrade]),
+      dampenedUpgrades: new Map([[current.id, upgrade]])
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Select Armor' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Equip Dampened Frozen Plate' }))
+    const open = () => {
+      fireEvent.click(screen.getByRole('button', { name: 'View Dampened upgrade' }))
+      return within(screen.getByRole('dialog', { name: 'Confirm Dampened upgrade' }))
+    }
+    const preview = open()
+    expect(preview.getByRole('row', { name: /Minimum level 1 6/ })).toBeTruthy()
+    expect(preview.getByRole('row', { name: /Enhancement Bonus 3 4 \+1/ })).toBeTruthy()
+    expect(preview.getByRole('row', { name: /Physical Resistance Rating.*\+10/ })).toBeTruthy()
+    expect(preview.getByRole('row', { name: /Cold Guard.*Lost/ })).toBeTruthy()
+    expect(preview.queryByRole('row', { name: /Hardness|Durability/ })).toBeNull()
+    fireEvent.click(preview.getByRole('button', { name: 'Cancel' }))
+    const equipped = screen.getByTestId('gear-slot-Armor')
+    expect(equipped.textContent).toContain(current.source.name)
+
+    fireEvent.click(open().getByRole('button', { name: 'Replace item' }))
+    expect(equipped.textContent).toContain(upgrade.source.name)
+    expect(equipped.textContent).not.toContain(current.source.name)
+    expect(screen.queryByRole('button', { name: 'View Dampened upgrade' })).toBeNull()
+    const saved = parsePersistedGearPlannerState(JSON.parse(localStorage.getItem(GEAR_PLANNER_STORAGE_KEY) ?? '{}'))
+    expect(saved.setups[0].equipment.Armor).toBe(upgrade.id)
+    fireEvent.click(screen.getByRole('button', { name: 'Undo plan edit' }))
+    expect(equipped.textContent).toContain(current.source.name)
+  })
+
+  it('shows item upgrades immediately and lets the user apply and clear them', async () => {
     await renderReadyPage(dataWithItems([item('eyes', gearPlannerSlots.eyes, 'Test Goggles')]))
     fireEvent.click(screen.getByRole('button', { name: 'Select Eyes' }))
     fireEvent.click(await screen.findByRole('button', { name: 'Equip Test Goggles' }))
     const card = within(screen.getByTestId('gear-item-editor'))
-    fireEvent.click(card.getByText('Item upgrades'))
-    const selector = card.getByRole('combobox', { name: 'Reaper Forge' })
+    const upgrades = within(card.getByRole('region', { name: 'Item upgrades' }))
+    const selector = upgrades.getByRole('combobox', { name: 'Reaper Forge' })
     fireEvent.click(selector)
     fireEvent.click(await screen.findByRole('option', { name: 'Reaper Goggles Enchantment' }))
     expect(card.getByText('Attack Rolls 1 (Reaper)')).toBeTruthy()
@@ -1598,7 +1955,10 @@ describe('GearPlannerPage', () => {
       minLevel: 1,
       source: {},
       effectsAdded: [stat],
-      presentation: [{ name: 'Pact Magic', rows: [stat] }],
+      presentation: [
+        { name: 'Pact Magic', rows: [] },
+        { name: stat.name, rows: [stat] }
+      ],
       searchLabels: [stat.name]
     }
     const empty = {
@@ -1610,18 +1970,23 @@ describe('GearPlannerPage', () => {
       searchLabels: []
     }
     const helm = item('head', 'Head', 'Socketed Helm', 10, [], [], [{ augmentType: 'Red', name: 'Ruby socket' }])
-    await renderReadyPage({ ...dataWithItems([helm], [ruby, empty]), augmentEnchantmentNames: [stat.name] })
+    const necklace = item('neck', 'Neck', 'Pact Necklace', 10, [{ ...stat, modifier: '+2' }])
+    await renderReadyPage({ ...dataWithItems([helm, necklace], [ruby, empty]), augmentEnchantmentNames: [stat.name] })
+    fireEvent.click(screen.getByRole('button', { name: 'Select Neck' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Equip Pact Necklace' }))
     fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
     fireEvent.click(screen.getByRole('button', { name: 'Equip Socketed Helm' }))
     fireEvent.click(screen.getByRole('combobox', { name: 'Ruby socket' }))
     const option = within(screen.getByRole('button', { name: /Pact Ruby/ }))
     expect(option.getByText('Pact Magic')).toBeTruthy()
-    expect(option.getByText(/Eldritch Blast: Pact Dice/)).toBeTruthy()
+    expect(option.getAllByText(/Eldritch Blast: Pact Dice/)).toHaveLength(1)
+    expect(option.getByText(/Eldritch Blast: Pact Dice \+1 .*equipped \+2/)).toBeTruthy()
+    expect(option.getByText('Overpowered')).toBeTruthy()
     expect(screen.getByText('A gift of winter.')).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: /Pact Ruby/ }))
     const slot = within(screen.getByTestId('augment-slot-head-0'))
     expect(slot.getByText('Pact Magic')).toBeTruthy()
-    expect(slot.getByText(/Eldritch Blast: Pact Dice/)).toBeTruthy()
+    expect(slot.getByText('Eldritch Blast: Pact Dice +1 (Enhancement)')).toBeTruthy()
   })
 
   it('shows selectors only for published item augment slots and filters choices before search', async () => {
@@ -1709,11 +2074,9 @@ describe('GearPlannerPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Select Main Hand' }))
     fireEvent.click(await screen.findByRole('button', { name: 'Equip Sentient Dagger' }))
     fireEvent.click(screen.getByRole('button', { name: 'Manage filigrees for Sentient Dagger' }))
-    expect(screen.getByText('0 / 10 slots unlocked')).toBeTruthy()
-    fireEvent.click(screen.getByRole('button', { name: 'Unlock slot' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Filigree slot 1' }))
+    expect(screen.getByRole<HTMLSelectElement>('combobox', { name: 'Unlocked slots' }).value).toBe('1')
     fireEvent.click(screen.getByRole('button', { name: 'Select Filigree A' }))
-    expect(within(screen.getByRole('dialog')).getByText('Strength 2')).toBeTruthy()
+    expect(within(screen.getByRole('region', { name: 'Slot 1' })).getByText('Strength 2')).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: 'Close filigree selector' }))
     expect(within(screen.getByRole('list', { name: 'Main Hand enchantments' })).getByText(/Strength 2/)).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: 'Enchantments' }))
@@ -1751,10 +2114,8 @@ describe('GearPlannerPage', () => {
       click('Select ' + host.slot)
       click('Equip ' + host.source.name)
       click('Manage filigrees for ' + host.source.name)
-      for (let n = 1; n <= index; n++) {
-        if (!screen.queryByRole('button', { name: 'Filigree slot ' + String(n) })) click('Unlock slot')
-      }
-      click('Filigree slot ' + String(index))
+      if (index > 1)
+        fireEvent.change(screen.getByRole('combobox', { name: 'Unlocked slots' }), { target: { value: String(index) } })
       click('Select Amber Shard')
       click('Close filigree selector')
     }
@@ -1775,7 +2136,7 @@ describe('GearPlannerPage', () => {
     expect(screen.getByRole('button', { name: 'Test Blade · Main Hand · Slot 1' })).toBeTruthy()
     click('Test Ring · First Finger · Slot 2')
     const dialog = within(screen.getByRole('dialog', { name: 'Filigrees — Test Ring' }))
-    expect(dialog.getByText('Select for slot 2')).toBeTruthy()
+    expect(dialog.getByRole('heading', { name: 'Slot 2' })).toBeTruthy()
     expect(dialog.getByRole('button', { name: 'Filigree slot 2' }).getAttribute('aria-pressed')).toBe('true')
     click('Clear filigree')
     click('Close filigree selector')

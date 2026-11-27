@@ -1,6 +1,9 @@
 import { isVisibleEffect } from '../../shared/data/visibleEffect'
 import { displayPercentModifier, percentModifier } from './effectAmounts'
 import { loadOptionalAlchemicalData } from '../alchemical/loadAlchemicalData'
+import { loadOptionalThunderData } from '../thunderForged/data'
+import { addThunderBases } from './thunderForgedCrafting'
+import { loadOptionalHeroismData, prepareHeroismBases } from './heroismCrafting'
 import { loadOptionalSlaveLordsData } from '../slaveLords/loadSlaveLordsData'
 import type { GearPlannerStandardSetDefinition } from './standardSetDefinitions.ts'
 import { slaveLordsSetDefinitions } from './slaveLordsCrafting'
@@ -14,6 +17,7 @@ import type {
   GearPlannerAugmentSlot,
   GearPlannerBinding,
   GearPlannerEffect,
+  GearPlannerItem,
   GearPlannerSetBonus,
   GearPlannerSourceItem
 } from './gearPlanner.types.ts'
@@ -238,17 +242,64 @@ async function loadCraftingData(): Promise<GearCraftingData> {
   return { nearlyComplete, upgrades }
 }
 
+async function loadDampenedRecipes() {
+  const manifestPath = 'dampened/manifest.json'
+  const links = new Map<number, number>()
+  if (!(await hasDatasetFile(manifestPath))) return links
+  const manifest = recordAt(await loadDatasetFile<unknown>(manifestPath), manifestPath)
+  if (manifest.system !== 'dampened') invalid(manifestPath, 'expected the Dampened package')
+  const resources = recordAt(manifest.resources, manifestPath)
+  if (!isNonEmptyString(resources.recipes)) return invalid(manifestPath, 'missing the recipes resource')
+  const recipePath = 'dampened/' + resources.recipes
+  for (const entry of arrayAt(await loadDatasetFile<unknown>(recipePath), recipePath)) {
+    const recipe = recordAt(entry, recipePath)
+    if (recipe.stage !== 'cleansing') continue
+    const inputs = arrayAt(recipe.ingredients, recipePath).flatMap((ingredient) => {
+      const { itemId } = recordAt(ingredient, recipePath)
+      return typeof itemId === 'number' && Number.isSafeInteger(itemId) ? [itemId] : []
+    })
+    const output = recipe.outputItemId
+    if (inputs.length !== 1 || typeof output !== 'number' || !Number.isSafeInteger(output))
+      return invalid(recipePath, 'each cleansing recipe must have one input item and one output item')
+    if (links.has(inputs[0]) || inputs[0] === output) return invalid(recipePath, 'invalid cleansing recipe link')
+    links.set(inputs[0], output)
+  }
+  return links
+}
+
+function dampenedUpgradeItems(items: readonly GearPlannerItem[], links: ReadonlyMap<number, number>) {
+  const targetIds = new Set(links.values())
+  const targets = Map.groupBy(
+    items.filter(({ source }) => source.catalogId !== undefined && targetIds.has(source.catalogId)),
+    ({ source }) => source.catalogId
+  )
+  const upgrades = new Map<string, GearPlannerItem>()
+  for (const item of items) {
+    const catalogId = item.source.catalogId
+    const output = catalogId === undefined ? undefined : links.get(catalogId)
+    if (output === undefined) continue
+    const replacement = targets.get(output)?.find(({ slot }) => slot === item.slot)
+    if (replacement) upgrades.set(item.id, replacement)
+  }
+  return upgrades
+}
+
 export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types.ts').GearPlannerData> => {
-  const [crafting, slaveLords, alchemical, curses, reforging, sockets, itemCatalog] = await Promise.all([
-    loadCraftingData(),
-    loadOptionalSlaveLordsData(),
-    loadOptionalAlchemicalData(),
-    loadCatalogCurses(),
-    loadNearlyFinishedRecipes(),
-    loadSocketCatalog(),
-    loadItemCatalog()
-  ])
-  const sourceDatasets = itemCatalog.datasets
+  const [crafting, slaveLords, alchemical, thunderForged, heroism, dampened, curses, reforging, sockets, itemCatalog] =
+    await Promise.all([
+      loadCraftingData(),
+      loadOptionalSlaveLordsData(),
+      loadOptionalAlchemicalData(),
+      loadOptionalThunderData(),
+      loadOptionalHeroismData(),
+      loadDampenedRecipes(),
+      loadCatalogCurses(),
+      loadNearlyFinishedRecipes(),
+      loadSocketCatalog(),
+      loadItemCatalog()
+    ])
+  const itemDatasets = thunderForged ? addThunderBases(itemCatalog.datasets, thunderForged) : itemCatalog.datasets
+  const sourceDatasets = heroism ? prepareHeroismBases(itemDatasets, heroism) : itemDatasets
   const reforgingEntries = reforging.reforgingStation
   const normalized = normalizeGearPlannerSources(
     sourceDatasets,
@@ -259,7 +310,9 @@ export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types
   )
   const filigreeSetDefinitions = sockets.filigreeDefinitions
   const filigreeSetDefinitionByName = new Map(filigreeSetDefinitions.map((definition) => [definition.name, definition]))
-  const equipmentSetsByName = Map.groupBy(sockets.equipmentDefinitions, ([, set]) => set.name)
+  const equipmentDefinitions = new Map(sockets.equipmentDefinitions)
+  for (const [id, set] of heroism?.definitions ?? []) equipmentDefinitions.set(id, set)
+  const equipmentSetsByName = Map.groupBy(equipmentDefinitions, ([, set]) => set.name)
   const standardSets = new Map<string | number, GearPlannerStandardSetDefinition>()
   for (const matches of equipmentSetsByName.values()) {
     // Some set variants share a label but have different members.
@@ -273,7 +326,8 @@ export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types
     enchantmentAliases: itemCatalog.aliases,
     enchantmentNames: itemCatalog.enchantmentNames,
     augmentEnchantmentNames: sockets.enchantmentNames,
-    crafting: { ...crafting, slaveLords, alchemical },
+    crafting: { ...crafting, slaveLords, alchemical, thunderForged, heroism },
+    dampenedUpgrades: dampenedUpgradeItems(normalized.items, dampened),
     standardSets,
     reforging: createGearPlannerReforgingData(reforgingEntries, sourceDatasets),
     curses,

@@ -1,5 +1,10 @@
 import { EQUIPMENT_SLOTS } from './equipment.ts'
-import type { EssenceAffixPosition, EssenceCraftingData, EssenceEnhancement } from './essenceCrafting.types.ts'
+import type {
+  EssenceAffixPosition,
+  EssenceCraftingData,
+  EssenceEnhancement,
+  EssencePlacement
+} from './essenceCrafting.types.ts'
 
 const approvedAffixPositions = new Set<EssenceAffixPosition>(['prefix', 'suffix', 'extra'])
 
@@ -7,6 +12,41 @@ const isApprovedAffixPosition = (position: string): position is EssenceAffixPosi
   approvedAffixPositions.has(position as EssenceAffixPosition)
 
 const getEquipmentSlot = (equipmentSlotId: string) => EQUIPMENT_SLOTS.find(({ id }) => id === equipmentSlotId)
+
+export function placementMinimumLevel(
+  enhancement: EssenceEnhancement,
+  categoryIds: readonly string[],
+  position: string,
+  placements: readonly EssencePlacement[] = enhancement.placements
+): number {
+  return Math.min(
+    ...placements
+      .filter((entry) => entry.position === position)
+      .flatMap((entry) =>
+        entry.itemCategoryIds
+          .filter((id) => categoryIds.includes(id))
+          .map((id) => Math.max(enhancement.minimumItemLevel, entry.minimumItemLevels?.[id] ?? 0))
+      )
+  )
+}
+
+export function restoredShardLevel(
+  data: EssenceCraftingData,
+  categoryIds: readonly string[],
+  itemLevel: number,
+  selections: readonly (readonly [EssenceAffixPosition, string | null])[]
+): number {
+  let level = itemLevel
+  for (const [position, id] of selections) {
+    if (!id) continue
+    const previous = data.previousEnhancementById?.get(id)
+    const current = data.indexes.enhancementById.get(id)
+    if (!previous || !current || placementMinimumLevel(previous, categoryIds, position) > itemLevel) continue
+    const floor = placementMinimumLevel(current, categoryIds, position)
+    if (floor <= data.rules.supportedItemLevels.maximum) level = Math.max(level, floor)
+  }
+  return level
+}
 
 export const isSupportedEssenceItemLevel = (data: EssenceCraftingData, minimumLevel: number): boolean =>
   Number.isInteger(minimumLevel) &&
@@ -31,7 +71,8 @@ export const getAvailableEnhancementChoicesForItemCategories = (
   const matches = new Map<string, EssenceEnhancement>()
   for (const itemCategoryId of itemCategoryIds) {
     for (const enhancement of enhancementsByCategory.get(itemCategoryId) ?? []) {
-      if (minimumLevel >= enhancement.minimumItemLevel) matches.set(enhancement.id, enhancement)
+      if (minimumLevel >= placementMinimumLevel(enhancement, [itemCategoryId], position))
+        matches.set(enhancement.id, enhancement)
     }
   }
   return [...matches.values()].sort(compareEnhancementsForDisplay)
@@ -109,10 +150,17 @@ export const isSelectedEnhancementStillValid = (
   equipmentSlotId: string,
   position: string,
   minimumLevel: number
-): boolean =>
-  selectedEnhancementId === null ||
-  (isEnhancementPlacementEligible(data, selectedEnhancementId, equipmentSlotId, position) &&
-    isEnhancementAvailableAtMinimumLevel(data, selectedEnhancementId, minimumLevel))
+): boolean => {
+  if (selectedEnhancementId === null) return true
+  const enhancement = data.indexes.enhancementById.get(selectedEnhancementId)
+  const equipment = getEquipmentSlot(equipmentSlotId)
+  return (
+    !!enhancement &&
+    !!equipment &&
+    isSupportedEssenceItemLevel(data, minimumLevel) &&
+    minimumLevel >= placementMinimumLevel(enhancement, equipment.itemCategoryIds, position)
+  )
+}
 
 /** Returns placement- and level-eligible choices in stable alphabetical display order. */
 export const getAvailableEnhancementChoices = (

@@ -2,11 +2,24 @@ import KnownDiscrepancies from './KnownDiscrepancies'
 import { Badge, Button, Group, Modal, Paper, ScrollArea, Stack, Text, TextInput } from '@mantine/core'
 import { useMemo, useState } from 'react'
 import { gearPlannerCurseIdentity } from '../curses.ts'
+import { gearPlannerEssenceCraftingCurseBoost, isEssenceCraftedGearPlannerItem } from '../essenceCrafting'
 import { type GearPlannerEffectSource, previewPotentialEffectConflict } from '../effects.ts'
 import type { GearPlannerCurse, GearPlannerEffect, GearPlannerItem } from '../gearPlanner.types.ts'
 
 const effectLabel = (effect: GearPlannerEffect): string =>
   `${effect.name}${effect.modifier == null ? '' : ' ' + String(effect.modifier)}${effect.bonus ? ' (' + String(effect.bonus) + ')' : ''}`
+
+function MasterworksExplanation({ curse, item }: Readonly<{ curse: GearPlannerCurse; item: GearPlannerItem }>) {
+  const boost = gearPlannerEssenceCraftingCurseBoost(curse)
+  if (!boost) return null
+  return (
+    <Text size='xs' c='dimmed'>
+      {isEssenceCraftedGearPlannerItem(item)
+        ? `Scales eligible Essence Crafting effects at up to +${boost.toString()} effective item levels. The item's minimum level stays the same.`
+        : 'This may raise some effects on the item. The planner displays the catalog values for named gear.'}
+    </Text>
+  )
+}
 
 interface CurseSelectorProps {
   item: GearPlannerItem
@@ -58,6 +71,7 @@ const CurseSelector = ({ item, curses, selected, conflictSources, onChange }: Cu
             </Badge>
           </Group>
           <KnownDiscrepancies notes={selected.discrepancyNotes} />
+          <MasterworksExplanation curse={selected} item={item} />
           {selected.enchantments.map((effect, index) => (
             <Text key={`${effect.name}-${String(index)}`} size='xs'>
               {effectLabel(effect)}
@@ -157,6 +171,7 @@ const CurseSelector = ({ item, curses, selected, conflictSources, onChange }: Cu
                             {effectLabel(effect)}
                           </Text>
                         ))}
+                        <MasterworksExplanation curse={curse} item={item} />
                       </Stack>
                       <Button
                         aria-label={`Select ${curse.name}`}

@@ -159,6 +159,52 @@ afterAll(() => {
 })
 
 describe('EssenceCraftingPage', () => {
+  it('undoes and redoes affix edits and keeps a readable History tool after reloading', async () => {
+    const user = userEvent.setup()
+    renderPage()
+
+    await activateSlot(user, 'Main Hand')
+    await selectOption(user, 'Prefix for Main Hand', 'Alpha Prefix')
+    fireEvent.keyDown(getSelect('Prefix for Main Hand'), { key: 'z', ctrlKey: true })
+    expect(getSelect('Prefix for Main Hand').value).toBe('Alpha Prefix')
+    fireEvent.keyDown(document.body, { key: 'z', ctrlKey: true })
+    expect(getSelect('Prefix for Main Hand').value).toBe('')
+    await user.click(screen.getByRole('button', { name: 'Redo plan edit' }))
+    expect(getSelect('Prefix for Main Hand').value).toBe('Alpha Prefix')
+
+    cleanup()
+    renderPage()
+    await user.click(
+      within(await screen.findByTestId('workspace-mobile-tools')).getByRole('button', { name: 'History' })
+    )
+    const history = screen.getByRole('dialog', { name: 'History' })
+    expect(within(history).getByText('Redo · Applied Alpha Prefix to Main Hand prefix')).toBeTruthy()
+    expect(within(history).getByText('Undo · Applied Alpha Prefix to Main Hand prefix')).toBeTruthy()
+    expect(within(history).getByText('Added Main Hand to the plan')).toBeTruthy()
+  })
+
+  it('warns when storage is unavailable and clears the warning after a successful retry', async () => {
+    const user = userEvent.setup()
+    renderPage()
+    await screen.findByRole('combobox', { name: 'Master ML' })
+    const storageWrite = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('Storage is full')
+    })
+    try {
+      await activateSlot(user, 'Main Hand')
+      expect(screen.getByText('Plan changes are unsaved')).toBeTruthy()
+      const beforeUnload = new Event('beforeunload', { cancelable: true })
+      fireEvent(window, beforeUnload)
+      expect(beforeUnload.defaultPrevented).toBe(true)
+      storageWrite.mockRestore()
+      await user.click(screen.getByRole('button', { name: 'Retry save' }))
+      expect(screen.queryByText('Plan changes are unsaved')).toBeNull()
+      expect(sessionStorage.getItem('yourddo:essence-crafting:edit-history:v1')).toContain('Added Main Hand')
+    } finally {
+      storageWrite.mockRestore()
+    }
+  })
+
   it('prompts before unequipping an off-hand weapon', async () => {
     const user = userEvent.setup()
     renderPage()
@@ -330,6 +376,12 @@ describe('EssenceCraftingPage', () => {
 
     await selectOption(user, 'Equipment slot', 'Ring')
     await selectOption(user, 'Affix position', 'Prefix')
+    expect(within(lookup).getByText('No matching shards')).toBeTruthy()
+    await user.click(within(lookup).getByRole('button', { name: 'Show 1 hidden by filters' }))
+    expect(within(lookup).getByText('Outside filters')).toBeTruthy()
+    expect(getSelect('Equipment slot').value).toBe('Ring')
+    expect(search).toHaveProperty('value', 'LIGHT spell power')
+    await user.click(within(lookup).getByRole('button', { name: 'Hide filtered results' }))
     expect(within(lookup).getByText('No matching shards')).toBeTruthy()
     await selectOption(user, 'Affix position', 'Suffix')
     expect(within(lookup).getByRole('button', { name: /Split Prefix Test/ })).toBeTruthy()
@@ -836,9 +888,10 @@ describe('EssenceCraftingPage', () => {
     await user.click(screen.getByRole('button', { name: 'Reset plan' }))
 
     const dialog = screen.getByRole('dialog', { name: 'Reset the entire plan?' })
-    expect(dialog).toBeTruthy()
+    expect(dialog.textContent).toContain('clears edit history')
     await user.keyboard('{Escape}')
     expect(screen.getByTestId('planned-item-main-hand')).toBeTruthy()
+    expect(sessionStorage.getItem('yourddo:essence-crafting:edit-history:v1')).toContain('Added Main Hand')
 
     await user.click(screen.getByRole('button', { name: 'Reset plan' }))
     await user.click(
@@ -846,6 +899,8 @@ describe('EssenceCraftingPage', () => {
     )
     expect(screen.queryByTestId('planned-item-main-hand')).toBeNull()
     expect(screen.getByText('Select an equipment slot to begin crafting.')).toBeTruthy()
+    expect(sessionStorage.getItem('yourddo:essence-crafting:edit-history:v1')).toBeNull()
+    expect(screen.getByRole<HTMLButtonElement>('button', { name: 'Undo plan edit' }).disabled).toBe(true)
   })
 
   it('uses the pure transition engine for Mark and affix changes without render-phase corrections', async () => {

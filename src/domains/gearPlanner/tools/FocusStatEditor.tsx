@@ -2,7 +2,7 @@ import { ActionIcon, Group, Stack, Text } from '@mantine/core'
 import { IconChevronUp, IconChevronDown, IconX } from '@tabler/icons-react'
 import { useMemo } from 'react'
 import type { GearPlannerData } from '../gearPlanner.types'
-import type { GearOwner } from '../character'
+import { maxFocusStats, type GearOwner } from '../character'
 import type { GearPlannerEffectSource } from '../effects'
 import { skillObjective } from '../statObjectives'
 import StatObjectivePicker from './StatObjectivePicker'
@@ -36,7 +36,7 @@ export default function FocusStatEditor({
   }
   return (
     <Stack gap='xs'>
-      {names.length < 5 ? (
+      {names.length < maxFocusStats ? (
         <StatObjectivePicker
           focus
           verbatim={Boolean(data.enchantmentNames)}
@@ -53,7 +53,7 @@ export default function FocusStatEditor({
         </Text>
       )}
       <Text size='xs' c='dimmed'>
-        Choose up to five stats. Higher priorities rank first in upgrade recommendations.
+        Choose up to {maxFocusStats} stats. Higher priorities rank first in recommendations.
       </Text>
       {names.map((name, index) => (
         <Group key={name} gap='xs' wrap='nowrap'>

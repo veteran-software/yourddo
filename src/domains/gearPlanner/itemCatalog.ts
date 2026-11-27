@@ -169,7 +169,7 @@ function statModifier(stat: Row, value: number, name: string, source: EffectSour
   return { modifier: value }
 }
 
-function equipmentBonuses(enchantments: Row[], source: EffectSource, notes?: string) {
+function equipmentBonuses(enchantments: Row[], source: EffectSource, notes?: string, includeSkillEnhancement = false) {
   const stats: GearPlannerEffect[] = []
   for (const stat of enchantments) {
     if (
@@ -182,7 +182,7 @@ function equipmentBonuses(enchantments: Row[], source: EffectSource, notes?: str
     // Conditional and derived values cannot be counted as always-on equipment bonuses.
     if (
       stat.conditionalBonus ||
-      stat.sourceStat ||
+      (stat.sourceStat && !(includeSkillEnhancement && stat.sourceStat === 'Skill_SkillEnhancement')) ||
       stat.targetEligibility ||
       stat.requiresActiveBlocking ||
       stat.weaponType ||
@@ -199,10 +199,15 @@ function equipmentBonuses(enchantments: Row[], source: EffectSource, notes?: str
   return stats
 }
 
-function effectStats(effect: Row, source: EffectSource): GearPlannerEffect[] {
+function effectStats(effect: Row, source: EffectSource, includeSkillEnhancement = false): GearPlannerEffect[] {
   const notes = typeof effect.description === 'string' ? effect.description : undefined
   const name = typeof effect.displayName === 'string' ? effect.displayName.trim() : ''
-  const stats = equipmentBonuses(rows(effect.enchantments ?? [], 'enchantments'), source, notes)
+  const stats = equipmentBonuses(
+    rows(effect.enchantments ?? [], 'enchantments'),
+    source,
+    notes,
+    includeSkillEnhancement
+  )
   if (name && (!stats.length || (Array.isArray(effect.procs) && effect.procs.length))) stats.push({ name, notes })
   const discrepancies = discrepancyNotes(effect, source)
   if (stats.length && discrepancies.length) stats[0].discrepancyNotes = discrepancies
@@ -211,7 +216,7 @@ function effectStats(effect: Row, source: EffectSource): GearPlannerEffect[] {
 
 function indexedEffects<T>(
   effects: unknown,
-  adapt: (record: Row) => T,
+  adapt: (record: Row, parent: Row) => T,
   visible: (record: Row) => boolean = isVisibleEffect
 ) {
   const index = new Map<string, T | null>()
@@ -219,11 +224,11 @@ function indexedEffects<T>(
     const key = String(id(effect.id, 'effect'))
     const variants = rows(effect.variants ?? [], 'variants')
     if (effect.variants === undefined || effect.enchantments !== undefined)
-      index.set(key, visible(effect) ? adapt(effect) : null)
+      index.set(key, visible(effect) ? adapt(effect, effect) : null)
     for (const variant of variants)
       index.set(
         key + '/' + text(variant.variant, 'effect variant'),
-        visible(effect) && visible(variant) ? adapt(variant) : null
+        visible(effect) && visible(variant) ? adapt(variant, effect) : null
       )
   }
   return index
@@ -231,6 +236,18 @@ function indexedEffects<T>(
 
 export function effectIndex(effects: unknown, source: EffectSource = 'equipment') {
   return indexedEffects(effects, (effect) => effectStats(effect, source))
+}
+
+export function craftingMutationEffectIndex(effects: unknown) {
+  return indexedEffects(
+    effects,
+    (effect, parent) =>
+      isVisibleEffect(effect) && isVisibleEffect(parent)
+        ? // Good Luck upgrades publish the actual bonus for each skill under this source stat.
+          effectStats(effect, 'equipment', true)
+        : equipmentBonuses(rows(effect.enchantments ?? [], 'enchantments'), 'equipment'),
+    (effect) => effect.internal !== true
+  )
 }
 
 function referencedEffect<T>(index: ReadonlyMap<string, T | null>, ref: Row, name: string) {
@@ -242,13 +259,18 @@ function referencedEffect<T>(index: ReadonlyMap<string, T | null>, ref: Row, nam
 
 const publicRecord = (record: Row) => isVisibleEffect(record) && record.internal !== true
 
-function scopedEnchantmentRows(effect: Row): GearPlannerEffect[] {
+function scopedEnchantmentRows(effect: Row, hiddenGrant = false): GearPlannerEffect[] {
   return rows(effect.enchantments ?? [], 'augment enchantments').flatMap((stat) => {
     if (!publicRecord(stat) || stat.bonusType === 'Condition' || stat.type === 'script' || stat.type === 'condition')
       return []
-    const nested = stat.type === 'grantedFeat' ? scopedEnchantmentRows(stat) : []
-    if (typeof stat.displayName !== 'string') return nested
-    const name = stat.displayName
+    const nested = stat.type === 'grantedFeat' ? scopedEnchantmentRows(stat, hiddenGrant) : []
+    const name =
+      typeof stat.displayName === 'string'
+        ? stat.displayName
+        : hiddenGrant && stat.property === 'Feat_SneakDiceBonus'
+          ? 'Sneak Attack Dice'
+          : undefined
+    if (!name) return nested
     const hasAmount = typeof stat.value === 'number'
     return [
       {
@@ -263,6 +285,7 @@ function scopedEnchantmentRows(effect: Row): GearPlannerEffect[] {
         stat.requiresActiveBlocking ||
         stat.targetEligibility ||
         stat.weaponType ||
+        (hiddenGrant && stat.sourceStat) ||
         (!hasAmount && stat.value !== true && stat.type !== 'grantedFeat')
           ? { displayOnly: true }
           : {})
@@ -270,6 +293,31 @@ function scopedEnchantmentRows(effect: Row): GearPlannerEffect[] {
       ...nested
     ]
   })
+}
+
+function directlyGrantsAugmentEffects(ref: Row) {
+  return ref.activation === 'Augment_OnEquipEffects' || ref.activation === 'Augment_OnSlottedEffects'
+}
+
+export function craftingAugmentGrantReader(effects: unknown) {
+  // Crafting augments can grant passive stats through effects hidden from the game tooltip.
+  const index = indexedEffects(
+    effects,
+    (effect, parent) => {
+      if (isVisibleEffect(effect) && isVisibleEffect(parent)) return []
+      const stats = scopedEnchantmentRows(effect, true).filter(
+        (stat) => !stat.displayOnly && stat.modifier !== undefined
+      )
+      const discrepancies = discrepancyNotes(effect, 'augment')
+      if (stats.length && discrepancies.length) stats[0].discrepancyNotes = discrepancies
+      return stats
+    },
+    (effect) => effect.internal !== true
+  )
+  return (item: Row, name: string) =>
+    rows(item.effects ?? [], name)
+      .filter((ref) => publicRecord(ref) && directlyGrantsAugmentEffects(ref))
+      .flatMap((ref) => referencedEffect(index, ref, name) ?? [])
 }
 
 export function scopedAugmentReader(effects: unknown, names: readonly string[]) {
@@ -296,11 +344,7 @@ export function scopedAugmentReader(effects: unknown, names: readonly string[]) 
       if (group.name || group.rows.length) presentation.push(group)
       for (const label of [group.name, ...group.rows.map((stat) => stat.name)])
         if (labels.has(label)) searchLabels.add(label)
-      if (
-        ref.activation === 'Augment_OnEquipEffects' ||
-        ref.activation === 'Augment_OnSlottedEffects' ||
-        ref.activation === undefined
-      )
+      if (directlyGrantsAugmentEffects(ref) || ref.activation === undefined)
         effectsAdded.push(...group.rows.filter((stat) => !stat.displayOnly))
     }
     return {
@@ -440,6 +484,15 @@ export function adaptItemCategory(
   return [...datasets].map(([fileName, records]) => ({ fileName, records }))
 }
 
+export function catalogIconIndex(value: unknown) {
+  return new Map(
+    rows(value, 'icons').map((icon) => [
+      id(icon.id, 'icon'),
+      'data:image/png;base64,' + text(icon.pngBase64, 'icon image')
+    ])
+  )
+}
+
 export async function loadItemCatalog() {
   const manifest = row(await loadDatasetFile<unknown>('items/manifest.json'), 'manifest')
   if (manifest.system !== 'items') throw new Error('Invalid equipment catalog manifest')
@@ -454,12 +507,7 @@ export async function loadItemCatalog() {
   }
   const [iconData, spellData, names] = await Promise.all([read('icons'), read('spells'), read('enchantment-names')])
   const spells = spellIndex(spellData)
-  const icons = new Map(
-    rows(iconData, 'icons').map((icon) => [
-      id(icon.id, 'icon'),
-      'data:image/png;base64,' + text(icon.pngBase64, 'icon image')
-    ])
-  )
+  const icons = catalogIconIndex(iconData)
   const groups = await Promise.all(
     categories.map(async ([key, effectsKey]) => {
       const [items, effects] = await Promise.all([read(key), read(text(effectsKey, key))])
@@ -499,13 +547,16 @@ function enchantmentLabels(value: unknown): string[] {
 
 const scopedGroups = new Set(['standard', 'moon', 'sun'])
 
-// Gear Planner and its embedded crafting editor request the same release files concurrently.
-const pendingAugmentFiles = new Map<string, Promise<unknown>>()
+// Both planners read these resources from the same pinned release.
+const augmentFiles = new Map<string, Promise<unknown>>()
 function augmentFile(path: string) {
-  const cached = pendingAugmentFiles.get(path)
+  const cached = augmentFiles.get(path)
   if (cached) return cached
-  const pending = loadDatasetFile<unknown>('items/augments/' + path).finally(() => pendingAugmentFiles.delete(path))
-  pendingAugmentFiles.set(path, pending)
+  const pending = loadDatasetFile<unknown>('items/augments/' + path).catch((error: unknown) => {
+    augmentFiles.delete(path)
+    throw error
+  })
+  augmentFiles.set(path, pending)
   return pending
 }
 
@@ -567,7 +618,8 @@ export function adaptItemSetDefinitions(sets: unknown, index: ReturnType<typeof 
             return {
               threshold,
               effects,
-              ...(typeof tier.requirement === 'string' && { requirement: tier.requirement })
+              ...(typeof tier.requirement === 'string' && { requirement: tier.requirement }),
+              ...(tier.requiredItemId !== undefined && { requiredItemId: id(tier.requiredItemId, name) })
             }
           })
     const definition: GearPlannerFiligreeSetDefinition = {
@@ -611,6 +663,7 @@ export async function loadSocketCatalog() {
   const names = exportedLabels === undefined ? undefined : enchantmentLabels(exportedLabels)
   const scoped = names && scopedAugmentReader(effectData, names)
   const index = effectIndex(effectData, 'augment')
+  const craftingGrants = craftingAugmentGrantReader(effectData)
   // Filigrees grant effects whose records are hidden from the game's effect tooltips.
   const filigreeIndex = indexedEffects(
     effectData,
@@ -654,8 +707,10 @@ export async function loadSocketCatalog() {
           .map((item) => {
             const { name, slotTypes, minimumLevel } = socketItem(item)
             const override = item.hostSetOverride ? row(item.hostSetOverride, name) : undefined
-            const details = scoped && scopedGroups.has(groupNames[i]) ? scoped(item) : undefined
+            const isScoped = scopedGroups.has(groupNames[i])
+            const details = scoped && isScoped ? scoped(item) : undefined
             const effectsAdded = details?.effectsAdded ?? resolveEffects(item, name, index, spells)
+            if (!isScoped) effectsAdded.push(...craftingGrants(item, name))
             const set = override ? sets.byId.get(id(override.primarySetId, name)) : undefined
             const discrepancy = [...new Set([...itemDiscrepancies(item, effectsAdded), ...setDiscrepancies(set)])]
             return {
