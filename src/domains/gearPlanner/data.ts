@@ -1,6 +1,8 @@
 import { isVisibleEffect } from '../../shared/data/visibleEffect'
 import { displayPercentModifier, percentModifier } from './effectAmounts'
 import { loadOptionalAlchemicalData } from '../alchemical/loadAlchemicalData'
+import { loadOptionalThunderData } from '../thunderForged/data'
+import { addThunderBases } from './thunderForgedCrafting'
 import { loadOptionalSlaveLordsData } from '../slaveLords/loadSlaveLordsData'
 import type { GearPlannerStandardSetDefinition } from './standardSetDefinitions.ts'
 import { slaveLordsSetDefinitions } from './slaveLordsCrafting'
@@ -239,16 +241,17 @@ async function loadCraftingData(): Promise<GearCraftingData> {
 }
 
 export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types.ts').GearPlannerData> => {
-  const [crafting, slaveLords, alchemical, curses, reforging, sockets, itemCatalog] = await Promise.all([
+  const [crafting, slaveLords, alchemical, thunderForged, curses, reforging, sockets, itemCatalog] = await Promise.all([
     loadCraftingData(),
     loadOptionalSlaveLordsData(),
     loadOptionalAlchemicalData(),
+    loadOptionalThunderData(),
     loadCatalogCurses(),
     loadNearlyFinishedRecipes(),
     loadSocketCatalog(),
     loadItemCatalog()
   ])
-  const sourceDatasets = itemCatalog.datasets
+  const sourceDatasets = thunderForged ? addThunderBases(itemCatalog.datasets, thunderForged) : itemCatalog.datasets
   const reforgingEntries = reforging.reforgingStation
   const normalized = normalizeGearPlannerSources(
     sourceDatasets,
@@ -273,7 +276,7 @@ export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types
     enchantmentAliases: itemCatalog.aliases,
     enchantmentNames: itemCatalog.enchantmentNames,
     augmentEnchantmentNames: sockets.enchantmentNames,
-    crafting: { ...crafting, slaveLords, alchemical },
+    crafting: { ...crafting, slaveLords, alchemical, thunderForged },
     standardSets,
     reforging: createGearPlannerReforgingData(reforgingEntries, sourceDatasets),
     curses,

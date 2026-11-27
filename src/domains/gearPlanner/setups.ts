@@ -1,7 +1,7 @@
 import { canExchangeAugments, type LoadoutSocket } from './augmentSockets'
 import { enabledOwners, slotOwner } from './character'
 import { getGearPlannerBaseAugmentSlots } from './augments'
-import { gearCraftGroups, applyGearCraft, type GearCraftingData } from './crafting.ts'
+import { gearCraftGroups, applyGearCraft, craftStageOrder, type GearCraftingData } from './crafting.ts'
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
 import { createGearPlannerEssenceCraftingConfiguration, isEssenceCraftedGearPlannerItem } from './essenceCrafting.ts'
 import type { GearPlannerAugment, GearPlannerCurse, GearPlannerFiligree, GearPlannerItem } from './gearPlanner.types.ts'
@@ -287,7 +287,7 @@ export const setGearPlannerSetupCraft = (
     const updated = applyGearCraft(item, group, choiceId, data)
     if (updated === item) return setup
     const slottedAugments =
-      system === 'slave-lords-augment' || system.startsWith('alchemical-')
+      system === 'slave-lords-augment' || craftStageOrder(system) >= 0
         ? sanitizeGearPlannerSlottedAugments(setup.slottedAugments, updated, getGearPlannerBaseAugmentSlots(updated))
         : setup.slottedAugments
     return { ...setup, slottedAugments, equipment: { ...setup.equipment, [slot]: updated } }

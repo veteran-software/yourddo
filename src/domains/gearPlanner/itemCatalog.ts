@@ -440,6 +440,15 @@ export function adaptItemCategory(
   return [...datasets].map(([fileName, records]) => ({ fileName, records }))
 }
 
+export function catalogIconIndex(value: unknown) {
+  return new Map(
+    rows(value, 'icons').map((icon) => [
+      id(icon.id, 'icon'),
+      'data:image/png;base64,' + text(icon.pngBase64, 'icon image')
+    ])
+  )
+}
+
 export async function loadItemCatalog() {
   const manifest = row(await loadDatasetFile<unknown>('items/manifest.json'), 'manifest')
   if (manifest.system !== 'items') throw new Error('Invalid equipment catalog manifest')
@@ -454,12 +463,7 @@ export async function loadItemCatalog() {
   }
   const [iconData, spellData, names] = await Promise.all([read('icons'), read('spells'), read('enchantment-names')])
   const spells = spellIndex(spellData)
-  const icons = new Map(
-    rows(iconData, 'icons').map((icon) => [
-      id(icon.id, 'icon'),
-      'data:image/png;base64,' + text(icon.pngBase64, 'icon image')
-    ])
-  )
+  const icons = catalogIconIndex(iconData)
   const groups = await Promise.all(
     categories.map(async ([key, effectsKey]) => {
       const [items, effects] = await Promise.all([read(key), read(text(effectsKey, key))])

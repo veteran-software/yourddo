@@ -17,6 +17,7 @@ import SagaTrackerPage from '../domains/sagaTracker/SagaTrackerPage.tsx'
 import ShadowCryptPage from '../domains/shadowCrypt/ShadowCryptPage.tsx'
 import ShroudPage from '../domains/shroud/ShroudPage.tsx'
 import TotalChaosPage from '../domains/totalChaos/TotalChaosPage.tsx'
+import ThunderForgedPage from '../domains/thunderForged/ThunderForgedPage.tsx'
 import ViktraniumPage from '../domains/viktranium/ViktraniumPage.tsx'
 import { routeAliases } from '../shared/seo/seoConfig'
 import NotFoundPage from '../shared/ui/NotFoundPage.tsx'
@@ -43,6 +44,7 @@ const AppRouter = ({ hostname = globalThis.window?.location.hostname ?? '' }: { 
       <Route path='/legendary-green-steel' element={<LegendaryGreenSteelPage />} />
       <Route path='/alchemical' element={<AlchemicalPage />} />
       <Route path='/slave-lords' element={<SlaveLordsPage />} />
+      <Route path='/thunder-forged' element={<ThunderForgedPage />} />
       <Route path='/incredible-potential' element={<IncrediblePotentialPage />} />
       <Route path='/nearly-complete' element={<NearlyCompletePage />} />
       <Route path='/nearly-finished' element={<NearlyFinishedPage />} />

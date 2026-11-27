@@ -57,6 +57,11 @@ const ROUTE_SEO_DATA = [
     'Plan Heroic and Legendary Slave Lords upgrades, preview set bonuses, and calculate the materials for your equipment.'
   ],
   [
+    '/thunder-forged',
+    'Thunder-Forged Crafting | YourDDO',
+    'Plan DDO Thunder-Forged weapons and Flawless Shadowscale armor. Preview Magma Forge upgrades and total the ingredients for your build.'
+  ],
+  [
     '/incredible-potential',
     'Incredible Potential | YourDDO',
     'Plan Incredible Potential item upgrades, materials, and results.'

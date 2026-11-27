@@ -1,6 +1,5 @@
 import { convertLegacyGearSave } from './legacyImport'
-import { alchemicalStageOrder } from './alchemicalCrafting'
-import { gearCraftGroups, applyGearCraft } from './crafting.ts'
+import { gearCraftGroups, applyGearCraft, craftStageOrder } from './crafting.ts'
 import type { EssenceCraftingData } from '../essenceCrafting/essenceCrafting.types.ts'
 import { gearPlannerAugmentIdentity, isCompatibleGearPlannerAugment } from './augments.ts'
 import { canApplyGearPlannerCurse, collectSelectedGearPlannerCurses, gearPlannerCurseIdentity } from './curses.ts'
@@ -698,7 +697,7 @@ function restoreGearCrafts(
   report: ReportIssue
 ) {
   for (const { itemId, system, choiceId } of (savedSetup.selectedCrafts ?? []).toSorted(
-    (a, b) => alchemicalStageOrder(a.system) - alchemicalStageOrder(b.system)
+    (a, b) => craftStageOrder(a.system) - craftStageOrder(b.system)
   )) {
     const slot = allGearPlannerSlots.find((s) => equipment[s]?.id === itemId)
     const item = slot && equipment[slot]
