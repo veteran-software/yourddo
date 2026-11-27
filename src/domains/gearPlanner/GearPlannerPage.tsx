@@ -18,6 +18,7 @@ import AugmentsTool from './tools/AugmentsTool'
 import FarmingTool from './tools/FarmingTool'
 import LevelRangeInputs, { type LevelRange } from './components/LevelRangeInputs'
 import FocusStatEditor from './tools/FocusStatEditor'
+import { rankBrowserFocus } from './focusStats'
 import CharacterSetupTool from './tools/CharacterSetupTool'
 import { ownsTroveItem } from './trove'
 import { gearPlannerAugmentIdentity } from './augments'
@@ -511,6 +512,7 @@ const EquipmentEditor = ({
 )
 
 interface ItemBrowserProps extends Pick<EquipmentEditorProps, 'effectiveAugmentSlots' | 'essenceCrafting' | 'openSet'> {
+  focusStats?: readonly string[]
   memberships: readonly GearPlannerSetMembership[]
   equippedFiligrees: readonly GearPlannerSelectedFiligree[]
   openFiligree: (host: GearPlannerSelectedFiligree) => void
@@ -563,6 +565,7 @@ const ItemBrowser = ({
   equippedFiligrees,
   openFiligree,
   catalogItems,
+  focusStats,
   missingWeaponFilters,
   effectiveAugmentSlots,
   essenceCrafting,
@@ -593,6 +596,7 @@ const ItemBrowser = ({
   const [bonusType, setBonusType] = useState<string | null>(effectTarget?.bonusType ?? null)
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [showFiltered, setShowFiltered] = useState(false)
+  const [focusFirst, setFocusFirst] = useState(true)
   const filtersId = useId()
   const filterSlot = finding ? slotFilter : slot
   const effectQuery = search.trim().toLowerCase()
@@ -695,7 +699,10 @@ const ItemBrowser = ({
       setName: null
     }).filter((candidate) => !visible.has(candidate))
   }, [catalog, eligibleCandidates, exactEffect, filtered, inventory, search])
-  const results = showFiltered ? [...filtered, ...hidden] : filtered
+  const results = useMemo(() => {
+    const priorities = focusFirst ? (focusStats ?? []) : []
+    return rankBrowserFocus(showFiltered ? [...filtered, ...hidden] : filtered, priorities)
+  }, [filtered, focusFirst, focusStats, hidden, showFiltered])
   const hiddenCandidates = new Set(hidden)
 
   useEffect(() => {
@@ -920,7 +927,7 @@ const ItemBrowser = ({
                 onChange={setSetName}
               />
             </SimpleGrid>
-            <Group gap='md'>
+            <Group gap='md' role='group' aria-label='Item search options'>
               <Checkbox
                 size='xs'
                 label='Show conflicting or lesser items'
@@ -930,6 +937,17 @@ const ItemBrowser = ({
                 }}
               />
               <OwnedFilter />
+              {Boolean(focusStats?.length) && (
+                <Checkbox
+                  size='xs'
+                  label='Focus stats first'
+                  checked={focusFirst}
+                  onChange={(event) => {
+                    setFocusFirst(event.currentTarget.checked)
+                    setVisibleCount(pageSize)
+                  }}
+                />
+              )}
             </Group>
           </div>
           {setName && <SetBonusPreview key={setName} compact={finding} definition={data.standardSets?.get(setName)} />}
@@ -950,7 +968,7 @@ const ItemBrowser = ({
           )}
 
           <ul className={classes.results} data-finder={finding || undefined}>
-            {results.slice(0, visibleCount).map((candidate) => {
+            {results.slice(0, visibleCount).map(({ candidate, matches }) => {
               const { item, sets: itemSets, effects, craftGroups } = candidate
               const incumbent = equipment[item.slot]
               const equipped = incumbent?.id === item.id
@@ -1007,6 +1025,14 @@ const ItemBrowser = ({
                           </Text>
                         )}
                       </Group>
+                      {matches.length > 0 && (
+                        <Text size='xs' c='blue'>
+                          Focus match ·{' '}
+                          {matches
+                            .map(({ name, position, text }) => `#${position.toString()} ${name} ${text}`)
+                            .join(' · ')}
+                        </Text>
+                      )}
                       {craftGroups.length > 0 && itemSets.length > 1 && !setName ? (
                         <details>
                           <Text component='summary' size='xs'>
@@ -1676,6 +1702,7 @@ const GearPlannerWorkspace = () => {
         essenceCrafting={essenceCrafting}
         missingWeaponFilters={unavailableWeaponsOnly && owner === 'Character' ? activeSetup.character.weapons : []}
         catalogItems={catalogItems}
+        focusStats={activeSetup.character.focusStats}
         slots={slots}
         finding={isFinder}
         showConflicts={showConflicts}

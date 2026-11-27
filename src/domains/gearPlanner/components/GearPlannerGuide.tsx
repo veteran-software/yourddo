@@ -39,7 +39,7 @@ export default function GearPlannerGuide() {
             setOpened(true)
           }}
         >
-          <IconInfoCircle size={19} aria-hidden />
+          <IconInfoCircle size={23} aria-hidden />
         </ActionIcon>
       </Tooltip>
       <Modal

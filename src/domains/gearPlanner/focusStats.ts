@@ -1,6 +1,14 @@
 import { formatAmount } from './effectAmounts'
-import { skillObjective } from './statObjectives'
-import type { loadoutSnapshot } from './loadoutComparison'
+import {
+  aggregateEffectSummary,
+  effectAmount,
+  normalizeBonusType,
+  normalizeEffectName,
+  type GearPlannerEffectSource
+} from './effects'
+import { objectiveEffect, skillObjective } from './statObjectives'
+import type { GearPlannerCandidate } from './planner'
+import { statValue, type loadoutSnapshot } from './loadoutComparison'
 
 type Stats = ReturnType<typeof loadoutSnapshot>['Stats']
 export interface FocusChange {
@@ -53,4 +61,50 @@ export function focusSummary(changes: FocusChange[]) {
     .filter((entry) => entry.delta)
     .map(({ name, delta, unit, rounding }) => name + ' ' + formatAmount(delta, unit, true, rounding))
     .join(' · ')
+}
+
+/** Rank the gear already in the result list by built-in effects in setup priority order. */
+export function rankBrowserFocus(candidates: readonly GearPlannerCandidate[], names: readonly string[]) {
+  const priorities = names.map((name, index) => ({
+    name,
+    position: index + 1,
+    key: normalizeEffectName(objectiveEffect({ name }).name)
+  }))
+  const keys = new Set(priorities.map(({ key }) => key))
+  if (!keys.size) return candidates.map((candidate) => ({ candidate, matches: [] }))
+
+  const rows = candidates.map((candidate) => {
+    const effects: GearPlannerEffectSource[] = []
+    for (const source of candidate.item.source.enchantments ?? []) {
+      if (source.displayOnly) continue
+      const effect = objectiveEffect(source)
+      const key = normalizeEffectName(effect.name)
+      if (!keys.has(key)) continue
+      effects.push({
+        id: effects.length.toString(),
+        category: 'equipped-item',
+        effect,
+        normalizedName: key,
+        normalizedBonusType: normalizeBonusType(effect.bonus),
+        comparisonValue: effectAmount(effect)
+      })
+    }
+    const stats = new Map(
+      aggregateEffectSummary(effects).map((entry) => [entry.normalizedName, statValue(entry, true)])
+    )
+    const matches = priorities.flatMap(({ name, position, key }) => {
+      const value = stats.get(key)
+      return value?.amount !== undefined && value.amount > 0 ? [{ name, position, ...value }] : []
+    })
+    return { candidate, matches, stats }
+  })
+  return rows.sort((a, b) => {
+    for (const { key } of priorities) {
+      const left = a.stats.get(key)?.amount ?? 0
+      const right = b.stats.get(key)?.amount ?? 0
+      const difference = Math.max(right, 0) - Math.max(left, 0)
+      if (difference) return difference
+    }
+    return 0
+  })
 }

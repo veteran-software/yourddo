@@ -995,6 +995,50 @@ describe('GearPlannerPage', () => {
     expect(await screen.findByText('Skill: Jump +2')).toBeTruthy()
   })
 
+  it('ranks the strongest focus values first in slot and all-slot browsing and can restore the catalog order', async () => {
+    await renderReadyPage(
+      dataWithItems([
+        item('heavy', 'Head', 'Heavy Helm', 24, [{ name: 'Jump', modifier: -2 }]),
+        item('dex', 'Head', 'Agile Helm', 20, [{ name: 'Dexterity', modifier: 4 }]),
+        item('jump', 'Head', 'Leaping Helm', 10, [
+          { name: 'Jump +4', modifier: 4, bonus: 'Competence' },
+          { name: 'Jump', modifier: 2, bonus: 'Competence' },
+          { name: 'Jump', modifier: 1, bonus: 'Insight' }
+        ]),
+        item('both', 'Head', 'Acrobat Helm', 8, [
+          { name: 'Skill: Jump', modifier: 3 },
+          { name: 'Dexterity', modifier: 2 }
+        ])
+      ])
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Character setup' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Add focus stat' }))
+    fireEvent.change(screen.getByRole('textbox', { name: 'Search stats' }), { target: { value: 'jump' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Jump' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Add focus stat' }))
+    fireEvent.change(screen.getByRole('textbox', { name: 'Search stats' }), { target: { value: 'dexterity' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Dexterity' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Close workspace tool' }))
+
+    const ranked = ['Leaping', 'Acrobat', 'Agile', 'Heavy']
+    const resultOrder = () =>
+      screen
+        .getAllByRole('button', { name: /^Equip (?:Acrobat|Leaping|Agile|Heavy) Helm/ })
+        .map((button) => button.getAttribute('aria-label')?.split(' ')[1])
+
+    fireEvent.click(screen.getByRole('button', { name: 'Select Head' }))
+    expect(resultOrder()).toEqual(ranked)
+    expect(screen.getByText('Focus match · #1 Skill: Jump +5')).toBeTruthy()
+    expect(screen.getByText('Focus match · #1 Skill: Jump +3 · #2 Dexterity +2')).toBeTruthy()
+    const searchOptions = within(screen.getByRole('group', { name: 'Item search options' }))
+    expect(searchOptions.getByRole('checkbox', { name: 'Show conflicting or lesser items' })).toBeTruthy()
+    fireEvent.click(searchOptions.getByRole('checkbox', { name: 'Focus stats first' }))
+    expect(resultOrder()).toEqual(['Heavy', 'Agile', 'Leaping', 'Acrobat'])
+
+    fireEvent.click(screen.getByRole('button', { name: 'Find gear' }))
+    expect(resultOrder()).toEqual(ranked)
+  })
+
   it('compares same-slot replacements against overlapping bonuses and preserves unique effect losses', () => {
     const stat = (name: string, modifier: number) => ({ name, modifier, bonus: 'Enhancement' })
     const host = item('gloves', 'Hands', 'Original gloves', 10, [stat('Strength', 12), { name: 'Ghostly' }])
