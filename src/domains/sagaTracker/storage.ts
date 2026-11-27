@@ -1,4 +1,4 @@
-import { createStore, get, set } from 'idb-keyval'
+import { createStore, getMany, setMany } from 'idb-keyval'
 import {
   canonicalQuestId,
   canonicalSagaId,
@@ -20,6 +20,7 @@ export const TURNED_IN_AT_KEY = 'turnedInAt'
 export const LOCAL_ITEMS_KEY = 'yourddo:saga-tracker:v2'
 export const LOCAL_QUESTS_KEY = 'yourddo:saga-tracker:quests:v1'
 export const LOCAL_TURNED_IN_KEY = 'yourddo:saga-tracker:turnedInAt:v1'
+const PENDING_PROGRESS_KEY = 'yourddo:saga-tracker:pending-progress:v1'
 export const ACTIVE_TAB_KEY = 'yourddo:saga-tracker:activeTab:v1'
 
 export interface StoredSagaItem extends SagaStatus {
@@ -27,14 +28,14 @@ export interface StoredSagaItem extends SagaStatus {
 }
 
 interface StorageDriver {
-  getValue: (key: string) => Promise<unknown>
-  setValue: (key: string, value: unknown) => Promise<void>
+  getValues: (keys: string[]) => Promise<unknown[]>
+  setValues: (entries: [string, unknown][]) => Promise<void>
 }
 
 const store = createStore('yourddo-db', 'saga-tracker')
 const defaultDriver: StorageDriver = {
-  getValue: (key) => get(key, store),
-  setValue: (key, value) => set(key, value, store)
+  getValues: (keys) => getMany(keys, store),
+  setValues: (entries) => setMany(entries, store)
 }
 
 const safeLocalRead = (key: string): unknown => {
@@ -64,7 +65,14 @@ const parseItems = (value: unknown): StoredSagaItem[] | undefined => {
     if (typeof item.id !== 'string' || typeof item.completed !== 'boolean' || typeof item.turnedIn !== 'boolean') {
       continue
     }
-    items.push({ id: item.id, completed: item.completed, turnedIn: item.turnedIn })
+    items.push({
+      id: item.id,
+      completed: item.completed,
+      turnedIn: item.turnedIn,
+      ...(typeof item.runStartedAt === 'number' &&
+        Number.isFinite(item.runStartedAt) &&
+        item.runStartedAt >= 0 && { runStartedAt: item.runStartedAt })
+    })
   }
   return items
 }
@@ -99,9 +107,7 @@ export const buildProgress = (
   questDoneAt: TimestampMap | undefined,
   turnedInAt: TimestampMap | undefined
 ): SagaTrackerProgress => {
-  const statusById = withCompatibleSagaIds(
-    Object.fromEntries((items ?? []).map(({ id, completed, turnedIn }) => [id, { completed, turnedIn }]))
-  )
+  const statusById = withCompatibleSagaIds(Object.fromEntries((items ?? []).map(({ id, ...status }) => [id, status])))
   const sagaStatus: SagaStatusMap = Object.fromEntries(
     sagas.map(({ id }) => [id, statusById[id] ?? { completed: false, turnedIn: false }])
   )
@@ -136,15 +142,27 @@ export const loadProgress = async (
   quests: readonly QuestDefinition[],
   driver: StorageDriver = defaultDriver
 ): Promise<LoadProgressResult> => {
+  const pending = safeLocalRead(PENDING_PROGRESS_KEY)
+  if (
+    pending &&
+    typeof pending === 'object' &&
+    'items' in pending &&
+    'questDoneAt' in pending &&
+    'turnedInAt' in pending
+  ) {
+    const items = parseItems(pending.items)
+    const questDoneAt = parseTimestampMap(pending.questDoneAt)
+    const turnedInAt = parseTimestampMap(pending.turnedInAt)
+    if (items && questDoneAt && turnedInAt) {
+      return { progress: buildProgress(sagas, quests, items, questDoneAt, turnedInAt), storageAvailable: true }
+    }
+  }
+
   await requestPersistentStorage()
   let idbValues: unknown[]
   let storageAvailable = true
   try {
-    idbValues = await Promise.all([
-      driver.getValue(SAGA_ITEMS_KEY),
-      driver.getValue(QUEST_DONE_AT_KEY),
-      driver.getValue(TURNED_IN_AT_KEY)
-    ])
+    idbValues = await driver.getValues([SAGA_ITEMS_KEY, QUEST_DONE_AT_KEY, TURNED_IN_AT_KEY])
   } catch {
     storageAvailable = false
     idbValues = [undefined, undefined, undefined]
@@ -179,23 +197,37 @@ export const saveProgress = async (
   driver: StorageDriver = defaultDriver
 ): Promise<boolean> => {
   const items = progressItems(sagas, progress.sagaStatus)
-  const localOk = [
-    safeLocalWrite(LOCAL_ITEMS_KEY, items),
-    safeLocalWrite(
-      LOCAL_QUESTS_KEY,
-      Object.entries(progress.questDoneAt).map(([id, lastDoneAt]) => ({ id, lastDoneAt }))
-    ),
-    safeLocalWrite(
-      LOCAL_TURNED_IN_KEY,
-      Object.entries(progress.turnedInAt).map(([id, turnedInAt]) => ({ id, turnedInAt }))
-    )
-  ].every(Boolean)
-  const results = await Promise.allSettled([
-    driver.setValue(SAGA_ITEMS_KEY, items),
-    driver.setValue(QUEST_DONE_AT_KEY, progress.questDoneAt),
-    driver.setValue(TURNED_IN_AT_KEY, progress.turnedInAt)
-  ])
-  return localOk && results.every(({ status }) => status === 'fulfilled')
+  // Keep a synchronous snapshot until the matching IndexedDB transaction has committed.
+  const previousPending = safeLocalRead(PENDING_PROGRESS_KEY)
+  const pending = { items, questDoneAt: progress.questDoneAt, turnedInAt: progress.turnedInAt }
+  const pendingSaved = safeLocalWrite(PENDING_PROGRESS_KEY, pending)
+  safeLocalWrite(LOCAL_ITEMS_KEY, items)
+  safeLocalWrite(
+    LOCAL_QUESTS_KEY,
+    Object.entries(progress.questDoneAt).map(([id, lastDoneAt]) => ({ id, lastDoneAt }))
+  )
+  safeLocalWrite(
+    LOCAL_TURNED_IN_KEY,
+    Object.entries(progress.turnedInAt).map(([id, turnedInAt]) => ({ id, turnedInAt }))
+  )
+  try {
+    await driver.setValues([
+      [SAGA_ITEMS_KEY, items],
+      [QUEST_DONE_AT_KEY, progress.questDoneAt],
+      [TURNED_IN_AT_KEY, progress.turnedInAt]
+    ])
+  } catch {
+    return pendingSaved
+  }
+  try {
+    const written = pendingSaved ? pending : previousPending
+    if (localStorage.getItem(PENDING_PROGRESS_KEY) === JSON.stringify(written)) {
+      localStorage.removeItem(PENDING_PROGRESS_KEY)
+    }
+  } catch {
+    // IndexedDB has committed even if localStorage cannot be accessed to clear the snapshot.
+  }
+  return true
 }
 
 export const readActiveTab = (): 'heroic' | 'epic' | 'legendary' => {

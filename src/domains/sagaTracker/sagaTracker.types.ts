@@ -22,6 +22,7 @@ export interface SagaTrackerData {
 export interface SagaStatus {
   completed: boolean
   turnedIn: boolean
+  runStartedAt?: number
 }
 
 export type SagaStatusMap = Partial<Record<string, SagaStatus>>

@@ -88,6 +88,24 @@ describe('Saga Tracker backups', () => {
     })
   })
 
+  it('round-trips the start of a run separately from its turn-in cutoff', () => {
+    const progress = parseBackup(
+      {
+        ...valid,
+        items: [{ id: 'first', completed: false, turnedIn: true, runStartedAt: 3 }]
+      },
+      sagas,
+      quests
+    )
+    expect(createBackup(sagas, progress).items[0]).toEqual({
+      id: 'first',
+      completed: false,
+      turnedIn: true,
+      runStartedAt: 3
+    })
+    expect(progress.turnedInAt.first).toBe(5)
+  })
+
   it('rejects an invalid version or timestamp before returning progress', () => {
     expect(() => parseBackup({ ...valid, version: 1 }, sagas, quests)).toThrow(InvalidSagaTrackerBackupError)
     expect(() => parseBackup({ ...valid, questDoneAt: { quest: -1 } }, sagas, quests)).toThrow(

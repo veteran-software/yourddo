@@ -80,10 +80,21 @@ export const toggleTurnedIn = (
   sagaId: string,
   checked: boolean,
   now: number
-) => ({
-  sagaStatus: { ...status, [sagaId]: { ...(status[sagaId] ?? { completed: false }), turnedIn: checked } },
-  turnedInAt: { ...cutoffs, [sagaId]: checked ? now : 0 }
-})
+) => {
+  const previous = status[sagaId]
+  const runStartedAt = previous?.runStartedAt ?? (previous?.turnedIn ? 0 : (cutoffs[sagaId] ?? 0))
+  return {
+    sagaStatus: {
+      ...status,
+      [sagaId]: {
+        completed: previous?.completed ?? false,
+        turnedIn: checked,
+        ...(runStartedAt > 0 && { runStartedAt })
+      }
+    },
+    turnedInAt: { ...cutoffs, [sagaId]: checked ? Math.max(now, runStartedAt) : runStartedAt }
+  }
+}
 
 export const startNewRun = (
   status: Readonly<SagaStatusMap>,
@@ -91,7 +102,7 @@ export const startNewRun = (
   sagaId: string,
   now: number
 ) => ({
-  sagaStatus: { ...status, [sagaId]: { completed: false, turnedIn: false } },
+  sagaStatus: { ...status, [sagaId]: { completed: false, turnedIn: false, runStartedAt: now } },
   turnedInAt: { ...cutoffs, [sagaId]: now }
 })
 

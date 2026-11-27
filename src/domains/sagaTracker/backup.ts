@@ -1,11 +1,11 @@
 import type { QuestDefinition, SagaDefinition, SagaTrackerProgress, TimestampMap } from './sagaTracker.types.ts'
-import { buildProgress, progressItems } from './storage.ts'
+import { buildProgress, progressItems, type StoredSagaItem } from './storage.ts'
 
 export const BACKUP_FILENAME = 'yourddo-saga-backup.json'
 
 export interface SagaTrackerBackup {
   version: 2
-  items: { id: string; completed: boolean; turnedIn: boolean }[]
+  items: StoredSagaItem[]
   questDoneAt: TimestampMap
   turnedInAt: TimestampMap
 }
@@ -58,7 +58,19 @@ export const parseBackup = (
     if (typeof item.completed !== 'boolean' || typeof item.turnedIn !== 'boolean') {
       throw new InvalidSagaTrackerBackupError('saga completion and turn-in statuses must be booleans')
     }
-    return { id: item.id, completed: item.completed, turnedIn: item.turnedIn }
+    const { runStartedAt } = item
+    if (
+      runStartedAt !== undefined &&
+      (typeof runStartedAt !== 'number' || !Number.isFinite(runStartedAt) || runStartedAt < 0)
+    ) {
+      throw new InvalidSagaTrackerBackupError('runStartedAt must be a finite non-negative number')
+    }
+    return {
+      id: item.id,
+      completed: item.completed,
+      turnedIn: item.turnedIn,
+      ...(runStartedAt !== undefined && { runStartedAt })
+    }
   })
 
   return buildProgress(
