@@ -27,6 +27,7 @@ import { gearPlannerPermalink } from './sharing'
 import { createGearPlannerSetup } from './setups'
 import GearPlannerPage from './GearPlannerPage.tsx'
 import { readTroveInventory, serializeTroveInventory, troveStorageKey, TroveSnapshot } from './trove'
+import { pendingTroveEquippedKey } from './troveV5'
 import { createGearPlannerExport, GEAR_PLANNER_STORAGE_KEY, parsePersistedGearPlannerState } from './plannerStorage.ts'
 import { createGearPlannerReforgingData, emptyGearPlannerReforgingData } from './reforging.ts'
 import type { ReforgingEntry } from '../nearlyFinished/nearlyFinished.types.ts'
@@ -693,6 +694,101 @@ describe('GearPlannerPage', () => {
     expect(readTroveInventory().get('quiet helm')).toEqual(['Robin (Bank)', 'Shared Bank'])
   })
 
+  it('creates only the selected Trove v5 setups and reuses an identical import', async () => {
+    const items = [
+      item('helm', gearPlannerSlots.head, 'Quiet Helm', 10),
+      item('epic-helm', gearPlannerSlots.head, 'Quiet Helm', 20),
+      item('first-ring', gearPlannerSlots.firstFinger, 'Quiet Ring'),
+      item('second-ring', gearPlannerSlots.secondFinger, 'Quiet Ring'),
+      item('spare', gearPlannerSlots.eyes, 'Spare Goggles')
+    ]
+    const snapshot = (fileName: string, payload: unknown) => {
+      const contents = JSON.stringify(payload)
+      const file = new File([contents], fileName)
+      Object.defineProperty(file, 'text', { value: () => Promise.resolve(contents) })
+      return file
+    }
+    const files = [
+      snapshot('robin-inventory.json', {
+        Name: 'Robin',
+        Inventory: [
+          { Name: 'Quiet Helm', Container: 'Equipped', EquipsTo: ['Head'], MinimumLevel: 20 },
+          { Name: 'Quiet Ring', Container: 'Equipped', EquipsTo: ['Finger2'] },
+          { Name: 'Unknown Gear', Container: 'Equipped', EquipsTo: ['Neck'] },
+          { Name: 'Spare Goggles', Container: 'Inventory' }
+        ]
+      }),
+      snapshot('dara-inventory.json', {
+        Inventory: [{ CharacterName: 'Dara', Name: 'Quiet Helm', Container: 'Equipped', MinLevel: 10 }]
+      })
+    ]
+    await renderReadyPage(dataWithItems(items))
+    const upload = async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Import Trove' }))
+      const dialog = await screen.findByRole('dialog', { name: 'DH Trove Import' })
+      const input = dialog.querySelector('input[accept=".json,application/json"]')
+      if (!input) throw new Error('Missing Trove JSON input')
+      fireEvent.change(input, { target: { files } })
+      return within(await screen.findByRole('dialog', { name: 'Create Equipped setups' }))
+    }
+
+    const skipped = await upload()
+    expect(skipped.getByRole<HTMLButtonElement>('button', { name: 'Create setups' }).disabled).toBe(true)
+    expect(screen.queryByRole('tab', { name: /Equipped ·/ })).toBeNull()
+    fireEvent.click(skipped.getByRole('button', { name: 'Skip setup creation' }))
+    expect(readTroveInventory().has('spare goggles')).toBe(true)
+    expect(screen.queryByRole('tab', { name: /Equipped ·/ })).toBeNull()
+
+    const picker = await upload()
+    fireEvent.change(picker.getByRole('textbox', { name: 'Search Trove characters' }), {
+      target: { value: 'rob' }
+    })
+    expect(picker.queryByRole('checkbox', { name: 'Dara' })).toBeNull()
+    fireEvent.click(picker.getByRole('checkbox', { name: 'Robin' }))
+    fireEvent.click(picker.getByRole('button', { name: 'Create 1 setup' }))
+    expect(await screen.findByText('Equipped setup ready for 1 character.')).toBeTruthy()
+    fireEvent.click(screen.getByText('1 equipped item needs review'))
+    expect(screen.getByText('Robin · Unknown Gear · Item not found in the catalog')).toBeTruthy()
+    expect(screen.getByRole('tab', { name: 'Default Setup' })).toBeTruthy()
+    expect(screen.getByRole('tab', { name: 'Equipped · Robin' }).getAttribute('aria-selected')).toBe('true')
+    expect(screen.queryByRole('tab', { name: 'Equipped · Dara' })).toBeNull()
+    expect(screen.getByTestId('gear-slot-Second Finger').textContent).toContain('Quiet Ring')
+    expect(screen.getByTestId('gear-slot-First Finger').textContent).not.toContain('Quiet Ring')
+    expect(screen.getByTestId('gear-slot-Eyes').textContent).not.toContain('Spare Goggles')
+    expect(readTroveInventory().has('spare goggles')).toBe(true)
+    await waitFor(() => {
+      const saved = localStorage.getItem(GEAR_PLANNER_STORAGE_KEY) ?? ''
+      expect(saved).toContain('epic-helm')
+    })
+    const repeat = await upload()
+    fireEvent.click(repeat.getByRole('checkbox', { name: 'Robin' }))
+    fireEvent.click(repeat.getByRole('button', { name: 'Create 1 setup' }))
+    expect(screen.getAllByRole('tab', { name: /Equipped ·/ })).toHaveLength(1)
+    await waitFor(() => {
+      expect(localStorage.getItem(pendingTroveEquippedKey)).toBe('[]')
+    })
+  })
+
+  it('waits for confirmation before creating a Trove loadout queued from another page', async () => {
+    localStorage.removeItem('gearPlannerInfoDismissed')
+    const items = [item('helm', gearPlannerSlots.head, 'Quiet Helm')]
+    localStorage.setItem(
+      pendingTroveEquippedKey,
+      JSON.stringify([{ character: 'Robin', name: 'Quiet Helm', slots: ['Head'] }])
+    )
+    await renderReadyPage(dataWithItems(items))
+    const picker = within(await screen.findByRole('dialog', { name: 'Create Equipped setups' }))
+    expect(screen.queryByRole('dialog', { name: 'Gear Planner tutorial' })).toBeNull()
+    expect(screen.queryByRole('tab', { name: /Equipped ·/ })).toBeNull()
+    fireEvent.click(picker.getByRole('checkbox', { name: 'Robin' }))
+    fireEvent.click(picker.getByRole('button', { name: 'Create 1 setup' }))
+    expect(await screen.findByRole('tab', { name: 'Equipped · Robin' })).toBeTruthy()
+    await waitFor(() => {
+      expect(localStorage.getItem(pendingTroveEquippedKey)).toBe('[]')
+      expect(localStorage.getItem(GEAR_PLANNER_STORAGE_KEY)).toContain('Equipped · Robin')
+    })
+  })
+
   it('restores both legacy owner formats and preserves older v2 name-only imports', () => {
     localStorage.setItem(
       'troveData',
@@ -774,7 +870,8 @@ describe('GearPlannerPage', () => {
     }
   })
 
-  it('opens the Trove import guide directly from the planner toolbar', async () => {
+  it('opens the Trove import guide and copies the path for the selected format', async () => {
+    const user = userEvent.setup()
     localStorage.setItem(troveStorageKey, JSON.stringify(['ring', 'boots']))
     await renderReadyPage(data)
     const trigger = screen.getByRole('button', { name: 'Import Trove' })
@@ -785,7 +882,17 @@ describe('GearPlannerPage', () => {
     expect(dialog.getByRole('button', { name: 'Choose server folder' })).toBeTruthy()
     expect(dialog.getByRole('button', { name: 'Select JSON files' })).toBeTruthy()
     expect(document.querySelector('input[webkitdirectory]')).toBeTruthy()
+    const copyShadowdale = dialog.getByRole('button', { name: 'Copy Shadowdale path' })
+    const version5Path = '%LOCALAPPDATA%\\DungeonHelperData\\plugins\\Trove\\Shadowdale'
+    expect(dialog.getByText(version5Path)).toBeTruthy()
+    await user.click(copyShadowdale)
+    expect(await navigator.clipboard.readText()).toBe(version5Path)
+
     fireEvent.click(dialog.getByLabelText('Legacy CSV'))
+    const legacyPath = '%APPDATA%\\Dungeon Helper\\plugins\\Trove\\Shadowdale'
+    expect(dialog.getByText(legacyPath)).toBeTruthy()
+    await user.click(copyShadowdale)
+    expect(await navigator.clipboard.readText()).toBe(legacyPath)
     expect(document.querySelector('input[webkitdirectory]')).toBeNull()
     expect(dialog.getByText('TroveExport.Inventory.csv')).toBeTruthy()
     expect(dialog.getAllByRole('button', { name: /^Copy .+ path$/ })).toHaveLength(4)
