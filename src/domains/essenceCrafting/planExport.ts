@@ -27,6 +27,7 @@ export interface EssencePlanBackup {
   recipeBinding: EssenceBinding
   plan: {
     masterMinimumLevel: number
+    petClasses?: EssencePlanState['petClasses']
     activeSlotIds: EssencePlanState['activeSlotIds']
     collapsedSlotIds: EssencePlanState['collapsedSlotIds']
     itemsBySlotId: Partial<Record<EquipmentSlotId, EssencePlanBackupItem>>
@@ -88,6 +89,7 @@ export const createEssencePlanBackup = (
     recipeBinding,
     plan: {
       masterMinimumLevel: plan.masterMinimumLevel,
+      ...(plan.petClasses?.length && { petClasses: [...plan.petClasses] }),
       activeSlotIds,
       collapsedSlotIds: plan.collapsedSlotIds.filter((equipmentSlotId) => activeSlotIdSet.has(equipmentSlotId)),
       itemsBySlotId

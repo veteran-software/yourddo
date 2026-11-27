@@ -1,9 +1,11 @@
+import LZString from 'lz-string'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { loadScopedAugmentCatalog } from '../gearPlanner/itemCatalog'
 import { loadDatasetFile } from '../../shared/data/loadDataset.ts'
 import { InvalidEssenceCraftingDataError, loadEssenceCraftingData, validateEssenceCraftingDataset } from './data.ts'
 import { createEssenceCraftingTestPayload } from './test-fixture.ts'
 import { getAvailableEnhancementChoices } from './enhancementEligibility'
+import { decodeEssenceCraftingPermalink, encodeEssenceCraftingPermalink } from './permalink'
 import { resolveEnhancementEffects } from './enhancementEffects'
 import { hydrateEssencePlan } from './plannerTransitions'
 
@@ -17,7 +19,7 @@ const required = <T>(value: T | undefined): T => {
   return value
 }
 
-function mockNativeShards() {
+function mockNativeShards(withCrosswalk = false) {
   const recipe = {
     recipeId: 23,
     level: 20,
@@ -41,7 +43,10 @@ function mockNativeShards() {
     ]
   }
   vi.mocked(loadDatasetFile)
-    .mockResolvedValueOnce({ system: 'essence', resources: { shards: 'essenceCrafting.v2.json' } })
+    .mockResolvedValueOnce({
+      system: 'essence',
+      resources: { shards: 'essenceCrafting.v2.json', ...(withCrosswalk && { idCrosswalk: 'id-crosswalk.json' }) }
+    })
     .mockResolvedValueOnce([
       {
         name: 'Native Shard Test',
@@ -128,6 +133,56 @@ describe('Essence Crafting data', () => {
       filterEffects: []
     })
     expect(data.enchantmentNames).toEqual(['Eldritch Blast: Dice', 'Eldritch Blast: Pact Dice'])
+  })
+
+  it('uses the optional CDN crosswalk only for v3 augments and resolves duplicate names by item ID', async () => {
+    mockNativeShards(true)
+    const sapphire = {
+      name: 'Sapphire of Good Luck +1',
+      slotTypes: ['Blue'],
+      presentation: [],
+      effectsAdded: [],
+      searchLabels: []
+    }
+    vi.mocked(loadScopedAugmentCatalog).mockResolvedValueOnce({
+      names: [],
+      entries: [
+        { ...sapphire, id: 1879270644, minimumLevel: 4 },
+        { ...sapphire, id: 1879171477, minimumLevel: 12 }
+      ]
+    })
+    const data = await loadEssenceCraftingData()
+    const emptyPlan = hydrateEssencePlan(data, {})
+    await decodeEssenceCraftingPermalink(data, encodeEssenceCraftingPermalink(data, emptyPlan))
+    expect(loadDatasetFile).toHaveBeenCalledTimes(2)
+
+    const encoded = LZString.compressToEncodedURIComponent(
+      JSON.stringify({
+        v: 3,
+        ml: 12,
+        a: [4],
+        c: [],
+        i: [[4, 0, 0, 0, 0, 0, [[2, 899, 0, []]]]]
+      })
+    )
+    vi.mocked(loadDatasetFile).mockRejectedValueOnce(new Error('Crosswalk unavailable'))
+    const fallback = await decodeEssenceCraftingPermalink(data, encoded)
+    expect(fallback).toMatchObject({
+      ok: true,
+      plan: { itemsBySlotId: { armor: { augmentSlots: [{ augmentId: null }] } } }
+    })
+
+    const legacyId = 'augment-4a8d5bc634a20e0c'
+    vi.mocked(loadDatasetFile).mockResolvedValueOnce({
+      schemaVersion: 1,
+      augments: { [legacyId]: { id: legacyId, name: sapphire.name, itemId: 1879171477 } }
+    })
+    const decoded = await decodeEssenceCraftingPermalink(data, encoded)
+    expect(loadDatasetFile).toHaveBeenLastCalledWith('essence/id-crosswalk.json')
+    expect(decoded).toMatchObject({
+      ok: true,
+      plan: { itemsBySlotId: { armor: { augmentSlots: [{ augmentId: legacyId }] } } }
+    })
   })
 
   it('decodes a valid fixture and builds only the required indexes', () => {

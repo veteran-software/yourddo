@@ -6,7 +6,7 @@ import {
   isSelectedAugmentStillValid
 } from './augmentRules.ts'
 import { isSelectedEnhancementStillValid, placementMinimumLevel, restoredShardLevel } from './enhancementEligibility.ts'
-import { EQUIPMENT_SLOTS, type EquipmentSlotId } from './equipment.ts'
+import { EQUIPMENT_SLOTS, getAvailableEquipmentSlots, readPetClasses, type EquipmentSlotId } from './equipment.ts'
 import type { EssenceAffixPosition, EssenceBinding, EssenceCraftingData } from './essenceCrafting.types.ts'
 import {
   createEmptyEssencePlan,
@@ -31,6 +31,7 @@ export type EssencePlanAction =
   | EquipmentChange
   | { type: 'resolve-equipment-conflict'; change: EquipmentChange; blockers: readonly EquipmentSlotId[] }
   | { type: 'set-master-minimum-level'; minimumLevel: number }
+  | { type: 'set-pet-classes'; classes: readonly string[] }
   | { type: 'deactivate-equipment-slot'; equipmentSlotId: string }
   | { type: 'collapse-equipment-slot'; equipmentSlotId: string }
   | { type: 'expand-equipment-slot'; equipmentSlotId: string }
@@ -349,7 +350,10 @@ export const hydrateEssencePlan = (data: EssenceCraftingData, externalState: unk
       ? externalState.masterMinimumLevel
       : data.rules.supportedItemLevels.minimum
   const requestedActiveIds = readEquipmentSlotIds(externalState.activeSlotIds)
-  const activeSlotIds = orderEquipmentSlotIds(requestedActiveIds)
+  const petClasses = readPetClasses(externalState.petClasses)
+  const activeSlotIds = getAvailableEquipmentSlots(petClasses)
+    .map(({ id }) => id)
+    .filter((id) => requestedActiveIds.has(id))
   const rawItems = isRecord(externalState.itemsBySlotId) ? externalState.itemsBySlotId : {}
   const itemsBySlotId: EssencePlanState['itemsBySlotId'] = {}
   for (const equipmentSlotId of activeSlotIds) {
@@ -365,6 +369,7 @@ export const hydrateEssencePlan = (data: EssenceCraftingData, externalState: unk
 
   return {
     masterMinimumLevel,
+    ...(petClasses.length > 0 && { petClasses }),
     activeSlotIds,
     collapsedSlotIds: activeSlotIds.filter((id) => requestedCollapsedIds.has(id)),
     itemsBySlotId
@@ -399,6 +404,7 @@ function activateEquipmentSlot(
   action: Extract<EssencePlanAction, { type: 'activate-equipment-slot' }>
 ): EssencePlanState {
   if (!isEquipmentSlotId(action.equipmentSlotId) || getEquipmentBlockers(state, action).length) return state
+  if (!getAvailableEquipmentSlots(state.petClasses).some(({ id }) => id === action.equipmentSlotId)) return state
   const activeIds = new Set(state.activeSlotIds)
   activeIds.add(action.equipmentSlotId)
   const activeSlotIds = orderEquipmentSlotIds(activeIds)
@@ -453,7 +459,7 @@ function applyShard(
   const { equipmentSlotId, position, enhancementId, binding } = action
   if (!isEquipmentSlotId(equipmentSlotId)) return state
   const enhancement = data.indexes.enhancementById.get(enhancementId)
-  const slot = EQUIPMENT_SLOTS.find(({ id }) => id === equipmentSlotId)
+  const slot = getAvailableEquipmentSlots(state.petClasses).find(({ id }) => id === equipmentSlotId)
   if (!enhancement || !slot) return state
   const recipe = binding && data.recipes.find(({ id }) => id === enhancement.recipes[`${binding}RecipeId`])
   const placements = recipe && recipe.kind === 'enhancement-shard' ? recipe.placements : undefined
@@ -484,6 +490,21 @@ export const transitionEssencePlan = (
   switch (action.type) {
     case 'set-master-minimum-level':
       return setMasterMinimumLevel(data, state, action.minimumLevel)
+    case 'set-pet-classes': {
+      const petClasses = readPetClasses(action.classes)
+      const { petClasses: previous = [], ...plan } = state
+      if (petClasses.length === previous.length && petClasses.every((petClass, i) => petClass === previous[i]))
+        return state
+      const eligibleIds = new Set(getAvailableEquipmentSlots(petClasses).map(({ id }) => id))
+      const activeSlotIds = state.activeSlotIds.filter((id) => eligibleIds.has(id))
+      return {
+        ...plan,
+        ...(petClasses.length > 0 && { petClasses }),
+        activeSlotIds,
+        collapsedSlotIds: state.collapsedSlotIds.filter((id) => eligibleIds.has(id)),
+        itemsBySlotId: orderItemsBySlotId(activeSlotIds, state.itemsBySlotId)
+      }
+    }
     case 'activate-equipment-slot':
       return activateEquipmentSlot(state, action)
     case 'set-two-handed':

@@ -26,7 +26,7 @@ export default function SharingTool({ binding, data, plan, planMaterials, onRest
   return (
     <>
       <SharingPanel
-        permalink={buildEssenceCraftingPermalinkUrl(encodeEssenceCraftingPermalink(data, plan))}
+        permalink={buildEssenceCraftingPermalinkUrl(encodeEssenceCraftingPermalink(data, plan, binding))}
         discord={formatEssencePlanDiscordMarkdown(data, plan, binding, planMaterials)}
         forum={formatEssencePlanBbCode(data, plan, binding, planMaterials)}
         jsonExport={{

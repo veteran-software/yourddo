@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { validateEssenceCraftingDataset } from './data.ts'
-import { EQUIPMENT_SLOTS } from './equipment.ts'
+import { EQUIPMENT_SLOTS, getAvailableEquipmentSlots } from './equipment.ts'
 import { createEmptyEssencePlan, createPlannedAugmentSlotId } from './plannerState.ts'
 import { createEssenceCraftingTestPayload } from './test-fixture.ts'
 
@@ -26,10 +26,10 @@ const expectedSlots = [
 
 describe('Essence Crafting equipment catalog', () => {
   it('has unique stable IDs in the fixed planner order with their display labels and canonical categories', () => {
-    expect(EQUIPMENT_SLOTS.map(({ id }) => id)).toEqual(expectedSlots.map(([id]) => id))
+    expect(getAvailableEquipmentSlots().map(({ id }) => id)).toEqual(expectedSlots.map(([id]) => id))
     expect(new Set(EQUIPMENT_SLOTS.map(({ id }) => id)).size).toBe(EQUIPMENT_SLOTS.length)
-    expect(EQUIPMENT_SLOTS.map(({ label }) => label)).toEqual(expectedSlots.map(([, label]) => label))
-    expect(EQUIPMENT_SLOTS.map(({ itemCategoryIds }) => itemCategoryIds)).toEqual(
+    expect(getAvailableEquipmentSlots().map(({ label }) => label)).toEqual(expectedSlots.map(([, label]) => label))
+    expect(getAvailableEquipmentSlots().map(({ itemCategoryIds }) => itemCategoryIds)).toEqual(
       expectedSlots.map(([, , itemCategoryIds]) => itemCategoryIds)
     )
   })

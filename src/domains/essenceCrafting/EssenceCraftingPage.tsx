@@ -1,4 +1,18 @@
-import { ActionIcon, Alert, Anchor, Button, Center, Group, List, Loader, Modal, Stack, Tabs, Text } from '@mantine/core'
+import {
+  ActionIcon,
+  Alert,
+  Anchor,
+  Button,
+  Center,
+  Group,
+  List,
+  Loader,
+  Modal,
+  MultiSelect,
+  Stack,
+  Tabs,
+  Text
+} from '@mantine/core'
 import {
   IconSparkles,
   IconBasket,
@@ -24,7 +38,7 @@ import WorkspaceLayout, { type WorkspaceTool } from '../../shared/layout/Workspa
 import { InvalidEssenceCraftingDataError } from './data.ts'
 import { useEssenceCraftingCatalog } from './useEssenceCraftingCatalog'
 import { describePlanEdit } from './describePlanEdit'
-import { EQUIPMENT_SLOTS, type EquipmentSlotId } from './equipment.ts'
+import { EQUIPMENT_SLOTS, PET_COLLAR_SLOTS, type EquipmentSlotId } from './equipment.ts'
 import type { EssenceCraftingData } from './essenceCrafting.types.ts'
 import SharingTool from './SharingTool.tsx'
 import IngredientsTool from './IngredientsTool.tsx'
@@ -243,20 +257,26 @@ const EssenceCraftingPage = () => {
     let active = true
 
     loadCatalog()
-      .then((data) => {
+      .then(async (data) => {
+        if (!active) return
+        const encodedPermalink = permalinkToImportRef.current
+        const decodedPermalink = encodedPermalink
+          ? await decodeEssenceCraftingPermalink(data, encodedPermalink)
+          : undefined
         if (!active) return
         const stored = loadEssenceCraftingPlan(data)
-        const encodedPermalink = permalinkToImportRef.current
-        const decodedPermalink = encodedPermalink ? decodeEssenceCraftingPermalink(data, encodedPermalink) : undefined
         const plan = decodedPermalink?.ok ? decodedPermalink.plan : stored.plan
-        setRemovedShardSelections(decodedPermalink?.ok ? [] : (stored.removedShardSelections ?? []))
+        setRemovedShardSelections(
+          (decodedPermalink?.ok ? decodedPermalink.removedShardSelections : stored.removedShardSelections) ?? []
+        )
         if (decodedPermalink?.ok) {
           removeEssenceCraftingPermalinkFromCurrentUrl()
           setPermalinkError(null)
         } else if (decodedPermalink) {
           setPermalinkError(getPermalinkErrorMessage(decodedPermalink.reason))
         }
-        reset({ status: 'loaded', data, plan, binding: 'bound' })
+        const initialBinding = decodedPermalink?.ok ? (decodedPermalink.binding ?? 'bound') : 'bound'
+        reset({ status: 'loaded', data, plan, binding: initialBinding })
       })
       .catch((cause: unknown) => {
         if (!active) return
@@ -419,14 +439,32 @@ const EssenceCraftingPage = () => {
               className={lookupStyles.tabs}
               classNames={{ panel: lookupStyles.panel }}
             >
-              <Tabs.List aria-label='Essence Crafting views'>
-                <Tabs.Tab value='plan' leftSection={<IconListDetails size={16} />}>
-                  Crafting Plan
-                </Tabs.Tab>
-                <Tabs.Tab value='lookup' leftSection={<IconSearch size={16} />}>
-                  Master Shard Lookup
-                </Tabs.Tab>
-              </Tabs.List>
+              <Group justify='space-between' gap='xs'>
+                <Tabs.List aria-label='Essence Crafting views'>
+                  <Tabs.Tab value='plan' leftSection={<IconListDetails size={16} />}>
+                    Crafting Plan
+                  </Tabs.Tab>
+                  <Tabs.Tab value='lookup' leftSection={<IconSearch size={16} />}>
+                    Master Shard Lookup
+                  </Tabs.Tab>
+                </Tabs.List>
+                <Group gap='xs' wrap='nowrap'>
+                  <Text component='label' htmlFor='essence-pet-classes' size='sm' fw={600}>
+                    Pet classes
+                  </Text>
+                  <MultiSelect
+                    id='essence-pet-classes'
+                    size='xs'
+                    w={230}
+                    placeholder={dataState.plan.petClasses?.length ? undefined : 'Select classes'}
+                    data={PET_COLLAR_SLOTS.map(({ petClass }) => petClass)}
+                    value={dataState.plan.petClasses ?? []}
+                    onChange={(classes) => {
+                      dispatch({ type: 'set-pet-classes', classes })
+                    }}
+                  />
+                </Group>
+              </Group>
               <Tabs.Panel value='plan' data-active={view === 'plan' || undefined}>
                 <EssencePlanWorkspace
                   tools={tools}

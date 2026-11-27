@@ -12,6 +12,7 @@ import {
   IconHandStop,
   IconHelmet,
   IconJacket,
+  IconPaw,
   IconRings,
   IconShield,
   IconShirt,
@@ -23,7 +24,7 @@ import {
 } from '@tabler/icons-react'
 import { type ReactNode, useRef, useState } from 'react'
 import layout from '../../shared/layout/PlannerWorkspace.module.css'
-import { EQUIPMENT_SLOTS, type EquipmentSlotId } from './equipment'
+import { getAvailableEquipmentSlots, type EquipmentSlotId } from './equipment'
 import type { EssenceCraftingData } from './essenceCrafting.types'
 import PlannedItemEditor from './PlannedItemEditor'
 import type { EssencePlanState } from './plannerState'
@@ -46,7 +47,10 @@ const icons = {
   'ring-1': IconRings,
   'ring-2': IconRings,
   trinket: IconSparkles,
-  shield: IconShield
+  shield: IconShield,
+  'iron-defender-collar': IconPaw,
+  'wolf-companion-collar': IconPaw,
+  'dark-wolf-collar': IconPaw
 } satisfies Record<EquipmentSlotId, typeof IconSword>
 
 import { useSlotView } from '../../shared/layout/plannerView'
@@ -86,6 +90,7 @@ export default function EssencePlanWorkspace({
   const { minimum, maximum } = data.rules.supportedItemLevels
   const levels = Array.from({ length: maximum - minimum + 1 }, (_, i) => String(minimum + i))
 
+  const equipmentSlots = getAvailableEquipmentSlots(plan.petClasses)
   const SlotPanel = view === 'grid' ? 'section' : 'nav'
 
   function selectSlot(id: EquipmentSlotId) {
@@ -124,6 +129,7 @@ export default function EssencePlanWorkspace({
             size='compact-sm'
             disabled={
               !plan.activeSlotIds.length &&
+              !plan.petClasses?.length &&
               !hasEditHistory &&
               plan.masterMinimumLevel === data.rules.supportedItemLevels.minimum
             }
@@ -154,11 +160,11 @@ export default function EssencePlanWorkspace({
               Equipment slots
             </Title>
             <Text size='xs' c='dimmed'>
-              {plan.activeSlotIds.length} / {EQUIPMENT_SLOTS.length} planned
+              {plan.activeSlotIds.length} / {equipmentSlots.length} planned
             </Text>
           </Group>
           <div className={layout.slotList} ref={slotList} data-testid='equipment-slot-selector'>
-            {EQUIPMENT_SLOTS.map(({ id, label }) => {
+            {equipmentSlots.map(({ id, label }) => {
               const planned = plan.itemsBySlotId[id]
               const Icon = icons[id]
               if (view === 'grid') {

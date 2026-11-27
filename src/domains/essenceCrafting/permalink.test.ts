@@ -3,7 +3,7 @@
 import LZString from 'lz-string'
 import { afterEach, describe, expect, it } from 'vitest'
 import { validateEssenceCraftingDataset } from './data.ts'
-import { EQUIPMENT_SLOTS } from './equipment.ts'
+import { getAvailableEquipmentSlots } from './equipment.ts'
 import { LEGACY_V3_AUGMENT_NAMES, LEGACY_V3_EFFECT_NAMES } from './legacyPermalinkV3Data.ts'
 import {
   buildEssenceCraftingPermalinkUrl,
@@ -103,11 +103,11 @@ afterEach(() => {
 })
 
 describe('Essence Crafting permalink v4', () => {
-  it('preserves the two-handed Main Hand setting in session data, shared plans, and backups', () => {
+  it('preserves the two-handed Main Hand setting in session data, shared plans, and backups', async () => {
     const { data, plan } = createRepresentativePlan()
     const twoHandedPlan = transitionEssencePlan(data, plan, { type: 'set-two-handed', enabled: true })
     expect(hydrateEssencePlan(data, createEssenceCraftingSessionPayload(twoHandedPlan))).toEqual(twoHandedPlan)
-    expect(decodeEssenceCraftingPermalink(data, encodeEssenceCraftingPermalink(data, twoHandedPlan))).toEqual({
+    expect(await decodeEssenceCraftingPermalink(data, encodeEssenceCraftingPermalink(data, twoHandedPlan))).toEqual({
       ok: true,
       version: 4,
       plan: twoHandedPlan
@@ -117,12 +117,30 @@ describe('Essence Crafting permalink v4', () => {
     )
   })
 
-  it('round-trips multiple items, a split prefix, Mark state, collapse state, and augments', () => {
+  it('round-trips multiple items, a split prefix, Mark state, collapse state, and augments', async () => {
     const { data, plan } = createRepresentativePlan()
 
-    const decoded = decodeEssenceCraftingPermalink(data, encodeEssenceCraftingPermalink(data, plan))
+    const decoded = await decodeEssenceCraftingPermalink(data, encodeEssenceCraftingPermalink(data, plan))
 
     expect(decoded).toEqual({ ok: true, version: 4, plan })
+  })
+
+  it('preserves Unbound while keeping existing Bound links compatible', async () => {
+    const { data, plan } = createRepresentativePlan()
+    const bound = encodeEssenceCraftingPermalink(data, plan, 'bound')
+    expect(bound).toBe(encodeEssenceCraftingPermalink(data, plan))
+    expect(await decodeEssenceCraftingPermalink(data, bound)).toEqual({ ok: true, version: 4, plan })
+    const unbound = encodeEssenceCraftingPermalink(data, plan, 'unbound')
+    expect(await decodeEssenceCraftingPermalink(data, unbound)).toEqual({
+      ok: true,
+      version: 4,
+      plan,
+      binding: 'unbound'
+    })
+    expect(await decodeEssenceCraftingPermalink(data, compress({ v: 4, ml: 2, c: [], i: [], b: 'unknown' }))).toEqual({
+      ok: false,
+      reason: 'malformed-payload'
+    })
   })
 
   it('stores stable domain IDs and no display-name or full-record indexes', () => {
@@ -156,7 +174,7 @@ describe('Essence Crafting permalink v4', () => {
     expect(encodeEssenceCraftingPermalink(data, reorderedPlan)).toBe(encodeEssenceCraftingPermalink(data, plan))
   })
 
-  it('drops unknown current IDs through transition hydration', () => {
+  it('drops unknown current IDs through transition hydration', async () => {
     const data = createPermalinkData()
     const encoded = compress({
       v: 4,
@@ -179,7 +197,7 @@ describe('Essence Crafting permalink v4', () => {
       ]
     })
 
-    const decoded = decodeEssenceCraftingPermalink(data, encoded)
+    const decoded = await decodeEssenceCraftingPermalink(data, encoded)
 
     expect(decoded.ok).toBe(true)
     if (!decoded.ok) return
@@ -197,18 +215,18 @@ describe('Essence Crafting permalink v4', () => {
     })
   })
 
-  it('rejects unsupported versions and malformed payloads', () => {
+  it('rejects unsupported versions and malformed payloads', async () => {
     const data = createPermalinkData()
 
-    expect(decodeEssenceCraftingPermalink(data, compress({ v: 5, ml: 2, c: [], i: [] }))).toEqual({
+    expect(await decodeEssenceCraftingPermalink(data, compress({ v: 5, ml: 2, c: [], i: [] }))).toEqual({
       ok: false,
       reason: 'unsupported-version'
     })
-    expect(decodeEssenceCraftingPermalink(data, 'not-a-compressed-payload')).toEqual({
+    expect(await decodeEssenceCraftingPermalink(data, 'not-a-compressed-payload')).toEqual({
       ok: false,
       reason: 'malformed-payload'
     })
-    expect(decodeEssenceCraftingPermalink(data, compress({ v: 4, ml: 2, c: 'wrong', i: [] }))).toEqual({
+    expect(await decodeEssenceCraftingPermalink(data, compress({ v: 4, ml: 2, c: 'wrong', i: [] }))).toEqual({
       ok: false,
       reason: 'malformed-payload'
     })
@@ -218,9 +236,9 @@ describe('Essence Crafting permalink v4', () => {
     const { data, plan } = createRepresentativePlan()
     const allSlotPlan = hydrateEssencePlan(data, {
       ...plan,
-      activeSlotIds: EQUIPMENT_SLOTS.map(({ id }) => id),
+      activeSlotIds: getAvailableEquipmentSlots().map(({ id }) => id),
       itemsBySlotId: Object.fromEntries(
-        EQUIPMENT_SLOTS.map(({ id }) => [
+        getAvailableEquipmentSlots().map(({ id }) => [
           id,
           plan.itemsBySlotId[id] ?? {
             prefixEnhancementId: null,
@@ -244,7 +262,7 @@ describe('Essence Crafting permalink v4', () => {
 })
 
 describe('legacy Essence Crafting permalink v3', () => {
-  it('decodes representative v3 recipe, slot, augment, mode, and effect indexes to current IDs', () => {
+  it('decodes representative v3 recipe, slot, augment, mode, and effect indexes to current IDs', async () => {
     const data = createPermalinkData()
     const encoded = compress({
       v: 3,
@@ -257,7 +275,7 @@ describe('legacy Essence Crafting permalink v3', () => {
       ]
     })
 
-    const decoded = decodeEssenceCraftingPermalink(data, encoded)
+    const decoded = await decodeEssenceCraftingPermalink(data, encoded)
 
     expect(decoded.ok).toBe(true)
     if (!decoded.ok) return
@@ -278,12 +296,12 @@ describe('legacy Essence Crafting permalink v3', () => {
     })
   })
 
-  it('uses frozen indexes that do not depend on current dataset sorting', () => {
+  it('uses frozen indexes that do not depend on current dataset sorting', async () => {
     expect(LEGACY_V3_AUGMENT_NAMES[53]).toBe('Diamond of Charisma +1')
     expect(LEGACY_V3_EFFECT_NAMES[31]).toBe('Charisma')
 
     const data = createPermalinkData()
-    const decoded = decodeEssenceCraftingPermalink(
+    const decoded = await decodeEssenceCraftingPermalink(
       data,
       compress({ v: 3, ml: 2, a: [0], c: [], i: [[0, 2, 0, 0, 0, 0, [[1, 54, 0]]]] })
     )
@@ -293,9 +311,9 @@ describe('legacy Essence Crafting permalink v3', () => {
     )
   })
 
-  it('safely drops removed legacy enhancements and augments', () => {
+  it('safely drops removed legacy enhancements and augments', async () => {
     const data = createPermalinkData()
-    const decoded = decodeEssenceCraftingPermalink(
+    const decoded = await decodeEssenceCraftingPermalink(
       data,
       compress({ v: 3, ml: 2, a: [0], c: [], i: [[0, 2, 0, 999, 0, 0, [[1, 415, 0]]]] })
     )
