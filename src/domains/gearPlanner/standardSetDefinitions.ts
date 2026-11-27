@@ -4,6 +4,7 @@ export interface GearPlannerStandardSetThreshold {
   threshold: number
   effects: readonly GearPlannerEffect[]
   requirement?: string
+  requiredItemId?: number
 }
 
 export interface GearPlannerStandardSetDefinition {

@@ -1,6 +1,7 @@
 import { percentModifier } from './effectAmounts'
 import { alchemicalCraftGroups, alchemicalStageOrder, applyAlchemicalRecipe } from './alchemicalCrafting'
 import { applyThunderRecipe, thunderCraftGroups, thunderStageOrder } from './thunderForgedCrafting'
+import { applyHeroismRecipe, heroismCraftGroups, heroismStageOrder, type HeroismData } from './heroismCrafting'
 import type { ThunderData } from '../thunderForged/data'
 import type { AlchemicalData } from '../alchemical/data'
 import type { SlaveLordsData } from '../slaveLords/data'
@@ -32,6 +33,7 @@ export interface CraftGroup {
 export interface GearCraftingData {
   alchemical?: AlchemicalData
   thunderForged?: ThunderData
+  heroism?: HeroismData
   slaveLords?: SlaveLordsData
   nearlyComplete: readonly {
     name: string
@@ -51,7 +53,8 @@ export interface GearCraftingData {
 }
 
 export const emptyGearCraftingData: GearCraftingData = { nearlyComplete: [], upgrades: [] }
-export const craftStageOrder = (system: string) => Math.max(alchemicalStageOrder(system), thunderStageOrder(system))
+export const craftStageOrder = (system: string) =>
+  Math.max(alchemicalStageOrder(system), thunderStageOrder(system), heroismStageOrder(system))
 const setChoice = (name: string): CraftChoice => ({ id: name, label: name, setName: name })
 export const craftItemKey = (title: string) => title.trim().replace(/\s+/g, ' ').toLowerCase()
 
@@ -102,6 +105,7 @@ export function gearCraftGroups(item: GearPlannerItem, data: GearCraftingData): 
   const groups: CraftGroup[] = []
   if (item.alchemical && data.alchemical) groups.push(...alchemicalCraftGroups(item, data.alchemical))
   if (data.thunderForged) groups.push(...thunderCraftGroups(item, data.thunderForged))
+  if (data.heroism) groups.push(...heroismCraftGroups(item, data.heroism))
   const source = item.source
   const markers = new Set(source.enchantments?.map(({ name }) => name))
   for (const { system, label, marker, items, nativeChoices } of data.upgrades) {
@@ -191,6 +195,8 @@ export function applyGearCraft(
     return applyAlchemicalRecipe(item, group, choiceId, data.alchemical)
   if (data.thunderForged && thunderStageOrder(group.system) >= 0)
     return applyThunderRecipe(item, group, choiceId, data.thunderForged)
+  if (data.heroism && heroismStageOrder(group.system) >= 0)
+    return applyHeroismRecipe(item, group, choiceId, data.heroism)
   const current = item.crafts ?? []
   const remaining = current.filter((c) => c.system !== group.system)
   if (choiceId === null) return remaining.length === current.length ? item : { ...item, crafts: remaining }

@@ -3,6 +3,7 @@ import { displayPercentModifier, percentModifier } from './effectAmounts'
 import { loadOptionalAlchemicalData } from '../alchemical/loadAlchemicalData'
 import { loadOptionalThunderData } from '../thunderForged/data'
 import { addThunderBases } from './thunderForgedCrafting'
+import { loadOptionalHeroismData, prepareHeroismBases } from './heroismCrafting'
 import { loadOptionalSlaveLordsData } from '../slaveLords/loadSlaveLordsData'
 import type { GearPlannerStandardSetDefinition } from './standardSetDefinitions.ts'
 import { slaveLordsSetDefinitions } from './slaveLordsCrafting'
@@ -241,17 +242,20 @@ async function loadCraftingData(): Promise<GearCraftingData> {
 }
 
 export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types.ts').GearPlannerData> => {
-  const [crafting, slaveLords, alchemical, thunderForged, curses, reforging, sockets, itemCatalog] = await Promise.all([
-    loadCraftingData(),
-    loadOptionalSlaveLordsData(),
-    loadOptionalAlchemicalData(),
-    loadOptionalThunderData(),
-    loadCatalogCurses(),
-    loadNearlyFinishedRecipes(),
-    loadSocketCatalog(),
-    loadItemCatalog()
-  ])
-  const sourceDatasets = thunderForged ? addThunderBases(itemCatalog.datasets, thunderForged) : itemCatalog.datasets
+  const [crafting, slaveLords, alchemical, thunderForged, heroism, curses, reforging, sockets, itemCatalog] =
+    await Promise.all([
+      loadCraftingData(),
+      loadOptionalSlaveLordsData(),
+      loadOptionalAlchemicalData(),
+      loadOptionalThunderData(),
+      loadOptionalHeroismData(),
+      loadCatalogCurses(),
+      loadNearlyFinishedRecipes(),
+      loadSocketCatalog(),
+      loadItemCatalog()
+    ])
+  const itemDatasets = thunderForged ? addThunderBases(itemCatalog.datasets, thunderForged) : itemCatalog.datasets
+  const sourceDatasets = heroism ? prepareHeroismBases(itemDatasets, heroism) : itemDatasets
   const reforgingEntries = reforging.reforgingStation
   const normalized = normalizeGearPlannerSources(
     sourceDatasets,
@@ -262,7 +266,9 @@ export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types
   )
   const filigreeSetDefinitions = sockets.filigreeDefinitions
   const filigreeSetDefinitionByName = new Map(filigreeSetDefinitions.map((definition) => [definition.name, definition]))
-  const equipmentSetsByName = Map.groupBy(sockets.equipmentDefinitions, ([, set]) => set.name)
+  const equipmentDefinitions = new Map(sockets.equipmentDefinitions)
+  for (const [id, set] of heroism?.definitions ?? []) equipmentDefinitions.set(id, set)
+  const equipmentSetsByName = Map.groupBy(equipmentDefinitions, ([, set]) => set.name)
   const standardSets = new Map<string | number, GearPlannerStandardSetDefinition>()
   for (const matches of equipmentSetsByName.values()) {
     // Some set variants share a label but have different members.
@@ -276,7 +282,7 @@ export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types
     enchantmentAliases: itemCatalog.aliases,
     enchantmentNames: itemCatalog.enchantmentNames,
     augmentEnchantmentNames: sockets.enchantmentNames,
-    crafting: { ...crafting, slaveLords, alchemical, thunderForged },
+    crafting: { ...crafting, slaveLords, alchemical, thunderForged, heroism },
     standardSets,
     reforging: createGearPlannerReforgingData(reforgingEntries, sourceDatasets),
     curses,

@@ -130,6 +130,7 @@ export const resolveGearPlannerSetState = (
   augmentSlotsByItem: Readonly<Record<string, readonly GearPlannerAugmentSlot[]>> = {}
 ): GearPlannerSetState => {
   const memberships = collectGearPlannerSetMemberships(equipment, slottedAugments, slottedFiligrees, augmentSlotsByItem)
+  const catalogIds = new Map(equippedItems(equipment).map((item) => [item.id, item.source.catalogId]))
   const setKey = ({ setId, setName }: GearPlannerSetMembership) =>
     setId !== undefined && definitions.has(setId) ? setId : setName
   const membershipsBySet = new Map<string, GearPlannerSetMembership[]>()
@@ -149,14 +150,16 @@ export const resolveGearPlannerSetState = (
       const key = setKey(setMemberships[0])
       const definition = category === 'filigree' ? filigreeDefinitions.get(name) : definitions.get(key)
       const count = setMemberships.length
+      const meetsRequirements = ({ requirement, requiredItemId, threshold }: GearPlannerStandardSetThreshold) =>
+        !requirement &&
+        threshold <= count &&
+        (requiredItemId === undefined ||
+          setMemberships.some(
+            (entry) => entry.category === 'equipped-item' && catalogIds.get(entry.itemId) === requiredItemId
+          ))
       const highest =
         definition?.thresholdMode === 'highestOnly'
-          ? Math.max(
-              0,
-              ...definition.thresholds.flatMap(({ requirement, threshold }) =>
-                !requirement && threshold <= count ? [threshold] : []
-              )
-            )
+          ? Math.max(0, ...definition.thresholds.filter(meetsRequirements).map(({ threshold }) => threshold))
           : undefined
       return {
         name,
@@ -168,10 +171,7 @@ export const resolveGearPlannerSetState = (
           definition?.thresholds.map((threshold, index) => ({
             ...threshold,
             id: `${category}:${String(key)}:${String(index)}`,
-            isActive:
-              !threshold.requirement &&
-              threshold.threshold <= count &&
-              (highest === undefined || threshold.threshold === highest)
+            isActive: meetsRequirements(threshold) && (highest === undefined || threshold.threshold === highest)
           })) ?? []
       }
     })

@@ -169,7 +169,7 @@ function statModifier(stat: Row, value: number, name: string, source: EffectSour
   return { modifier: value }
 }
 
-function equipmentBonuses(enchantments: Row[], source: EffectSource, notes?: string) {
+function equipmentBonuses(enchantments: Row[], source: EffectSource, notes?: string, includeSkillEnhancement = false) {
   const stats: GearPlannerEffect[] = []
   for (const stat of enchantments) {
     if (
@@ -182,7 +182,7 @@ function equipmentBonuses(enchantments: Row[], source: EffectSource, notes?: str
     // Conditional and derived values cannot be counted as always-on equipment bonuses.
     if (
       stat.conditionalBonus ||
-      stat.sourceStat ||
+      (stat.sourceStat && !(includeSkillEnhancement && stat.sourceStat === 'Skill_SkillEnhancement')) ||
       stat.targetEligibility ||
       stat.requiresActiveBlocking ||
       stat.weaponType ||
@@ -199,10 +199,15 @@ function equipmentBonuses(enchantments: Row[], source: EffectSource, notes?: str
   return stats
 }
 
-function effectStats(effect: Row, source: EffectSource): GearPlannerEffect[] {
+function effectStats(effect: Row, source: EffectSource, includeSkillEnhancement = false): GearPlannerEffect[] {
   const notes = typeof effect.description === 'string' ? effect.description : undefined
   const name = typeof effect.displayName === 'string' ? effect.displayName.trim() : ''
-  const stats = equipmentBonuses(rows(effect.enchantments ?? [], 'enchantments'), source, notes)
+  const stats = equipmentBonuses(
+    rows(effect.enchantments ?? [], 'enchantments'),
+    source,
+    notes,
+    includeSkillEnhancement
+  )
   if (name && (!stats.length || (Array.isArray(effect.procs) && effect.procs.length))) stats.push({ name, notes })
   const discrepancies = discrepancyNotes(effect, source)
   if (stats.length && discrepancies.length) stats[0].discrepancyNotes = discrepancies
@@ -231,6 +236,18 @@ function indexedEffects<T>(
 
 export function effectIndex(effects: unknown, source: EffectSource = 'equipment') {
   return indexedEffects(effects, (effect) => effectStats(effect, source))
+}
+
+export function craftingMutationEffectIndex(effects: unknown) {
+  return indexedEffects(
+    effects,
+    (effect, parent) =>
+      isVisibleEffect(effect) && isVisibleEffect(parent)
+        ? // Good Luck upgrades publish the actual bonus for each skill under this source stat.
+          effectStats(effect, 'equipment', true)
+        : equipmentBonuses(rows(effect.enchantments ?? [], 'enchantments'), 'equipment'),
+    (effect) => effect.internal !== true
+  )
 }
 
 function referencedEffect<T>(index: ReadonlyMap<string, T | null>, ref: Row, name: string) {
@@ -601,7 +618,8 @@ export function adaptItemSetDefinitions(sets: unknown, index: ReturnType<typeof 
             return {
               threshold,
               effects,
-              ...(typeof tier.requirement === 'string' && { requirement: tier.requirement })
+              ...(typeof tier.requirement === 'string' && { requirement: tier.requirement }),
+              ...(tier.requiredItemId !== undefined && { requiredItemId: id(tier.requiredItemId, name) })
             }
           })
     const definition: GearPlannerFiligreeSetDefinition = {

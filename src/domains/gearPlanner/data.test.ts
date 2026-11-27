@@ -20,7 +20,13 @@ import {
 } from './data.ts'
 import { getGearPlannerBaseAugmentSlots, isCompatibleGearPlannerAugment } from './augments.ts'
 import { aggregateEffectSummary, collectEquippedEffects } from './effects.ts'
-import { gearPlannerSlots, type GearPlannerSourceItem } from './gearPlanner.types.ts'
+import { applyGearCraft, gearCraftGroups } from './crafting.ts'
+import {
+  gearPlannerSlots,
+  type GearPlannerData,
+  type GearPlannerItem,
+  type GearPlannerSourceItem
+} from './gearPlanner.types.ts'
 import {
   gearPlannerFiligreeId,
   gearPlannerItemId,
@@ -28,7 +34,9 @@ import {
   normalizeGearPlannerSources
 } from './normalize.ts'
 import { createEmptyGearPlannerEquipment } from './planner.ts'
+import { restorePersistedGearPlannerState, serializeGearPlannerState } from './plannerStorage.ts'
 import { collectActiveSetEffectSources, resolveGearPlannerSetState } from './sets.ts'
+import { createDefaultGearPlannerState } from './setups.ts'
 
 const item = (name: string, type?: string): GearPlannerSourceItem => ({
   name,
@@ -39,6 +47,70 @@ const item = (name: string, type?: string): GearPlannerSourceItem => ({
 
 const normalize = (fileName: string, records: readonly GearPlannerSourceItem[]) =>
   normalizeGearPlannerSources([{ fileName, records }], [])
+
+function verifyHeroismUpgrades(data: GearPlannerData) {
+  const heroism = data.crafting.heroism
+  if (!heroism) throw new Error('Missing Attuned to Heroism package')
+  const groups = (gear: GearPlannerItem) =>
+    gearCraftGroups(gear, data.crafting).filter(({ system }) => system.startsWith('attuned-to-heroism-'))
+  const byId = (id: number) => {
+    const gear = data.items.find((candidate) => candidate.source.catalogId === id)
+    if (!gear) throw new Error('Missing Attuned to Heroism item ' + String(id))
+    return gear
+  }
+  const recipeIds = new Set<string>()
+  function walk(gear: GearPlannerItem, tier = 0) {
+    const group = groups(gear)[tier]
+    if (!group) return
+    for (const { id } of group.choices) {
+      const upgraded = applyGearCraft(gear, group, id, data.crafting)
+      expect(upgraded, gear.source.name).not.toBe(gear)
+      recipeIds.add(id)
+      walk(upgraded, tier + 1)
+    }
+  }
+  for (const id of heroism.items.keys()) walk(byId(id))
+  expect(recipeIds.size).toBe(112)
+
+  const pendant = byId(1879174660)
+  expect(groups(pendant)).toHaveLength(1)
+  const firstTier = groups(pendant)[0]
+  const socketedPendant = applyGearCraft(pendant, firstTier, firstTier.choices[0].id, data.crafting)
+  const secondTier = groups(socketedPendant)[1]
+  const upgradedPendant = applyGearCraft(socketedPendant, secondTier, secondTier.choices[0].id, data.crafting)
+  expect(getGearPlannerBaseAugmentSlots(upgradedPendant).map(({ augmentType }) => augmentType)).toEqual(['Yellow'])
+
+  let twilight = byId(1879161291)
+  for (const [tier, id] of ['1879161602', '1879165545', '1879165537', '1879173093'].entries())
+    twilight = applyGearCraft(twilight, groups(twilight)[tier], id, data.crafting)
+  const state = createDefaultGearPlannerState()
+  const equipment = state.setups[0].equipment
+  equipment[upgradedPendant.slot] = upgradedPendant
+  equipment[twilight.slot] = twilight
+  const ordinary = aggregateEffectSummary(collectEquippedEffects(equipment))
+  expect(ordinary).toContainEqual(expect.objectContaining({ name: 'Elemental Resistance: Electric', total: 50 }))
+  expect(ordinary).toContainEqual(expect.objectContaining({ name: 'Spell Power: Fire', total: 120 }))
+  expect(getGearPlannerBaseAugmentSlots(twilight).map(({ augmentType }) => augmentType)).toEqual(['Red'])
+  expect(
+    resolveGearPlannerSetState(equipment, {}, data.standardSets)
+      .sets.flatMap(({ thresholds }) => thresholds)
+      .some(({ isActive }) => isActive)
+  ).toBe(false)
+  const focus = byId(1879160957)
+  equipment[focus.slot] = focus
+  const active = resolveGearPlannerSetState(equipment, {}, data.standardSets)
+  expect(aggregateEffectSummary(collectActiveSetEffectSources(active))).toContainEqual(
+    expect.objectContaining({ name: 'Maximum Spell Points', total: 250 })
+  )
+
+  const restored = restorePersistedGearPlannerState(serializeGearPlannerState(state), data)
+  expect(restored.issues).toEqual([])
+  expect(restored.state.setups[0].equipment[twilight.slot]?.crafts).toEqual(twilight.crafts)
+  const cleared = applyGearCraft(twilight, groups(twilight)[0], null, data.crafting)
+  expect(cleared.crafts).toEqual([])
+  expect(getGearPlannerBaseAugmentSlots(cleared)).toEqual([])
+  expect(cleared.source.setBonus).toEqual([])
+}
 
 describe('Gear Planner data validation', () => {
   it('joins native effect variants and keeps identically named game items distinct in both ring slots', () => {
@@ -577,6 +649,7 @@ describe('Gear Planner production CDN validation', () => {
     })
     try {
       const [data, rings] = await Promise.all([loadGearPlannerData(), loadIncrediblePotentialData()])
+      verifyHeroismUpgrades(data)
       for (const [augmentName, minLevel, name, bonus, total] of [
         ['Melancholic: Wisdom', 34, 'Wisdom', 'Enhancement', 15],
         ['Bronzescale', 31, 'Skill: Hide', 'Enhancement', 5],
