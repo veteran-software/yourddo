@@ -39,7 +39,7 @@ import { PlannerViewToolbar } from '../../shared/layout/PlannerViewToolbar'
 import classes from '../../shared/layout/PlannerWorkspace.module.css'
 import workspace from '../../shared/layout/workspace.module.css'
 import ItemCraftingSelector from './components/ItemCraftingSelector.tsx'
-import DampenedUpgradeButton from './components/DampenedUpgradeButton'
+import ItemReplacementUpgrade from './components/ItemReplacementUpgrade'
 import {
   ActionIcon,
   Autocomplete,
@@ -388,7 +388,7 @@ const EquipmentEditor = ({
         </Stack>
       </Group>
       <Group gap='xs'>
-        <DampenedUpgradeButton key={item.id} item={item} setup={setup} data={data} onReplace={replaceItem} />
+        <ItemReplacementUpgrade key={item.id} item={item} setup={setup} data={data} onReplace={replaceItem} />
         <Button
           size='xs'
           variant='light'

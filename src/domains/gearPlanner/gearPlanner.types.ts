@@ -90,6 +90,7 @@ export interface GearPlannerSourceItem {
   blockedSlots?: readonly string[]
   catalogId?: number
   catalogSlots?: readonly GearPlannerSlot[]
+  suppressedPowerRecipeId?: number
   iconLayers?: readonly string[]
   name: string
   pageTitle?: string
@@ -173,6 +174,7 @@ export interface GearPlannerData {
   enchantmentAliases?: ReadonlyMap<string, string>
   crafting: import('./crafting.ts').GearCraftingData
   dampenedUpgrades?: ReadonlyMap<string, GearPlannerItem>
+  suppressedPowerUpgrades?: ReadonlyMap<string, readonly GearPlannerItem[]>
   standardSets?: ReadonlyMap<string | number, GearPlannerStandardSetDefinition>
   sourceDatasets: readonly GearPlannerSourceDataset[]
   items: readonly GearPlannerItem[]

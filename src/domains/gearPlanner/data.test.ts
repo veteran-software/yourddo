@@ -655,6 +655,33 @@ describe('Gear Planner production CDN validation', () => {
       expect(dinosaur.items.some(({ setBonus }) => setBonus?.length)).toBe(true)
       expect(dinosaur.dinosaurAugments.filter(({ setBonus }) => setBonus?.length).length).toBeGreaterThanOrEqual(6)
       expect(requested.some((url) => url.endsWith('/items/augments/sets.json'))).toBe(false)
+      const paleBlue = data.items.find(({ source }) => source.catalogId === 1879068176)
+      const lavender = data.items.find(({ source }) => source.catalogId === 1879068157)
+      const rahl = data.items.find(({ source }) => source.catalogId === 1879103704)
+      if (!paleBlue || !lavender || !rahl) throw new Error('Missing Suppressed Power base items')
+      const paleBlueUpgrade = data.suppressedPowerUpgrades?.get(paleBlue.id)?.[0]
+      expect(paleBlueUpgrade?.source).toMatchObject({
+        name: 'Pale Blue Ioun Stone (Unsuppressed)',
+        minLevel: 5,
+        suppressedPowerRecipeId: 1879108307
+      })
+      expect(paleBlueUpgrade?.source.enchantments).toContainEqual(
+        expect.objectContaining({ name: 'Strength', modifier: 6 })
+      )
+      expect(paleBlueUpgrade?.source.enchantments).not.toContainEqual(
+        expect.objectContaining({ name: 'Suppressed Power' })
+      )
+      expect(data.suppressedPowerUpgrades?.get(lavender.id)?.[0]?.source.catalogId).toBe(1879108324)
+      expect(data.suppressedPowerUpgrades?.get(rahl.id)).toHaveLength(5)
+      const upgradeResults = new Set(
+        [...(data.suppressedPowerUpgrades?.values() ?? [])].flatMap((choices) => choices.map(({ source }) => source))
+      )
+      expect(upgradeResults.size).toBe(24)
+      expect(
+        data.suppressedPowerUpgrades?.get(rahl.id)?.find(({ source }) => source.suppressedPowerRecipeId === 1879103833)
+          ?.source.enchantments
+      ).toContainEqual(expect.objectContaining({ name: 'Shocking Burst' }))
+      expect(requested.some((url) => url.endsWith('/suppressed-power/items.json'))).toBe(false)
       for (const [input, output] of [
         [1879110202, 1879110200],
         [1879110212, 1879110213],
@@ -843,7 +870,12 @@ describe('Gear Planner production CDN validation', () => {
       expect(data.items).toHaveLength(data.normalizedItemCount)
       expect(new Set(data.items.map(({ id }) => id)).size).toBe(data.items.length)
       expect(
-        data.sourceDatasets.every(({ records }) => records.every(({ catalogId }) => Number.isSafeInteger(catalogId)))
+        data.sourceDatasets.every(({ records }) =>
+          records.every(
+            ({ catalogId, suppressedPowerRecipeId }) =>
+              Number.isSafeInteger(catalogId) || Number.isSafeInteger(suppressedPowerRecipeId)
+          )
+        )
       ).toBe(true)
       expect(data.filigrees.length).toBeGreaterThan(0)
       expect(

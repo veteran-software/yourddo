@@ -4,6 +4,7 @@ import { loadOptionalAlchemicalData } from '../alchemical/loadAlchemicalData'
 import { loadOptionalThunderData } from '../thunderForged/data'
 import { addThunderBases } from './thunderForgedCrafting'
 import { loadOptionalHeroismData, prepareHeroismBases } from './heroismCrafting'
+import { loadOptionalSuppressedPower, prepareSuppressedPower, suppressedPowerUpgradeItems } from './suppressedPower'
 import { loadOptionalSlaveLordsData } from '../slaveLords/loadSlaveLordsData'
 import type { GearPlannerStandardSetDefinition } from './standardSetDefinitions.ts'
 import { slaveLordsSetDefinitions } from './slaveLordsCrafting'
@@ -285,21 +286,34 @@ function dampenedUpgradeItems(items: readonly GearPlannerItem[], links: Readonly
 }
 
 export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types.ts').GearPlannerData> => {
-  const [crafting, slaveLords, alchemical, thunderForged, heroism, dampened, curses, reforging, sockets, itemCatalog] =
-    await Promise.all([
-      loadCraftingData(),
-      loadOptionalSlaveLordsData(),
-      loadOptionalAlchemicalData(),
-      loadOptionalThunderData(),
-      loadOptionalHeroismData(),
-      loadDampenedRecipes(),
-      loadCatalogCurses(),
-      loadNearlyFinishedRecipes(),
-      loadSocketCatalog(),
-      loadItemCatalog()
-    ])
+  const [
+    crafting,
+    slaveLords,
+    alchemical,
+    thunderForged,
+    heroism,
+    dampened,
+    suppressed,
+    curses,
+    reforging,
+    sockets,
+    itemCatalog
+  ] = await Promise.all([
+    loadCraftingData(),
+    loadOptionalSlaveLordsData(),
+    loadOptionalAlchemicalData(),
+    loadOptionalThunderData(),
+    loadOptionalHeroismData(),
+    loadDampenedRecipes(),
+    loadOptionalSuppressedPower(),
+    loadCatalogCurses(),
+    loadNearlyFinishedRecipes(),
+    loadSocketCatalog(),
+    loadItemCatalog()
+  ])
   const itemDatasets = thunderForged ? addThunderBases(itemCatalog.datasets, thunderForged) : itemCatalog.datasets
-  const sourceDatasets = heroism ? prepareHeroismBases(itemDatasets, heroism) : itemDatasets
+  const prepared = heroism ? prepareHeroismBases(itemDatasets, heroism) : itemDatasets
+  const { datasets: sourceDatasets, destinations } = prepareSuppressedPower(prepared, suppressed)
   const reforgingEntries = reforging.reforgingStation
   const normalized = normalizeGearPlannerSources(
     sourceDatasets,
@@ -328,6 +342,7 @@ export const loadGearPlannerData = async (): Promise<import('./gearPlanner.types
     augmentEnchantmentNames: sockets.enchantmentNames,
     crafting: { ...crafting, slaveLords, alchemical, thunderForged, heroism },
     dampenedUpgrades: dampenedUpgradeItems(normalized.items, dampened),
+    suppressedPowerUpgrades: suppressedPowerUpgradeItems(normalized.items, destinations),
     standardSets,
     reforging: createGearPlannerReforgingData(reforgingEntries, sourceDatasets),
     curses,
